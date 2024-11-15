@@ -5,12 +5,12 @@ class AppTheme {
   ThemeData getTheme() => ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Color(0xff323742),
-            primary: Color(0xff323742),
-            primaryFixed: Color(0xff323742),
-            secondary: Color(0xff7AD0AC),
-            tertiary: Color(0xff7AA9D0),
-            error: Color(0xffFF0004)),
+            seedColor: const Color(0xff323742),
+            primary: const Color(0xff323742),
+            primaryFixed: const Color(0xff323742),
+            secondary: const Color(0xff7AD0AC),
+            tertiary: const Color(0xff7AA9D0),
+            error: const Color(0xffFF0004)),
         textTheme: TextTheme(
           titleLarge: GoogleFonts.poppins()
               .copyWith(fontSize: 40, fontWeight: FontWeight.bold),
@@ -25,6 +25,6 @@ class AppTheme {
           bodySmall: GoogleFonts.poppins()
               .copyWith(fontSize: 15, fontWeight: FontWeight.normal),
         ),
-        scaffoldBackgroundColor: Color(0xffC8C8C8),
+        scaffoldBackgroundColor: const Color(0xffdadada),
       );
 }

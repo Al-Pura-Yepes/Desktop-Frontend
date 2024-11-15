@@ -1,6 +1,8 @@
+import 'package:al_pura_frontend/config/router/app_router.dart';
 import 'package:al_pura_frontend/feature/shared/widget/navbar/custom_navigation_item.dart';
 import 'package:al_pura_frontend/feature/shared/widget/navbar/custom_navigation_item_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomNavigationRail extends StatefulWidget {
 
@@ -13,8 +15,8 @@ class CustomNavigationRail extends StatefulWidget {
 
 class _CustomNavigationRailState extends State<CustomNavigationRail> {
   final List<CustomNavigationItemModel> _options = const [
-    CustomNavigationItemModel(title: 'Venta', icon: Icons.shopping_cart),
-    CustomNavigationItemModel(title: 'Reserva', icon: Icons.receipt),
+    CustomNavigationItemModel(title: 'Venta', icon: Icons.shopping_cart, goTo: '/'),
+    CustomNavigationItemModel(title: 'Reserva', icon: Icons.receipt, goTo: '/history'),
     CustomNavigationItemModel(title: 'Historial', icon: Icons.book)
   ];
   String optionSelected = 'Venta';
@@ -28,7 +30,7 @@ class _CustomNavigationRailState extends State<CustomNavigationRail> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final size = MediaQuery.of(context).size;
-        final double width = size.width < 1900 ? 80 : 110;
+        final double width = size.width < 1900 ? 90 : 120;
 
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -36,17 +38,20 @@ class _CustomNavigationRailState extends State<CustomNavigationRail> {
           color: primaryColor,
           child: Column(
             children: [
-              Icon(Icons.business_center_rounded, size: width, color: Colors.white,),
+              Image.asset('assets/logo_white.png'),
 
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
               ..._options.map((e) {
                 return CustomNavigationItem(
                   item: e,
                   isSelected: optionSelected == e.title,
-                  onPress: () => setState(() {
-                    optionSelected = e.title;
-                  }),
+                  onPress: () {
+                    setState(() {
+                      optionSelected = e.title;
+                    });
+                    context.go(e.goTo);
+                  }
                 );
               },).toList(),
             ]

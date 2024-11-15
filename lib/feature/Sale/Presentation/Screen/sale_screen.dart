@@ -6,13 +6,25 @@ class SaleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: 200,
-          height: 200,
-          child: ProductCard(),
-        ),
+
+      //TODO: CHANGE TO SLIVER APP BAR
+      appBar: AppBar(
+        toolbarHeight: 80,
+        backgroundColor: Colors.transparent,
+        title: Text('Venta', style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
+      ),
+      body: Row(
+        children: [
+          Container(
+            color: Colors.red,
+            width: size.width * 0.6,
+            
+          )
+        ],
       ),
     );
   }

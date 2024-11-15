@@ -1,3 +1,4 @@
+import 'package:al_pura_frontend/config/router/app_router.dart';
 import 'package:al_pura_frontend/config/theme/app_theme.dart';
 import 'package:al_pura_frontend/feature/shared/widget/navbar/custom_navigation_rail.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +10,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: AppTheme().getTheme(),
       title: 'Al Pura Yepes Tienda',
-      home: Scaffold(
-        body: Row(
-          children: [CustomNavigationRail()],
-        ),
-      ),
+      routerConfig: router,
     );
   }
 }
