@@ -12,24 +12,17 @@ class _ProductCardState extends State<ProductCard> {
   bool isFront = true;
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final primaryColor = Theme.of(context).primaryColor;
-
     return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(8)),
-      child: SizedBox(
-          width: 250,
-          height: 250,
-          child: isFront
-              ? _FrontCard(
-                  callback: () => setDisplay(false),
-                  quantity: 2,
-                )
-              : _BackCard(
-                  options: [1, 2, 3],
-                  callback: () => setDisplay(true),
-                )),
-    );
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        child: isFront
+            ? _FrontCard(
+                callback: () => setDisplay(false),
+                quantity: 2,
+              )
+            : _BackCard(
+                options: [1, 2, 3],
+                callback: () => setDisplay(true),
+              ));
   }
 
   void setDisplay(bool isFront) {
@@ -81,8 +74,8 @@ class _FrontCard extends StatelessWidget {
                       color: secondaryColor,
                       borderRadius:
                           BorderRadius.only(bottomLeft: Radius.circular(8))),
-                  height: 70,
-                  width: 70,
+                  height: 60,
+                  width: 60,
                   alignment: Alignment.center,
                   child: Text(
                     quantity.toString(),
