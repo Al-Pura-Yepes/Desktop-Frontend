@@ -1,4 +1,4 @@
-import 'package:al_pura_frontend/feature/Sale/Presentation/Screen/sale_screen.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/screen/sale_screen.dart';
 import 'package:al_pura_frontend/feature/shared/widget/navbar/custom_navigation_rail.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

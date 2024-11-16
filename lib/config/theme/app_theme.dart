@@ -17,7 +17,7 @@ class AppTheme {
           titleMedium: GoogleFonts.poppins()
               .copyWith(fontSize: 32, fontWeight: FontWeight.normal),
           titleSmall: GoogleFonts.poppins()
-              .copyWith(fontSize: 20, fontWeight: FontWeight.w600),
+              .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
           bodyLarge: GoogleFonts.poppins()
               .copyWith(fontSize: 25, fontWeight: FontWeight.normal),
           bodyMedium: GoogleFonts.poppins()
