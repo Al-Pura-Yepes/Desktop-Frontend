@@ -5,31 +5,27 @@ import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-final GoRouter router = GoRouter(
-  navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
-  routes: [
-    ShellRoute(
-        builder: (context, state, child) {
-          return Scaffold(
-            body: Row(
-              children: [
-                const CustomNavigationRail(),
-                Expanded(child: child)
-              ],
-            ),
-          );
-        },
-        routes: [
-          GoRoute(
-              path: '/',
-              builder: (context, state) =>  SaleScreen(),
+final GoRouter router =
+    GoRouter(navigatorKey: _rootNavigatorKey, initialLocation: '/', routes: [
+  ShellRoute(
+      builder: (context, state, child) {
+        return Scaffold(
+          body: Row(
+            children: [const CustomNavigationRail(), Expanded(child: child)],
           ),
-          GoRoute(
-              path: '/history',
-              builder: (context, state) => Scaffold(appBar: AppBar(), body: Text('hola'),),
-          )
-        ]
-    )
-  ]
-);
+        );
+      },
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => SaleScreen(),
+        ),
+        GoRoute(
+          path: '/history',
+          builder: (context, state) => Scaffold(
+            appBar: AppBar(),
+            body: Text('hola'),
+          ),
+        )
+      ])
+]);

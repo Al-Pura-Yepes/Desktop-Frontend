@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavigationItem extends StatelessWidget {
-
   final CustomNavigationItemModel item;
   final bool isSelected;
   final void Function()? onPress;
 
-  const CustomNavigationItem({super.key, required this.item, required this.isSelected, this.onPress});
+  const CustomNavigationItem(
+      {super.key, required this.item, required this.isSelected, this.onPress});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,8 @@ class CustomNavigationItem extends StatelessWidget {
                 Text(
                   item.title,
                   style: TextStyle(
-                      color: isSelected ? Colors.white : const Color(0xff95999C),
+                      color:
+                          isSelected ? Colors.white : const Color(0xff95999C),
                       fontSize: width * 0.15),
                 )
               ],

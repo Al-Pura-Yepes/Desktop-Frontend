@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavigationRail extends StatefulWidget {
-
-
   const CustomNavigationRail({super.key});
 
   @override
@@ -15,8 +13,10 @@ class CustomNavigationRail extends StatefulWidget {
 
 class _CustomNavigationRailState extends State<CustomNavigationRail> {
   final List<CustomNavigationItemModel> _options = const [
-    CustomNavigationItemModel(title: 'Venta', icon: Icons.shopping_cart, goTo: '/'),
-    CustomNavigationItemModel(title: 'Reserva', icon: Icons.receipt, goTo: '/history'),
+    CustomNavigationItemModel(
+        title: 'Venta', icon: Icons.shopping_cart, goTo: '/'),
+    CustomNavigationItemModel(
+        title: 'Reserva', icon: Icons.receipt, goTo: '/history'),
     CustomNavigationItemModel(title: 'Historial', icon: Icons.book)
   ];
   String optionSelected = 'Venta';
@@ -36,26 +36,25 @@ class _CustomNavigationRailState extends State<CustomNavigationRail> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           width: width,
           color: primaryColor,
-          child: Column(
-            children: [
-              Image.asset('assets/logo_white.png'),
-
-              const SizedBox(height: 50,),
-
-              ..._options.map((e) {
+          child: Column(children: [
+            Image.asset('assets/logo_white.png'),
+            const SizedBox(
+              height: 50,
+            ),
+            ..._options.map(
+              (e) {
                 return CustomNavigationItem(
-                  item: e,
-                  isSelected: optionSelected == e.title,
-                  onPress: () {
-                    setState(() {
-                      optionSelected = e.title;
+                    item: e,
+                    isSelected: optionSelected == e.title,
+                    onPress: () {
+                      setState(() {
+                        optionSelected = e.title;
+                      });
+                      context.go(e.goTo);
                     });
-                    context.go(e.goTo);
-                  }
-                );
-              },).toList(),
-            ]
-          ),
+              },
+            ).toList(),
+          ]),
         );
       },
     );

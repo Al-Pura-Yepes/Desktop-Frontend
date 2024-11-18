@@ -1,5 +1,7 @@
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/products_board.dart';
+import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
+import 'package:al_pura_frontend/feature/shared/widget/checkbox/custom_checkbox.dart';
 import 'package:al_pura_frontend/feature/shared/widget/options_bar/option_bar.dart';
 import 'package:al_pura_frontend/feature/shared/widget/product_card.dart';
 import 'package:flutter/material.dart';
@@ -11,48 +13,200 @@ class SaleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
 
     return Scaffold(
-
       //TODO: CHANGE TO SLIVER APP BAR
       appBar: AppBar(
         toolbarHeight: 80,
         backgroundColor: Colors.transparent,
-        title: Text('Venta', style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
+        title: Text('Venta',
+            style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
       ),
-      body: Row(
-        children: [
-          SizedBox(
-            width: size.width * 0.6,
-            child: const Column(
-              children: [
-                OptionBar(),
-                SizedBox(height: 10,),
-                Expanded(child: ProductsBoard())
-              ],
-            ),
-          ),
-
-          Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    color: Colors.white,
-                    child: const Column(
-                      children: [
-                        ProductStaticPriceSale(),
-                        ProductStaticPriceSale(),
-                        ProductStaticPriceSale(),
-                        ProductStaticPriceSale(),
-                        ProductStaticPriceSale(),
-                        ProductStaticPriceSale(),
-                        ProductStaticPriceSale(),
-                      ],
-                    ),
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Row(
+          children: [
+            SizedBox(
+              width: size.width * 0.6,
+              child: const Column(
+                children: [
+                  OptionBar(),
+                  SizedBox(
+                    height: 10,
                   ),
+                  Expanded(child: ProductsBoard())
+                ],
               ),
-          )
-        ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              )),
+                          height:
+                              const ProductStaticPriceSale().widgetHeight * 7,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  'Carrito',
+                                  textAlign: TextAlign.start,
+                                  style: textTheme.titleSmall,
+                                ),
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: 6,
+                                  itemBuilder: (context, index) {
+                                    return const ProductStaticPriceSale();
+                                  },
+                                ),
+                              )
+                            ],
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Informacion de la venta',
+                                  textAlign: TextAlign.start,
+                                  style: textTheme.titleSmall,
+                                ),
+                                const Row(
+                                  children: [
+                                    CustomButton(
+                                      size: 60,
+                                      filled: false,
+                                      iconColor: Color(0xff464C59),
+                                      color: Color(0xff464C59),
+                                      icon: Icons.add_alert,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    CustomButton(
+                                      size: 60,
+                                      filled: false,
+                                      iconColor: Colors.red,
+                                      color: Colors.red,
+                                      icon: Icons.delete,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomCheckbox(
+                                  title: 'Envio por delivery',
+                                  color: Colors.green,
+                                ),
+                                Text(
+                                  'Subtotal: Bs. ${3 + 3}',
+                                  style: textTheme.bodyLarge,
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomCheckbox(
+                                    title: 'Venta al por mayor'),
+                                Text(
+                                  'Descuento: Bs. ${3 + 3}',
+                                  style: textTheme.bodyLarge
+                                      ?.copyWith(color: secondaryColor),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Row(
+                                  children: [
+                                    CustomButton(
+                                        size: 70,
+                                        color: Color(0xff464C59),
+                                        icon: Icons.qr_code,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    CustomButton(
+                                        size: 70,
+                                        color: Color(0xff7AD0AC),
+                                        icon: Icons.attach_money,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    CustomButton(
+                                        size: 70,
+                                        color: Color(0xff1C1897),
+                                        icon: Icons.bookmark,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Total: ',
+                                      style: textTheme.titleMedium,
+                                    ),
+                                    Text(
+                                      'Bs. ${(4 + 4.00).toStringAsFixed(2)}',
+                                      style: textTheme.titleLarge,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
