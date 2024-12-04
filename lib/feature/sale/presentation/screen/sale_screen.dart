@@ -1,5 +1,6 @@
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/products_board.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
 import 'package:al_pura_frontend/feature/shared/widget/checkbox/custom_checkbox.dart';
 import 'package:al_pura_frontend/feature/shared/widget/fields/custom_title_text_field.dart';
@@ -48,6 +49,8 @@ class SaleScreen extends StatelessWidget {
                     Expanded(
                       child: _SaleCart(textTheme: textTheme),
                     ),
+                    SizedBox(height: 10,),
+                    SaleInformationFront(),
                   ],
                 ),
               ),

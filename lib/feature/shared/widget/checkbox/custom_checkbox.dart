@@ -4,10 +4,12 @@ class CustomCheckbox extends StatefulWidget {
   final String title;
   final Color color;
   final bool value;
+  final double size;
   final void Function()? onChange;
 
   const CustomCheckbox(
       {super.key,
+      this.size = 20,
       required this.title,
       this.color = Colors.black,
       this.value = false,
@@ -27,11 +29,11 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
       children: [
         Text(
           widget.title,
-          style: TextStyle(color: widget.color),
+          style: TextStyle(color: widget.color, fontSize: widget.size),
         ),
         SizedBox(
-          height: 50,
-          width: 50,
+          height: widget.size * 2.2,
+          width: widget.size * 2.2,
           child: FittedBox(
             fit: BoxFit.cover,
             child: Checkbox(
