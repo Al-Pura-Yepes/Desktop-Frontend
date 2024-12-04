@@ -9,14 +9,15 @@ class CustomTitleTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Nombre del cliente:', style: TextStyle(color: Colors.white),),
+          Text(
+            'Nombre del cliente:',
+            style: TextStyle(color: Colors.white),
+          ),
           TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-              border: InputBorder.none,
-
-            )
-          ),
+                border: InputBorder.none,
+              )),
         ],
       ),
     );

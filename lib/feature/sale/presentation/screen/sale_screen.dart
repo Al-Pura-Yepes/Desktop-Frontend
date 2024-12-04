@@ -48,10 +48,6 @@ class SaleScreen extends StatelessWidget {
                     Expanded(
                       child: _SaleCart(textTheme: textTheme),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    _SaleInformationFrontCard(textTheme: textTheme, secondaryColor: secondaryColor)
                   ],
                 ),
               ),
@@ -62,28 +58,6 @@ class SaleScreen extends StatelessWidget {
     );
   }
 }
-
-class _SaleInformationBackCard extends StatelessWidget {
-  const _SaleInformationBackCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-          color: primaryColor,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          )),
-      child: CustomTitleTextField(),
-    );
-  }
-}
-
 
 class _SaleCart extends StatelessWidget {
   const _SaleCart({
