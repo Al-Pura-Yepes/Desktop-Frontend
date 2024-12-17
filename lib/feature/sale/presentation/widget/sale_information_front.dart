@@ -8,17 +8,17 @@ class SaleInformationFront extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
+
 
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(8),
-          bottomRight: Radius.circular(8)
-        )
-      ),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8))),
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,26 +29,33 @@ class SaleInformationFront extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Información de la venta',
-                    style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-
-              SizedBox(width: 30,),
-
-              Flexible(
+              const SizedBox(
+                width: 30,
+              ),
+              const Flexible(
                 child: FittedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       CustomButton(
-                        size: 35,
-                        color: Colors.yellow,
+                        size: 40,
+                        color: Color(0xff464C59),
+                        filled: false,
+                        icon: Icons.notification_add,
+                        iconColor: Color(0xff464C59),
                       ),
                       SizedBox(width: 10),
                       CustomButton(
-                        size: 35,
-                        color: Colors.green,
+                        size: 40,
+                        color: Colors.red,
+                        filled: false,
+                        icon: Icons.delete,
+                        iconColor: Colors.red,
                       ),
                     ],
                   ),
@@ -56,9 +63,9 @@ class SaleInformationFront extends StatelessWidget {
               ),
             ],
           ),
-
-          SizedBox(height: 20,),
-
+          const SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,11 +76,11 @@ class SaleInformationFront extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: CustomCheckbox(
                         title: 'Envio por delivery',
-                        size: 15,
+                        size: 20,
                       ))),
-
-              SizedBox(width: 30,),
-
+              const SizedBox(
+                width: 30,
+              ),
               Flexible(
                 child: FittedBox(
                   alignment: Alignment.centerRight,
@@ -94,24 +101,22 @@ class SaleInformationFront extends StatelessWidget {
               ),
             ],
           ),
-
-
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Expanded(
+              Expanded(
                   child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: CustomCheckbox(
+                        color: secondaryColor,
                         title: 'Venta al por mayor',
-                        size: 15,
+                        size: 20,
                       ))),
-
-              SizedBox(width: 30,),
-
+              const SizedBox(
+                width: 30,
+              ),
               Flexible(
                 child: FittedBox(
                   alignment: Alignment.centerRight,
@@ -132,9 +137,9 @@ class SaleInformationFront extends StatelessWidget {
               ),
             ],
           ),
-
-          SizedBox(height: 20,),
-
+          const SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -145,30 +150,36 @@ class SaleInformationFront extends StatelessWidget {
                   child: Row(
                     children: [
                       CustomButton(
-                        size: 45,
-                        color: Colors.yellow,
+                        size: 60,
+                        color: secondaryColor,
+                        icon: Icons.attach_money,
                       ),
                       SizedBox(width: 10),
                       CustomButton(
-                        size: 45,
-                        color: Colors.green,
+                        size: 60,
+                        color: Color(0xff464C59),
+                        icon: Icons.qr_code,
                       ),
                       SizedBox(width: 10),
                       CustomButton(
-                        size: 45,
-                        color: Colors.green,
+                        size: 60,
+                        color: Color(0xff1C1897),
+                        icon: Icons.bookmark
                       ),
                     ],
                   ),
                 ),
               ),
-
-              SizedBox(width: 30,),
-
-
+              const SizedBox(
+                width: 30,
+              ),
               Flexible(
-                  child: FittedBox(child: Text('Total: Bs 45', style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),))
-              )
+                  child: FittedBox(
+                      child: Text(
+                'Total: Bs 45',
+                style: textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              )))
             ],
           )
         ],

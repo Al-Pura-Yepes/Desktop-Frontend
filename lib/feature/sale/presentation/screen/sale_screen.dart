@@ -1,11 +1,8 @@
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/products_board.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_back.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
-import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
-import 'package:al_pura_frontend/feature/shared/widget/checkbox/custom_checkbox.dart';
-import 'package:al_pura_frontend/feature/shared/widget/fields/custom_title_text_field.dart';
 import 'package:al_pura_frontend/feature/shared/widget/options_bar/option_bar.dart';
-import 'package:al_pura_frontend/feature/shared/widget/product_card.dart';
 import 'package:flutter/material.dart';
 
 class SaleScreen extends StatelessWidget {
@@ -49,8 +46,12 @@ class SaleScreen extends StatelessWidget {
                     Expanded(
                       child: _SaleCart(textTheme: textTheme),
                     ),
-                    SizedBox(height: 10,),
-                    SaleInformationFront(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const SizedBox(
+                        height: 300,
+                        child: SaleInformationFront()),
                   ],
                 ),
               ),
@@ -64,7 +65,6 @@ class SaleScreen extends StatelessWidget {
 
 class _SaleCart extends StatelessWidget {
   const _SaleCart({
-    super.key,
     required this.textTheme,
   });
 
@@ -96,145 +96,14 @@ class _SaleCart extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 6,
                 itemBuilder: (context, index) {
-                  return const ProductStaticPriceSale();
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: const ProductStaticPriceSale(),
+                  );
                 },
               ),
             )
           ],
         ));
-  }
-}
-
-class _SaleInformationFrontCard extends StatelessWidget {
-  const _SaleInformationFrontCard({
-    super.key,
-    required this.textTheme,
-    required this.secondaryColor,
-  });
-
-  final TextTheme textTheme;
-  final Color secondaryColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10.0),
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          )),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Informacion de la venta',
-                textAlign: TextAlign.start,
-                style: textTheme.titleSmall,
-              ),
-              const Row(
-                children: [
-                  CustomButton(
-                    size: 60,
-                    filled: false,
-                    iconColor: Color(0xff464C59),
-                    color: Color(0xff464C59),
-                    icon: Icons.add_alert,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CustomButton(
-                    size: 60,
-                    filled: false,
-                    iconColor: Colors.red,
-                    color: Colors.red,
-                    icon: Icons.delete,
-                  ),
-                ],
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const CustomCheckbox(
-                title: 'Envio por delivery',
-                color: Colors.green,
-              ),
-              Text(
-                'Subtotal: Bs. ${3 + 3}',
-                style: textTheme.bodyLarge,
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const CustomCheckbox(title: 'Venta al por mayor'),
-              Text(
-                'Descuento: Bs. ${3 + 3}',
-                style: textTheme.bodyLarge?.copyWith(color: secondaryColor),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Row(
-                children: [
-                  CustomButton(
-                    size: 70,
-                    color: Color(0xff464C59),
-                    icon: Icons.qr_code,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CustomButton(
-                    size: 70,
-                    color: Color(0xff7AD0AC),
-                    icon: Icons.attach_money,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CustomButton(
-                    size: 70,
-                    color: Color(0xff1C1897),
-                    icon: Icons.bookmark,
-                  ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Total: ',
-                    style: textTheme.titleMedium,
-                  ),
-                  Text(
-                    'Bs. ${(4 + 4.00).toStringAsFixed(2)}',
-                    style: textTheme.titleLarge,
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
-      ),
-    );
   }
 }

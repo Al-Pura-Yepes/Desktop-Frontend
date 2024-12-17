@@ -24,32 +24,37 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          widget.title,
-          style: TextStyle(color: widget.color, fontSize: widget.size),
-        ),
-        SizedBox(
-          height: widget.size * 2.2,
-          width: widget.size * 2.2,
-          child: FittedBox(
-            fit: BoxFit.cover,
-            child: Checkbox(
-              activeColor: widget.color,
-              side: BorderSide(width: 1, color: widget.color),
-              value: currentValue,
-              onChanged: (value) {
-                widget.onChange ?? ();
-                setState(() {
-                  currentValue = value ?? false;
-                });
-              },
-            ),
+    return GestureDetector(
+      onTap: () => setState(() {
+        currentValue = !currentValue;
+      }),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            widget.title,
+            style: TextStyle(color: widget.color, fontSize: widget.size),
           ),
-        )
-      ],
+          SizedBox(
+            height: widget.size * 2.2,
+            width: widget.size * 2.2,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Checkbox(
+                activeColor: widget.color,
+                side: BorderSide(width: 1, color: widget.color),
+                value: currentValue,
+                onChanged: (value) {
+                  widget.onChange ?? ();
+                  setState(() {
+                    currentValue = value ?? false;
+                  });
+                },
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

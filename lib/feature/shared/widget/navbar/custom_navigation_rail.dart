@@ -1,4 +1,3 @@
-import 'package:al_pura_frontend/config/router/app_router.dart';
 import 'package:al_pura_frontend/feature/shared/widget/navbar/custom_navigation_item.dart';
 import 'package:al_pura_frontend/feature/shared/widget/navbar/custom_navigation_item_model.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +52,7 @@ class _CustomNavigationRailState extends State<CustomNavigationRail> {
                       context.go(e.goTo);
                     });
               },
-            ).toList(),
+            ),
           ]),
         );
       },

@@ -42,7 +42,7 @@ class ProductsBoard extends StatelessWidget {
 class _ProductsCategoryContent extends StatelessWidget {
   final ProductsModel products;
 
-  const _ProductsCategoryContent({super.key, required this.products});
+  const _ProductsCategoryContent({required this.products});
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +61,22 @@ class _ProductsCategoryContent extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          GridView.builder(
-            itemCount: products.products.length,
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 5,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-            ),
-            itemBuilder: (context, index) {
-              return const ProductCard();
+          LayoutBuilder(
+            builder: (context, constraints) {
+              int columnsNumber = constraints.maxWidth > 1000 ? 5 : 4;
+
+              return GridView.builder(
+                itemCount: products.products.length,
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: columnsNumber,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemBuilder: (context, index) {
+                  return const ProductCard();
+                },
+              );
             },
           ),
         ],

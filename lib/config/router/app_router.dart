@@ -1,5 +1,4 @@
 import 'package:al_pura_frontend/feature/sale/presentation/screen/sale_screen.dart';
-import 'package:al_pura_frontend/feature/shared/test_page.dart';
 import 'package:al_pura_frontend/feature/shared/widget/navbar/custom_navigation_rail.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,13 +18,13 @@ final GoRouter router =
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => SaleScreen(),
+          builder: (context, state) => const SaleScreen(),
         ),
         GoRoute(
           path: '/history',
           builder: (context, state) => Scaffold(
             appBar: AppBar(),
-            body: Text('hola'),
+            body: const Text('hola'),
           ),
         )
       ])

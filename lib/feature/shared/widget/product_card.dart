@@ -20,7 +20,7 @@ class _ProductCardState extends State<ProductCard> {
                 quantity: 2,
               )
             : _BackCard(
-                options: [1, 2, 3],
+                options: const [1, 2, 3],
                 callback: () => setDisplay(true),
               ));
   }
@@ -35,7 +35,7 @@ class _ProductCardState extends State<ProductCard> {
 class _FrontCard extends StatelessWidget {
   final void Function()? callback;
   final int? quantity;
-  const _FrontCard({super.key, this.callback, this.quantity});
+  const _FrontCard({this.callback, this.quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class _FrontCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: secondaryColor,
                       borderRadius:
-                          BorderRadius.only(bottomLeft: Radius.circular(8))),
+                          const BorderRadius.only(bottomLeft: Radius.circular(8))),
                   height: 60,
                   width: 60,
                   alignment: Alignment.center,
@@ -93,7 +93,7 @@ class _BackCard extends StatelessWidget {
   final List<Object> options;
   final void Function()? callback;
 
-  const _BackCard({super.key, required this.options, this.callback});
+  const _BackCard({required this.options, this.callback});
 
   @override
   Widget build(BuildContext context) {

@@ -21,7 +21,7 @@ class OptionBar extends StatelessWidget {
               SizedBox(
                 width: width > 600 ? width * 0.4 : width,
                 height: 50,
-                child: CustomTextField(),
+                child: const CustomTextField(),
               )
             ],
           );

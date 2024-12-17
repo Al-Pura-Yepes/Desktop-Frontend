@@ -16,7 +16,7 @@ class QuantityCounterState extends State<QuantityCounter> {
 
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0xffC8C8C8)),
+          border: Border.all(color: const Color(0xffC8C8C8)),
           borderRadius: BorderRadius.circular(8)),
       child: FittedBox(
         fit: BoxFit.scaleDown,

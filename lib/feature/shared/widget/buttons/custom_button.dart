@@ -17,20 +17,23 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        alignment: Alignment.center,
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: !filled ? null : color,
-            border: filled ? null : Border.all(color: color, width: 3)),
-        child: Icon(
-          icon,
-          size: size - 10,
-          color: iconColor,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {},
+        child: Container(
+          alignment: Alignment.center,
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: !filled ? null : color,
+              border: filled ? null : Border.all(color: color, width: 3)),
+          child: Icon(
+            icon,
+            size: size - 10,
+            color: iconColor,
+          ),
         ),
       ),
     );

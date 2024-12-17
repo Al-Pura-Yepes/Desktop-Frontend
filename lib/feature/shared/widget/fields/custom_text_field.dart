@@ -19,7 +19,7 @@ class CustomTextField extends StatelessWidget {
             )),
             Icon(
               Icons.search,
-              color: const Color(0xffC8C8C8),
+              color: Color(0xffC8C8C8),
             )
           ],
         ));
