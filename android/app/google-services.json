@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "881556254347",
+    "project_id": "al-pura-yepes",
+    "storage_bucket": "al-pura-yepes.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881556254347:android:88b480120b5f1bdb952e8e",
+        "android_client_info": {
+          "package_name": "com.example.alpurayepes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh7IG2A_EdjDT2rYEMVFaOYhipvmAwYtE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
