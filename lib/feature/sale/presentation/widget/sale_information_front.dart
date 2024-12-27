@@ -10,7 +10,6 @@ class SaleInformationFront extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
 
-
     return Container(
       decoration: const BoxDecoration(
           color: Colors.white,
@@ -162,10 +161,9 @@ class SaleInformationFront extends StatelessWidget {
                       ),
                       SizedBox(width: 10),
                       CustomButton(
-                        size: 60,
-                        color: Color(0xff1C1897),
-                        icon: Icons.bookmark
-                      ),
+                          size: 60,
+                          color: Color(0xff1C1897),
+                          icon: Icons.bookmark),
                     ],
                   ),
                 ),

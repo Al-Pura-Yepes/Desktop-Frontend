@@ -48,7 +48,7 @@ class _FrontCard extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.network(
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkp6vYs35kehbhWkTJFVsWPd6295PZSWg1pwgIqN29Mkw-60InZs9L13MCt3a5GY2dIzI&usqp=CAU",
+            "https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg",
             fit: BoxFit.fill,
           ),
           Positioned(
@@ -72,8 +72,8 @@ class _FrontCard extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       color: secondaryColor,
-                      borderRadius:
-                          const BorderRadius.only(bottomLeft: Radius.circular(8))),
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(8))),
                   height: 60,
                   width: 60,
                   alignment: Alignment.center,

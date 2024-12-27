@@ -69,6 +69,36 @@ flutter:
   assets:
     - google_fonts/
     - assets/logo_white.png
+    - lib/feature/shared/
+    - lib/feature/shared/domain/
+    - lib/feature/shared/domain/model/
+    - lib/feature/shared/domain/datasource/
+    - lib/feature/shared/domain/repository/
+    - lib/feature/shared/widget/
+    - lib/feature/shared/widget/text/
+    - lib/feature/shared/widget/chips/
+    - lib/feature/shared/widget/fields/
+    - lib/feature/shared/widget/navbar/
+    - lib/feature/shared/widget/buttons/
+    - lib/feature/shared/widget/checkbox/
+    - lib/feature/shared/widget/options_bar/
+    - lib/feature/shared/infrastructure/
+    - lib/feature/shared/infrastructure/datasource/
+    - lib/feature/shared/infrastructure/repository/
+    - lib/
+    - lib/config/
+    - lib/config/theme/
+    - lib/config/router/
+    - lib/feature/
+    - lib/feature/sale/
+    - lib/feature/sale/domain/
+    - lib/feature/sale/domain/model/
+    - lib/feature/sale/presentation/
+    - lib/feature/sale/presentation/screen/
+    - lib/feature/sale/presentation/widget/
+    - lib/feature/sale/infrastructure/
+    - lib/feature/shared/Provider/
+    - lib/generated/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

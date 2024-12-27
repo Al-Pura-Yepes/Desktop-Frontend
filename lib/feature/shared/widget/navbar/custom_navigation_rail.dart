@@ -16,7 +16,9 @@ class _CustomNavigationRailState extends State<CustomNavigationRail> {
         title: 'Venta', icon: Icons.shopping_cart, goTo: '/'),
     CustomNavigationItemModel(
         title: 'Reserva', icon: Icons.receipt, goTo: '/history'),
-    CustomNavigationItemModel(title: 'Historial', icon: Icons.book)
+    CustomNavigationItemModel(title: 'Historial', icon: Icons.book),
+    CustomNavigationItemModel(
+        title: 'Inventario', icon: Icons.inventory, goTo: '/inventory')
   ];
   String optionSelected = 'Venta';
 

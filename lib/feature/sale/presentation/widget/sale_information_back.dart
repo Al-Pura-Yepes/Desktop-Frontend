@@ -12,10 +12,8 @@ class SaleInformationBack extends StatelessWidget {
     final primaryColor = Theme.of(context).primaryColor;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
 
-
     return Container(
       padding: const EdgeInsets.all(16.0),
-
       decoration: BoxDecoration(
           color: primaryColor,
           borderRadius: const BorderRadius.only(
@@ -32,8 +30,8 @@ class SaleInformationBack extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Información de la venta',
-                      style: textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                      style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
@@ -58,11 +56,9 @@ class SaleInformationBack extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(
               height: 20,
             ),
-
             SizedBox(
               height: constraints.maxHeight * 0.2,
               child: Row(
@@ -77,14 +73,11 @@ class SaleInformationBack extends StatelessWidget {
                 ],
               ),
             ),
-
             SizedBox(
               height: constraints.maxHeight * 0.4,
               child: Row(
-
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   SizedBox(
                     width: constraints.maxWidth * 0.45,
                     child: FittedBox(
@@ -94,38 +87,67 @@ class SaleInformationBack extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomChip(color: secondaryColor, text: Text('Envio por delivery', style: textTheme.bodySmall?.copyWith(color: Colors.white),)),
-                          const SizedBox(height: 5,),
-                          CustomChip(color: secondaryColor, text: Text('Reserva', style: textTheme.bodySmall?.copyWith(color: Colors.white),))
+                          CustomChip(
+                              color: secondaryColor,
+                              text: Text(
+                                'Envio por delivery',
+                                style: textTheme.bodySmall
+                                    ?.copyWith(color: Colors.white),
+                              )),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          CustomChip(
+                              color: secondaryColor,
+                              text: Text(
+                                'Reserva',
+                                style: textTheme.bodySmall
+                                    ?.copyWith(color: Colors.white),
+                              ))
                         ],
                       ),
                     ),
                   ),
-
                   SizedBox(
                       height: constraints.maxHeight * 0.2,
                       width: constraints.maxWidth * 0.45,
                       child: const CustomTitleField()),
-
                 ],
               ),
             ),
-
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const FittedBox(child: Row(
+                  const FittedBox(
+                      child: Row(
                     children: [
-                      CustomButton(size: 60, filled: false, color: Colors.green, icon: Icons.check, iconColor: Colors.green,),
-                      SizedBox(width: 10,),
-                      CustomButton(size: 60, filled: false, color: Colors.red, icon: Icons.close, iconColor: Colors.red,),
+                      CustomButton(
+                        size: 60,
+                        filled: false,
+                        color: Colors.green,
+                        icon: Icons.check,
+                        iconColor: Colors.green,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      CustomButton(
+                        size: 60,
+                        filled: false,
+                        color: Colors.red,
+                        icon: Icons.close,
+                        iconColor: Colors.red,
+                      ),
                     ],
                   )),
                   FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Text('PRECIO', style: textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.bold, color: Colors.white),),
+                    child: Text(
+                      'PRECIO',
+                      style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
                   )
                 ],
               ),

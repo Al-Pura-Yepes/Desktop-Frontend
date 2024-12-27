@@ -1,3 +1,4 @@
+import 'package:al_pura_frontend/feature/inventory/presentation/screen/inventory_screen.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/screen/sale_screen.dart';
 import 'package:al_pura_frontend/feature/shared/widget/navbar/custom_navigation_rail.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,10 @@ final GoRouter router =
             appBar: AppBar(),
             body: const Text('hola'),
           ),
-        )
+        ),
+        GoRoute(
+          path: '/inventory',
+          builder: (context, state) => const InventoryScreen(),
+        ),
       ])
 ]);

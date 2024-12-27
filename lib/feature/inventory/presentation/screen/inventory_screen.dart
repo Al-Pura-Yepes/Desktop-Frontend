@@ -1,14 +1,13 @@
-import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
-import 'package:al_pura_frontend/feature/sale/presentation/widget/products_board.dart';
-import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_back.dart';
-import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
-import 'package:al_pura_frontend/feature/shared/widget/options_bar/option_bar.dart';
+import 'package:al_pura_frontend/feature/inventory/presentation/widgets/product_info.dart';
+import 'package:al_pura_frontend/feature/inventory/presentation/widgets/product_stock.dart';
+import 'package:al_pura_frontend/feature/shared/Domain/model/product.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/sale_cart.dart';
+import '../../../sale/presentation/widget/products_board.dart';
+import '../../../shared/widget/options_bar/option_bar.dart';
 
-class SaleScreen extends StatelessWidget {
-  const SaleScreen({super.key});
+class InventoryScreen extends StatelessWidget {
+  const InventoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +16,10 @@ class SaleScreen extends StatelessWidget {
     final secondaryColor = Theme.of(context).colorScheme.secondary;
 
     return Scaffold(
-      //TODO: CHANGE TO SLIVER APP BAR
       appBar: AppBar(
         toolbarHeight: 80,
         backgroundColor: Colors.transparent,
-        title: Text('Venta',
+        title: Text('Inventario',
             style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
       ),
       body: Padding(
@@ -46,12 +44,25 @@ class SaleScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Expanded(
-                      child: SaleCart(textTheme: textTheme),
+                      child: ProductInfo(
+                          product: Product(
+                              category: 'categoria',
+                              flavor: 'flavor',
+                              quantity: 2.0,
+                              imageURL:
+                                  'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
+                              expirationDateList: [])),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const SizedBox(height: 300, child: SaleInformationFront()),
+                    ProductStock(product: Product(
+                        category: 'categoria',
+                        flavor: 'flavor',
+                        quantity: 2.0,
+                        imageURL:
+                        'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
+                        expirationDateList: []),)
                   ],
                 ),
               ),
