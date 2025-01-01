@@ -1,4 +1,5 @@
 import 'package:al_pura_frontend/feature/shared/Domain/model/product.dart';
+import 'package:al_pura_frontend/feature/shared/widget/fields/custom_empty_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -56,7 +57,6 @@ class ProductStock extends StatelessWidget {
             alignment: Alignment.center,
             child: FittedBox(
               child: Container(
-                decoration: BoxDecoration(border: Border.all()),
                 child: _StockCounter(primaryColor: primaryColor, textTheme: textTheme, isFixedPrice: product.isFixedPrice,),
               ),
             ),
@@ -100,75 +100,62 @@ class _StockCounterState extends State<_StockCounter> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        TextButton(
-          onPressed: () {
-
-          },
-          child: Text(
-            'Reducir',
-            style: TextStyle(color: Colors.white, fontSize: 20),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.symmetric(horizontal: BorderSide(color: Colors.red))
           ),
-          style: ButtonStyle(
-            fixedSize: WidgetStatePropertyAll(Size(100, 50)),
-            backgroundColor: WidgetStatePropertyAll(Colors.red),
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
+          child: TextButton(
+            onPressed: () {
+
+            },
+            child: Text(
+              'Reducir',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            style: ButtonStyle(
+              fixedSize: WidgetStatePropertyAll(Size(100, 40)),
+              backgroundColor: WidgetStatePropertyAll(Colors.red),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
               ),
             ),
           ),
         ),
         Container(
-          width: 100,
-          height: 40,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: TextFormField(
-            cursorHeight: 30,
-            cursorWidth: 2,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 30),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              contentPadding: EdgeInsets.zero,
-            ),
-            onChanged: (value) {
-              setState(() {
-                if (value.length >= 3 && !widget.isFixedPrice) unity = "g";
-                if (value.length < 3 && !widget.isFixedPrice) unity = "Kg";
-              });
-            },
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(4),
-              FilteringTextInputFormatter.digitsOnly
-            ],
+          decoration: BoxDecoration(
+            border: Border.symmetric(
+              horizontal: BorderSide()
+            )
           ),
+          child: Container(
+                width: 200,
+                height: 40,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: CustomEmptyField(suffix: 'Kg',)
+              ),
         ),
-        SizedBox(
-          width: 30,
-          child: Text(
-            unity,
-            textAlign: TextAlign.center,
-            style:
-                widget.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.symmetric(horizontal: BorderSide(color: widget.primaryColor))
           ),
-        ),
-        SizedBox(width: 10,),
-        TextButton(
-          onPressed: () {
+          child: TextButton(
+            onPressed: () {
 
-          },
-          child: Text(
-            'Agregar',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          style: ButtonStyle(
-            fixedSize: WidgetStatePropertyAll(Size(100, 50)),
-            backgroundColor: WidgetStatePropertyAll(widget.primaryColor),
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
+            },
+            child: Text(
+              'Agregar',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            style: ButtonStyle(
+              fixedSize: WidgetStatePropertyAll(Size(100, 40)),
+              backgroundColor: WidgetStatePropertyAll(widget.primaryColor),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
               ),
             ),
           ),
