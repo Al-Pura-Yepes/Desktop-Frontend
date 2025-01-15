@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'al-pura-yepes.firebasestorage.app',
     measurementId: 'G-ELDXGF3DR1',
   );
+
 }
