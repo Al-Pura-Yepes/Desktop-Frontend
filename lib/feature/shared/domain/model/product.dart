@@ -1,4 +1,4 @@
-import 'package:al_pura_frontend/feature/shared/Domain/model/i_entity.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/i_entity.dart';
 
 class Product implements IEntity {
   @override
@@ -31,14 +31,17 @@ class Product implements IEntity {
         id: json["id"],
         category: json["category"],
         flavor: json["flavor"],
-        price: json["price"] ?? 0.0,
-        quantity: json["quantity"],
+        price: (json["price"] is int)
+            ? (json["price"] as int).toDouble()
+            : json["price"],
+        quantity: (json["quantity"] is int)
+            ? (json["quantity"] as int).toDouble()
+            : json["quantity"],
         weight: json["weight"] ?? 0.0,
         imageURL: json["imageURL"],
-        expirationDateList: json["expirationDateList"],
-        isReturnable: json["isReturnable"],
-        isFixedPrice: json["isFixedPrice"]
-    );
+        expirationDateList: json["expirationDateList"] ?? [],
+        isReturnable: json["isReturnable"] ?? false,
+        isFixedPrice: json["isFixedPrice"] ?? false);
   }
 
   Map<String, dynamic> toJson() {

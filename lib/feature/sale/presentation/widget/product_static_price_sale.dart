@@ -1,13 +1,20 @@
+import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/widget/buttons/quantity_counter.dart';
 
-class ProductStaticPriceSale extends StatelessWidget {
+class ProductStaticPriceSale extends ConsumerWidget {
+  final Product product;
   final double widgetHeight = 70;
-  const ProductStaticPriceSale({super.key});
+  const ProductStaticPriceSale({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final (productState, quantity) =
+        ref.watch(cartProvider).products[product.id]!;
+
     final textTheme = Theme.of(context).textTheme;
 
     return FittedBox(
@@ -18,7 +25,13 @@ class ProductStaticPriceSale extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const QuantityCounter(),
+            QuantityCounter(
+              callback: (quantity) {
+                ref
+                    .read(cartProvider.notifier)
+                    .setItemQuantity(product, quantity);
+              },
+            ),
             const SizedBox(
               width: 15,
             ),
@@ -26,9 +39,9 @@ class ProductStaticPriceSale extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Texto de prueba titulo', style: textTheme.titleSmall),
+                Text(product.category, style: textTheme.titleSmall),
                 Text(
-                  'Texto de prueba descripcion',
+                  '${product.flavor} - ${product.weight}',
                   style: textTheme.bodySmall,
                 )
               ],
@@ -36,17 +49,29 @@ class ProductStaticPriceSale extends StatelessWidget {
             const SizedBox(
               width: 40,
             ),
-            const Row(
-              children: [
-                Text('Bs'),
-                Text('15.00'),
-              ],
+            SizedBox(
+              width: 130,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text('Bs'),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    '${product.price! * quantity}',
+                    style: textTheme.bodyLarge,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               width: 30,
             ),
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  ref.read(cartProvider.notifier).deleteItemFromCart(product);
+                },
                 icon: const Icon(
                   Icons.delete,
                   size: 30,

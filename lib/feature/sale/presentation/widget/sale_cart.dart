@@ -1,15 +1,19 @@
+import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SaleCart extends StatelessWidget {
-  const SaleCart({
-    required this.textTheme,
-  });
+class SaleCart extends ConsumerWidget {
+  const SaleCart({required this.textTheme});
 
   final TextTheme textTheme;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartState = ref.watch(cartProvider);
+    final cartProducts = cartState.products;
+    final cartProductsKeys = cartProducts.keys.toList();
+
     return Container(
         alignment: Alignment.center,
         decoration: const BoxDecoration(
@@ -31,11 +35,13 @@ class SaleCart extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 6,
+                itemCount: cartProductsKeys.length,
                 itemBuilder: (context, index) {
+                  final (product, quantity) =
+                      cartProducts[cartProductsKeys[index]]!;
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    child: const ProductStaticPriceSale(),
+                    child: ProductStaticPriceSale(product: product),
                   );
                 },
               ),
