@@ -1,6 +1,8 @@
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/screen/reservation_information_box.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_cart.dart';
+import 'package:al_pura_frontend/feature/shared/widget/text/date_visualizer.dart';
+import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,6 +43,9 @@ class ReservationScreen extends ConsumerWidget {
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                       ),
+                      decoration: const BoxDecoration(
+                        color: Colors.white
+                      ),
                       border: TableBorder.all(color: colorScheme.secondary),
                       columns: const [
                         DataColumn(
@@ -55,11 +60,15 @@ class ReservationScreen extends ConsumerWidget {
                       rows: List<DataRow>.generate(
                         10,
                         (int index) => DataRow(
-                          cells: const <DataCell>[
-                            DataCell(Text("Lorem ipsum")),
-                            DataCell(Text("Lorem ipsum")),
-                            DataCell(Text("Lorem ipsum")),
-                            DataCell(Text("Lorem ipsum")),
+                          cells: <DataCell>[
+                            const DataCell(Text("Lorem ipsum")),
+                            DataCell(
+                                DateVisualizer(
+                                  dateTime: DateTime(2025, 1, 10)
+                                )
+                            ),
+                            const DataCell(Text("Lorem ipsum")),
+                            const DataCell(Text("Lorem ipsum")),
                           ],
                           selected: index == indexSelected,
                           onSelectChanged: (bool? value) {

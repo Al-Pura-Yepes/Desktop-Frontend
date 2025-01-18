@@ -1,4 +1,4 @@
-import 'package:al_pura_frontend/feature/shared/widget/text/number_label.dart';
+import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shared/widget/buttons/quantity_counter.dart';
@@ -23,7 +23,9 @@ class ProductStaticPriceSale extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            isEditable ? const QuantityCounter() : const NumberLabel(number: 6,),
+            isEditable
+                ? const QuantityCounter()
+                : LabelBorder(text: '6', textStyle: textTheme.bodyMedium!,),
             const SizedBox(
               width: 15,
             ),
@@ -33,7 +35,7 @@ class ProductStaticPriceSale extends StatelessWidget {
               children: [
                 Text('Texto de prueba titulo', style: textTheme.titleSmall),
                 Text(
-                  'Texto de prueba descripcion',
+                  'Texto de prueba descripción',
                   style: textTheme.bodySmall,
                 )
               ],
