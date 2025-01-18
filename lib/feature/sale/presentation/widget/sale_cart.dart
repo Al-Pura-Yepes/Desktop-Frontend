@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 
 class SaleCart extends StatelessWidget {
   const SaleCart({
+    super.key,
     required this.textTheme,
+    this.isOnReservationMode = false
   });
 
   final TextTheme textTheme;
+  final bool isOnReservationMode;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class SaleCart extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    child: const ProductStaticPriceSale(),
+                    child: ProductStaticPriceSale(isEditable: !isOnReservationMode,),
                   );
                 },
               ),

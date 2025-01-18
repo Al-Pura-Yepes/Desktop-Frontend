@@ -31,13 +31,13 @@ class Product implements IEntity {
         id: json["id"],
         category: json["category"],
         flavor: json["flavor"],
-        price: json["price"] ?? 0.0,
-        quantity: json["quantity"],
+        price: json["price"].toDouble() ?? 0.0,
+        quantity: json["quantity"].toDouble(),
         weight: json["weight"] ?? 0.0,
         imageURL: json["imageURL"],
-        expirationDateList: json["expirationDateList"],
-        isReturnable: json["isReturnable"],
-        isFixedPrice: json["isFixedPrice"]
+        expirationDateList: json["expirationDateList"] ?? [],
+        isReturnable: json["isReturnable"] ?? false,
+        isFixedPrice: json["isFixedPrice"] ?? false
     );
   }
 

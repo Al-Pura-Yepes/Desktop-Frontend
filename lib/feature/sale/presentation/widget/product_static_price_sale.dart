@@ -1,10 +1,15 @@
+import 'package:al_pura_frontend/feature/shared/widget/text/number_label.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shared/widget/buttons/quantity_counter.dart';
 
 class ProductStaticPriceSale extends StatelessWidget {
   final double widgetHeight = 70;
-  const ProductStaticPriceSale({super.key});
+  final bool isEditable;
+  const ProductStaticPriceSale({
+    super.key,
+    this.isEditable = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,7 @@ class ProductStaticPriceSale extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const QuantityCounter(),
+            isEditable ? const QuantityCounter() : const NumberLabel(number: 6,),
             const SizedBox(
               width: 15,
             ),
