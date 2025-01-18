@@ -59,7 +59,7 @@ class ProductStaticPriceSale extends ConsumerWidget {
                     width: 10,
                   ),
                   Text(
-                    '${product.price! * quantity}',
+                    '${(product.price! * quantity).toStringAsFixed(2)}',
                     style: textTheme.bodyLarge,
                   ),
                 ],

@@ -1,14 +1,17 @@
+import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
 import 'package:al_pura_frontend/feature/shared/widget/checkbox/custom_checkbox.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SaleInformationFront extends StatelessWidget {
+class SaleInformationFront extends ConsumerWidget {
   const SaleInformationFront({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
+    final cartState = ref.watch(cartProvider);
 
     return Container(
       decoration: const BoxDecoration(
@@ -91,7 +94,7 @@ class SaleInformationFront extends StatelessWidget {
                         style: textTheme.bodyMedium,
                       ),
                       Text(
-                        'Bs. 35.00',
+                        'Bs. ${cartState.totalPrice.toStringAsFixed(2)}',
                         style: textTheme.bodyMedium,
                       ),
                     ],
@@ -127,7 +130,7 @@ class SaleInformationFront extends StatelessWidget {
                         style: textTheme.bodyMedium,
                       ),
                       Text(
-                        'Bs. 35.00',
+                        'Bs. ${cartState.discount.toStringAsFixed(2)}',
                         style: textTheme.bodyMedium,
                       ),
                     ],
@@ -149,6 +152,9 @@ class SaleInformationFront extends StatelessWidget {
                   child: Row(
                     children: [
                       CustomButton(
+                        onPress: () {
+                          ref.read(cartProvider.notifier).saleByCash();
+                        },
                         size: 60,
                         color: secondaryColor,
                         icon: Icons.attach_money,
@@ -174,7 +180,7 @@ class SaleInformationFront extends StatelessWidget {
               Flexible(
                   child: FittedBox(
                       child: Text(
-                'Total: Bs 45',
+                'Total: Bs ${(cartState.totalPrice - cartState.discount).toStringAsFixed(2)}',
                 style: textTheme.titleMedium
                     ?.copyWith(fontWeight: FontWeight.bold),
               )))
