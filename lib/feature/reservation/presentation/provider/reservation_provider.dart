@@ -69,7 +69,7 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
     );
   }
 
-  loadReservations() async {
+  Future<void> loadReservations() async {
     state = state.copyWith(
         reservations: await repository.getAllReservations(state.isStatusAscending),
         isStatusAscending: state.isStatusAscending

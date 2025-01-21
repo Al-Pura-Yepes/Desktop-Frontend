@@ -2,6 +2,7 @@ import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/screen/reservation_information_box.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/widget/reservation_cart.dart';
+import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
 import 'package:al_pura_frontend/feature/shared/widget/text/date_visualizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +17,7 @@ class ReservationScreen extends ConsumerStatefulWidget {
 }
 
 class _ReservationScreenState extends ConsumerState<ReservationScreen> {
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -36,7 +38,28 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
       appBar: AppBar(
         toolbarHeight: 80,
         backgroundColor: Colors.transparent,
-        title: const Text('Reservas'),
+        title: Row(
+          spacing: 20,
+            children: [
+              const Text('Reservas'),
+              CustomButton(
+                size: 40,
+                filled: true,
+                color: Colors.green,
+                iconColor: Colors.white,
+                icon: Icons.refresh_rounded,
+                onPress: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await ref.read(reservationProvider.notifier).loadReservations();
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+              ),
+            ]
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -49,7 +72,9 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
               child: SingleChildScrollView(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: DataTable(
+                  child: isLoading ? const Expanded(
+                      child: Center(child: CircularProgressIndicator()))
+                      : DataTable(
                       dataTextStyle: textTheme.bodySmall,
                       dividerThickness: 1,
                       headingRowColor: WidgetStatePropertyAll(colorScheme.primary),
