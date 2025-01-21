@@ -1,8 +1,15 @@
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
+  final Product product;
   final int? quantity;
-  const ProductCard({super.key, this.quantity});
+  final void Function() callback;
+  const ProductCard(
+      {super.key,
+      this.quantity,
+      required this.product,
+      required this.callback});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -13,16 +20,11 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        child: isFront
-            ? _FrontCard(
-                callback: () => setDisplay(false),
-                quantity: 2,
-              )
-            : _BackCard(
-                options: const [1, 2, 3],
-                callback: () => setDisplay(true),
-              ));
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+        child: _FrontCard(
+          product: widget.product,
+          callback: widget.callback,
+        ));
   }
 
   void setDisplay(bool isFront) {
@@ -33,9 +35,10 @@ class _ProductCardState extends State<ProductCard> {
 }
 
 class _FrontCard extends StatelessWidget {
+  final Product product;
   final void Function()? callback;
   final int? quantity;
-  const _FrontCard({this.callback, this.quantity});
+  const _FrontCard({this.callback, this.quantity, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +51,7 @@ class _FrontCard extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.network(
-            "https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg",
+            product.imageURL,
             fit: BoxFit.fill,
           ),
           Positioned(
@@ -61,7 +64,7 @@ class _FrontCard extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Text(
-                  "Yogurt Probiotico SA Mango",
+                  product.flavor,
                   style: textTheme.bodySmall?.copyWith(color: Colors.white),
                 ),
               )),

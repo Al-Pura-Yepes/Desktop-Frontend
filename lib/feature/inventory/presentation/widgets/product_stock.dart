@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ProductStock extends StatelessWidget {
-
   final Product product;
 
   const ProductStock({super.key, required this.product});
@@ -57,7 +56,11 @@ class ProductStock extends StatelessWidget {
             alignment: Alignment.center,
             child: FittedBox(
               child: Container(
-                child: _StockCounter(primaryColor: primaryColor, textTheme: textTheme, isFixedPrice: product.isFixedPrice,),
+                child: _StockCounter(
+                  primaryColor: primaryColor,
+                  textTheme: textTheme,
+                  isFixedPrice: product.isFixedPrice,
+                ),
               ),
             ),
           )
@@ -68,7 +71,6 @@ class ProductStock extends StatelessWidget {
 }
 
 class _StockCounter extends StatefulWidget {
-
   final bool isFixedPrice;
 
   const _StockCounter({
@@ -86,13 +88,12 @@ class _StockCounter extends StatefulWidget {
 }
 
 class _StockCounterState extends State<_StockCounter> {
-
   late String unity;
 
   @override
   void initState() {
     super.initState();
-    unity =  widget.isFixedPrice ? "U" : "g";
+    unity = widget.isFixedPrice ? "U" : "g";
   }
 
   @override
@@ -102,12 +103,10 @@ class _StockCounterState extends State<_StockCounter> {
       children: [
         Container(
           decoration: BoxDecoration(
-            border: Border.symmetric(horizontal: BorderSide(color: Colors.red))
-          ),
+              border:
+                  Border.symmetric(horizontal: BorderSide(color: Colors.red))),
           child: TextButton(
-            onPressed: () {
-
-            },
+            onPressed: () {},
             child: Text(
               'Reducir',
               style: TextStyle(color: Colors.white, fontSize: 20),
@@ -124,27 +123,23 @@ class _StockCounterState extends State<_StockCounter> {
           ),
         ),
         Container(
-          decoration: BoxDecoration(
-            border: Border.symmetric(
-              horizontal: BorderSide()
-            )
-          ),
+          decoration:
+              BoxDecoration(border: Border.symmetric(horizontal: BorderSide())),
           child: Container(
-                width: 200,
-                height: 40,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: CustomEmptyField(suffix: 'Kg',)
-              ),
+              width: 200,
+              height: 40,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: CustomEmptyField(
+                suffix: 'Kg',
+              )),
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.symmetric(horizontal: BorderSide(color: widget.primaryColor))
-          ),
+              border: Border.symmetric(
+                  horizontal: BorderSide(color: widget.primaryColor))),
           child: TextButton(
-            onPressed: () {
-
-            },
+            onPressed: () {},
             child: Text(
               'Agregar',
               style: TextStyle(color: Colors.white, fontSize: 20),

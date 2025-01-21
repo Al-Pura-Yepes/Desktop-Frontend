@@ -1,4 +1,4 @@
-import 'package:al_pura_frontend/feature/shared/Domain/model/product.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 
 abstract class ProductRepository {
   Future<Product?> readProduct(String id);

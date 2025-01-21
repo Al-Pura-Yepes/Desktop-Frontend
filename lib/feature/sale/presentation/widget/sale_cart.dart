@@ -1,18 +1,23 @@
+import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SaleCart extends StatelessWidget {
+class SaleCart extends ConsumerWidget {
+  final TextTheme textTheme;
+
   const SaleCart({
     super.key,
     required this.textTheme,
-    this.isOnReservationMode = false
   });
 
-  final TextTheme textTheme;
-  final bool isOnReservationMode;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartState = ref.watch(cartProvider);
+    final cartProducts = cartState.products;
+    final cartProductsKeys = cartProducts.keys.toList();
+
     return Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -32,11 +37,13 @@ class SaleCart extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 6,
+                itemCount: cartProductsKeys.length,
                 itemBuilder: (context, index) {
+                  final (product, quantity) =
+                      cartProducts[cartProductsKeys[index]]!;
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    child: ProductStaticPriceSale(isEditable: !isOnReservationMode,),
+                    child: ProductStaticPriceSale(product: product, onReservationMode: false),
                   );
                 },
               ),

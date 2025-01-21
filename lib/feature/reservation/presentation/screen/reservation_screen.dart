@@ -1,7 +1,7 @@
 import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/screen/reservation_information_box.dart';
-import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_cart.dart';
+import 'package:al_pura_frontend/feature/reservation/presentation/widget/reservation_cart.dart';
 import 'package:al_pura_frontend/feature/shared/widget/text/date_visualizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -136,7 +136,7 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                     spacing: 10,
                     children: [
                       Expanded(
-                          child: SaleCart(textTheme: textTheme, isOnReservationMode: true,)
+                          child: ReservationCart(textTheme: textTheme)
                       ),
                       const ClientInformationBox(),
                       const ReservationInformationBox()

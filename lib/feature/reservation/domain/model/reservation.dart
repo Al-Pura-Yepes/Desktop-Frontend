@@ -11,7 +11,7 @@ class Reservation extends IEntity {
   final DateTime deliveryDate;
   final double discount;
   final double totalPrice;
-  final Status status;
+  Status status;
   final bool isDelivery;
   final bool isPerMajor;
   final bool isActive;
@@ -59,8 +59,8 @@ class Reservation extends IEntity {
         isDelivery: map['isDelivery'] as bool,
         isPerMajor: map['isPerMajor'] as bool,
         isActive: map['isActive'] as bool,
-        products: []/*(map['products'] as List<dynamic>)
-            .map((entity) => Product.fromJson(entity)).toList()*/
+        products: (map['products'] as List<dynamic>)
+            .map((entity) => Product.fromJson(entity)).toList()
     );
   }
 }

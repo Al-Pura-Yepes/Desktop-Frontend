@@ -1,5 +1,6 @@
 import 'package:al_pura_frontend/feature/reservation/domain/datasource/reservation_datasource.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/model/reservation.dart';
+import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReservationDatasourceImpl extends ReservationDatasource {
@@ -33,6 +34,21 @@ class ReservationDatasourceImpl extends ReservationDatasource {
       return reservation;
     }
     return null;
+  }
+
+  @override
+  Future<bool> updateStatus(String id, Status status) async {
+    try {
+      await firestore
+          .collection('Reservations')
+          .doc(id)
+          .update({
+        'status': getIntFromStatus(status)
+      });
+      return true;
+    } on Exception {
+      return false;
+    }
   }
 
 }

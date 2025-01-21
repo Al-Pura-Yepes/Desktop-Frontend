@@ -1,51 +1,44 @@
-import 'package:al_pura_frontend/feature/sale/domain/model/product_model.dart';
-import 'package:al_pura_frontend/feature/sale/domain/model/products_model.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
+import 'package:al_pura_frontend/feature/shared/Provider/products_provider.dart';
 import 'package:al_pura_frontend/feature/shared/widget/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProductsBoard extends StatelessWidget {
-  final List<ProductsModel> allProducts = const [
-    ProductsModel(category: 'Yogurt Griego', products: [
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego')
-    ]),
-    ProductsModel(category: 'Yogurt Probiotico', products: [
-      ProductModel(name: 'Griego', category: 'Griego'),
-    ]),
-    ProductsModel(category: 'Yogurt Griego', products: [
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego'),
-      ProductModel(name: 'Griego', category: 'Griego')
-    ]),
-  ];
-
+class ProductsBoard extends ConsumerWidget {
   const ProductsBoard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final productsState = ref.watch(productsProvider).products;
+    final categories = productsState.keys.toList();
+
+    if (productsState.isEmpty)
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+
     return ListView.builder(
-      itemCount: allProducts.length,
+      itemCount: categories.length,
       itemBuilder: (context, index) {
-        return _ProductsCategoryContent(products: allProducts[index]);
+        final List<Product> productsList =
+            productsState[categories[index]] ?? [];
+        return _ProductsCategoryContent(
+            category: categories[index], products: productsList);
       },
     );
   }
 }
 
-class _ProductsCategoryContent extends StatelessWidget {
-  final ProductsModel products;
+class _ProductsCategoryContent extends ConsumerWidget {
+  final String category;
+  final List<Product> products;
 
-  const _ProductsCategoryContent({required this.products});
+  const _ProductsCategoryContent(
+      {required this.category, required this.products});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
@@ -54,7 +47,7 @@ class _ProductsCategoryContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            products.category,
+            category,
             textAlign: TextAlign.start,
             style: textTheme.titleMedium,
           ),
@@ -64,9 +57,8 @@ class _ProductsCategoryContent extends StatelessWidget {
           LayoutBuilder(
             builder: (context, constraints) {
               int columnsNumber = constraints.maxWidth > 1000 ? 5 : 4;
-
               return GridView.builder(
-                itemCount: products.products.length,
+                itemCount: products.length,
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: columnsNumber,
@@ -74,7 +66,13 @@ class _ProductsCategoryContent extends StatelessWidget {
                   mainAxisSpacing: 10,
                 ),
                 itemBuilder: (context, index) {
-                  return const ProductCard();
+                  final data = products[index];
+                  return ProductCard(
+                    product: data,
+                    callback: () {
+                      ref.read(cartProvider.notifier).addItemToCart(data);
+                    },
+                  );
                 },
               );
             },

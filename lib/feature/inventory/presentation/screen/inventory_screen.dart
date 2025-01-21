@@ -56,13 +56,15 @@ class InventoryScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    ProductStock(product: Product(
-                        category: 'categoria',
-                        flavor: 'flavor',
-                        quantity: 2.0,
-                        imageURL:
-                        'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
-                        expirationDateList: []),)
+                    ProductStock(
+                      product: Product(
+                          category: 'categoria',
+                          flavor: 'flavor',
+                          quantity: 2.0,
+                          imageURL:
+                              'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
+                          expirationDateList: []),
+                    )
                   ],
                 ),
               ),

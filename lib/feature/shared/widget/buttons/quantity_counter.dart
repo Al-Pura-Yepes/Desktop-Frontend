@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class QuantityCounter extends StatefulWidget {
-  const QuantityCounter({super.key});
+  final void Function(int quantity) callback;
+  const QuantityCounter({super.key, required this.callback});
 
   @override
   State<QuantityCounter> createState() => QuantityCounterState();
@@ -27,7 +28,10 @@ class QuantityCounterState extends State<QuantityCounter> {
             IconButton(
                 onPressed: () {
                   setState(() {
-                    counter = counter + 1;
+                    if (counter < 30) {
+                      counter++;
+                      widget.callback(counter);
+                    }
                   });
                 },
                 icon: const Icon(Icons.add)),
@@ -42,7 +46,10 @@ class QuantityCounterState extends State<QuantityCounter> {
             IconButton(
                 onPressed: () {
                   setState(() {
-                    counter = counter - 1;
+                    if (counter > 1) {
+                      counter--;
+                      widget.callback(counter);
+                    }
                   });
                 },
                 icon: const Icon(Icons.remove)),

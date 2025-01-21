@@ -1,4 +1,3 @@
-import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,6 +11,7 @@ class ClientInformationBox extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final isInformationLoaded = ref.watch(reservationProvider).isReservationSelected;
+    final client = ref.watch(reservationProvider).reservation?.client;
 
     return SizedBox(
         height: 100,
@@ -55,7 +55,7 @@ class ClientInformationBox extends ConsumerWidget {
                                 decoration: BoxDecoration(
                                     border: Border.all(color: const Color(0xffC8C8C8)),
                                     borderRadius: BorderRadius.circular(8)),
-                                child: Text('Diego Figueroa', style: textTheme.bodySmall,),
+                                child: Text(client?.fullName ?? 'undefined', style: textTheme.bodySmall,),
                               )
                             ],
                           ),
@@ -74,7 +74,7 @@ class ClientInformationBox extends ConsumerWidget {
                                 decoration: BoxDecoration(
                                     border: Border.all(color: const Color(0xffC8C8C8)),
                                     borderRadius: BorderRadius.circular(8)),
-                                child: Text('69459340', style: textTheme.bodySmall,),
+                                child: Text(client?.phoneNumber.toString() ?? 'undefined', style: textTheme.bodySmall,),
                               )
                             ],
                           ),

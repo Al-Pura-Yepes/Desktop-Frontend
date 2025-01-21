@@ -1,5 +1,5 @@
-import 'package:al_pura_frontend/feature/shared/Domain/datasource/product_datasource.dart';
-import 'package:al_pura_frontend/feature/shared/Domain/model/product.dart';
+import 'package:al_pura_frontend/feature/shared/domain/datasource/product_datasource.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductDatasourceImpl implements ProductDatasource {

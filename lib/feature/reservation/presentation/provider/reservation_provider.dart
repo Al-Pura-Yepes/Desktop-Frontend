@@ -10,25 +10,29 @@ class ReservationState {
   final int? indexSelected;
   final bool? isStatusAscending;
   final List<Reservation> reservations;
+  final Reservation? reservation;
 
   ReservationState({
     this.isReservationSelected = false,
     this.isStatusAscending,
     this.indexSelected,
-    this.reservations = const []
+    this.reservations = const [],
+    this.reservation
   });
 
   ReservationState copyWith({
     bool? isReservationSelected,
     bool? isStatusAscending,
     int? indexSelected,
-    List<Reservation>? reservations
+    List<Reservation>? reservations,
+    Reservation? reservation
   }) {
     return ReservationState(
       isReservationSelected: isReservationSelected ?? this.isReservationSelected,
       isStatusAscending: isStatusAscending,
       indexSelected: indexSelected ?? this.indexSelected,
-      reservations: reservations ?? this.reservations
+      reservations: reservations ?? this.reservations,
+      reservation: reservation ?? this.reservation
     );
   }
 }
@@ -49,7 +53,19 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
     state = state.copyWith(
         indexSelected: index,
         isReservationSelected: true,
-        isStatusAscending: state.isStatusAscending
+        isStatusAscending: state.isStatusAscending,
+        reservation: state.reservations[index]
+    );
+  }
+
+  changeItemSelectedById(String id) {
+    var index = state.reservations
+        .indexWhere((reservation) => reservation.id == id);
+    state = state.copyWith(
+        indexSelected: index,
+        isReservationSelected: true,
+        isStatusAscending: state.isStatusAscending,
+        reservation: state.reservations[index]
     );
   }
 
@@ -70,6 +86,13 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
       filterStatus = null;
     }
     state = state.copyWith(isStatusAscending: filterStatus);
+  }
+
+  updateReservation(Reservation reservation) {
+    state = state.copyWith(
+        reservation: reservation,
+        isStatusAscending: state.isStatusAscending
+    );
   }
 }
 

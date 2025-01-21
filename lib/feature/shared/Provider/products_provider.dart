@@ -1,4 +1,4 @@
-import 'package:al_pura_frontend/feature/shared/Domain/model/product.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:al_pura_frontend/feature/shared/Provider/product_repository_provider.dart';
 import 'package:al_pura_frontend/feature/shared/domain/repository/product_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,7 +30,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
   Future getAll() async {
     try {
       List<Product> fetchProducts = await repository.readAllProduct();
-      final Map<String, List<Product>> auxList = state.products;
+      Map<String, List<Product>> auxList = {...state.products};
       for (Product product in fetchProducts) {
         if (auxList[product.category] == null) {
           auxList[product.category] = [product];
@@ -73,7 +73,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
   }
 }
 
-final productProvider =
+final productsProvider =
     StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
   final repository = ref.read(productRepositoryProvider);
   return ProductsNotifier(repository: repository);

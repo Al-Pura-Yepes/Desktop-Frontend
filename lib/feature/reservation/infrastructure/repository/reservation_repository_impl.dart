@@ -1,7 +1,7 @@
 import 'package:al_pura_frontend/feature/reservation/domain/datasource/reservation_datasource.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/model/reservation.dart';
+import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/repository/reservation_repository.dart';
-import 'package:al_pura_frontend/feature/reservation/infrastructure/datasource/reservation_datasource_impl.dart';
 
 class ReservationRepositoryImpl extends ReservationRepository {
   final ReservationDatasource datasource;
@@ -18,6 +18,11 @@ class ReservationRepositoryImpl extends ReservationRepository {
   @override
   Future<Reservation?> getReservationById(String id) {
     return datasource.getReservationById(id);
+  }
+
+  @override
+  Future<bool> updateStatus(String id, Status status) {
+    return datasource.updateStatus(id, status);
   }
   
 }
