@@ -1,22 +1,36 @@
+import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/screen/reservation_information_box.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_cart.dart';
 import 'package:al_pura_frontend/feature/shared/widget/text/date_visualizer.dart';
-import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'client_information_box.dart';
 
-class ReservationScreen extends ConsumerWidget {
+class ReservationScreen extends ConsumerStatefulWidget {
   const ReservationScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ReservationScreen> createState() => _ReservationScreenState();
+}
+
+class _ReservationScreenState extends ConsumerState<ReservationScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(reservationProvider.notifier).loadReservations();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
     final indexSelected = ref.watch(reservationProvider).indexSelected;
+    final reservations = ref.watch(reservationProvider).reservations;
+    final sortStatus = ref.watch(reservationProvider).isStatusAscending;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +51,7 @@ class ReservationScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: DataTable(
                       dataTextStyle: textTheme.bodySmall,
-                      dividerThickness: 2,
+                      dividerThickness: 1,
                       headingRowColor: WidgetStatePropertyAll(colorScheme.primary),
                       headingTextStyle: textTheme.bodySmall?.copyWith(
                           color: Colors.white,
@@ -47,35 +61,69 @@ class ReservationScreen extends ConsumerWidget {
                         color: Colors.white
                       ),
                       border: TableBorder.all(color: colorScheme.secondary),
-                      columns: const [
-                        DataColumn(
-                            label: Text('Cliente:')),
-                        DataColumn(
-                            label: Text('Fecha de Entrega:')),
-                        DataColumn(
+                      columns: [
+                        const DataColumn(
+                            label: Text('N°'),
+                            headingRowAlignment: MainAxisAlignment.center,
+                            numeric: true,
+                        ),
+                        const DataColumn(
+                            label: Text('Cliente:'),
+                        ),
+                        const DataColumn(
+                            label: Text('Fecha de Entrega:'),
+                            headingRowAlignment: MainAxisAlignment.center
+                        ),
+                        const DataColumn(
                             label: Text('Tipo de Entrega:')),
                         DataColumn(
-                            label: Text('Estado:'))
+                            label: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              spacing: 10,
+                              children: [
+                                Icon(
+                                  sortStatus == null
+                                      ? Icons.compare_arrows
+                                      : sortStatus == true
+                                        ? Icons.arrow_upward_rounded
+                                        : Icons.arrow_downward_rounded,
+                                  color: Colors.white,
+                                ),
+                                const Text('Estado:')
+                              ],
+                            ),
+                            onSort: (columnIndex, ascending) async {
+                              ref.read(reservationProvider.notifier).iterateSortByStatus();
+                              await ref.read(reservationProvider.notifier).loadReservations();
+                            },
+                        )
                       ],
                       rows: List<DataRow>.generate(
-                        10,
-                        (int index) => DataRow(
-                          cells: <DataCell>[
-                            const DataCell(Text("Lorem ipsum")),
-                            DataCell(
-                                DateVisualizer(
-                                  dateTime: DateTime(2025, 1, 10)
-                                )
-                            ),
-                            const DataCell(Text("Lorem ipsum")),
-                            const DataCell(Text("Lorem ipsum")),
-                          ],
-                          selected: index == indexSelected,
-                          onSelectChanged: (bool? value) {
-                            ref.read(reservationProvider.notifier).changeItemSelected(index);
-                            print(ref.read(reservationProvider).indexSelected);
-                          }
-                        ),
+                        reservations.length,
+                        (int index) {
+                          var reservation = reservations[index];
+                          return DataRow(
+                              cells: <DataCell>[
+                                DataCell(Center(child: Text(index.toString()))),
+                                DataCell(Text(reservation.client.fullName)),
+                                DataCell(
+                                    DateVisualizer(
+                                        dateTime: reservation.deliveryDate
+                                    )
+                                ),
+                                DataCell(Text(
+                                        reservation.isDelivery
+                                            ? "Entrega"
+                                            : "Delivery"
+                                )),
+                                DataCell(Text(statusToString(reservation.status))),
+                              ],
+                              selected: index == indexSelected,
+                              onSelectChanged: (bool? value) {
+                                ref.read(reservationProvider.notifier).changeItemSelected(index);
+                              }
+                          );
+                        }
                       )
                   ),
                 ),

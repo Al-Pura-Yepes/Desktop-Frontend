@@ -26,7 +26,7 @@ class DateVisualizer extends StatelessWidget {
   determinateColor(DateTime date) {
     final now = DateTime.now();
     
-    if (date.isBefore(now)) {
+    if (date.isAfter(now)) {
       bool isSameDay = date.year == now.year &&
           date.month == now.month &&
           date.day == now.day;
@@ -42,7 +42,7 @@ class DateVisualizer extends StatelessWidget {
   determinateColorText(DateTime date) {
     final now = DateTime.now();
 
-    if (date.isBefore(now)) {
+    if (date.isAfter(now)) {
       bool isSameDay = date.year == now.year &&
           date.month == now.month &&
           date.day == now.day;

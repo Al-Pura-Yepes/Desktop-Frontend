@@ -34,13 +34,14 @@ class ReservationInformationBox extends ConsumerWidget {
                     style: textTheme.titleSmall,
                   )
               ),
-              CustomButton(
-                size: 40,
-                icon: Icons.delete,
-                filled: false,
-                color: colorScheme.error,
-                iconColor: colorScheme.error,
-              )
+              isInformationLoaded
+                ? CustomButton(
+                  size: 40,
+                  icon: Icons.delete,
+                  filled: false,
+                  color: colorScheme.error,
+                  iconColor: colorScheme.error,
+                ) : const SizedBox.shrink()
             ],
           ),
           Expanded(
