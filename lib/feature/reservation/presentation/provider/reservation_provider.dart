@@ -94,6 +94,14 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
         isStatusAscending: state.isStatusAscending
     );
   }
+
+  clearReservations() {
+    state = state.copyWith(
+      reservation: null,
+      indexSelected: null,
+      isReservationSelected: false
+    );
+  }
 }
 
 final reservationProvider = StateNotifierProvider<ReservationNotifier, ReservationState>((ref) {

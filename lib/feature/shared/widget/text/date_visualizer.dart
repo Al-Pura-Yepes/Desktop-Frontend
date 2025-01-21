@@ -1,13 +1,16 @@
+import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateVisualizer extends StatelessWidget {
   final DateTime dateTime;
+  final Status status;
 
   const DateVisualizer({
     super.key,
-    required this.dateTime
+    required this.dateTime,
+    required this.status
   });
 
   @override
@@ -17,8 +20,8 @@ class DateVisualizer extends StatelessWidget {
     return LabelBorder(
       text: DateFormat('dd-MM-yyyy').format(dateTime),
       textStyle: textTheme.bodySmall!.copyWith(
-          color: determinateColorText(dateTime)),
-      color: determinateColor(dateTime),
+          color: status == Status.completed ? Colors.white : determinateColorText(dateTime)),
+      color: status == Status.completed ? Colors.green : determinateColor(dateTime),
       filled: true,
     );
   }

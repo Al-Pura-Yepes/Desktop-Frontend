@@ -24,5 +24,15 @@ class ReservationRepositoryImpl extends ReservationRepository {
   Future<bool> updateStatus(String id, Status status) {
     return datasource.updateStatus(id, status);
   }
+
+  @override
+  Future<bool> confirmPayment(String id, String paymentMethod) {
+    return datasource.confirmPayment(id, paymentMethod);
+  }
+
+  @override
+  Future<bool> deleteReservation(String id) {
+    return datasource.deleteReservation(id);
+  }
   
 }

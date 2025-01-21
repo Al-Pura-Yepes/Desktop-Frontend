@@ -51,4 +51,35 @@ class ReservationDatasourceImpl extends ReservationDatasource {
     }
   }
 
+  @override
+  Future<bool> confirmPayment(String id, String paymentMethod) async {
+    try {
+      await firestore
+          .collection('Reservations')
+          .doc(id)
+          .update({
+        'status': getIntFromStatus(Status.completed),
+        'paymentMethod': paymentMethod
+      });
+      return true;
+    } on Exception {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> deleteReservation(String id) async {
+    try {
+      await firestore
+          .collection('Reservations')
+          .doc(id)
+          .update({
+        'isActive': false
+      });
+      return true;
+    } on Exception {
+      return false;
+    }
+  }
+
 }

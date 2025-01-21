@@ -108,7 +108,8 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                                 DataCell(Text(reservation.client.fullName)),
                                 DataCell(
                                     DateVisualizer(
-                                        dateTime: reservation.deliveryDate
+                                        dateTime: reservation.deliveryDate,
+                                        status: reservation.status,
                                     )
                                 ),
                                 DataCell(Text(

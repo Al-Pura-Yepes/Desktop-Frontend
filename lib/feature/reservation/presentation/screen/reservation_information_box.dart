@@ -1,3 +1,4 @@
+import 'package:al_pura_frontend/feature/reservation/domain/model/reservation.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/state_button.dart';
@@ -9,11 +10,50 @@ import 'package:intl/intl.dart';
 
 import '../../../shared/widget/buttons/custom_button.dart';
 
-class ReservationInformationBox extends ConsumerWidget {
+class ReservationInformationBox extends ConsumerStatefulWidget {
   const ReservationInformationBox({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ReservationInformationBox> createState() => _ReservationInformationBoxState();
+}
+
+
+class _ReservationInformationBoxState extends ConsumerState<ReservationInformationBox> {
+  bool isPaymentSectionShown = false;
+  String? paymentMethod;
+
+  Future<void> managePaymentConfirmation(Reservation reservation) async {
+    setState(() {
+      isPaymentSectionShown = false;
+      paymentMethod = null;
+    });
+    var payConfirmed = await ref.read(reservationProvider.notifier)
+        .repository.confirmPayment(
+        reservation.id, paymentMethod ?? 'Efectivo'
+    );
+
+    if (payConfirmed) {
+      var reservationEditable = reservation;
+      reservationEditable.status = Status.completed;
+      ref.read(reservationProvider.notifier)
+          .updateReservation(reservationEditable);
+      ref.read(reservationProvider.notifier)
+          .loadReservations();
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(
+            const SnackBar(
+                content: Text(
+                    'Error happens while confirming payment')
+            )
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final isInformationLoaded = ref.watch(reservationProvider).isReservationSelected;
@@ -22,16 +62,16 @@ class ReservationInformationBox extends ConsumerWidget {
       return accumulator + (product.quantity * product.price!);
     });
 
-    return Stack(
-      children: [
-        Container(
-          height: 330,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10))
-          ),
-          child: Column(
+    return Container(
+      height: 330,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10))
+      ),
+      child: Stack(
+        children: [
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Row(
@@ -49,6 +89,23 @@ class ReservationInformationBox extends ConsumerWidget {
                       filled: false,
                       color: colorScheme.error,
                       iconColor: colorScheme.error,
+                      onPress: () async {
+                        var confirmation = await ref.read(reservationProvider.notifier)
+                            .repository.deleteReservation(reservation!.id);
+                        if (!confirmation) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'We are having trouble removing the product')
+                                ));
+                          }
+                        } else {
+                          ref.read(reservationProvider.notifier).clearReservations();
+                          ref.read(reservationProvider.notifier).loadReservations();
+                        }
+                      },
                     ) : const SizedBox.shrink()
                 ],
               ),
@@ -157,12 +214,28 @@ class ReservationInformationBox extends ConsumerWidget {
                                 size: 60,
                                 color: colorScheme.secondary,
                                 icon: Icons.attach_money,
+                                onPress: () {
+                                  if (reservation.status != Status.completed) {
+                                    setState(() {
+                                      isPaymentSectionShown = true;
+                                      paymentMethod = 'Efectivo';
+                                    });
+                                  }
+                                },
                               ),
                               const SizedBox(width: 10),
-                              const CustomButton(
+                              CustomButton(
                                 size: 60,
-                                color: Color(0xff464C59),
+                                color: const Color(0xff464C59),
                                 icon: Icons.qr_code,
+                                onPress: () {
+                                  if (reservation.status != Status.completed) {
+                                    setState(() {
+                                      isPaymentSectionShown = true;
+                                      paymentMethod = 'QR';
+                                    });
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -185,8 +258,59 @@ class ReservationInformationBox extends ConsumerWidget {
               )
             ],
           ),
-        ),
-      ]
+          isPaymentSectionShown ? Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: colorScheme.primary,
+                height: 175,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: 20,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Confirmar pago por:',
+                          style: textTheme.bodyMedium?.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          ' $paymentMethod',
+                          style: textTheme.titleSmall?.copyWith(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 30,
+                      children: [
+                        TextButton(
+                            style: const ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(Colors.green)
+                            ),
+                            onPressed: () => managePaymentConfirmation(reservation!),
+                            child: Text('Confirmar',
+                              style: textTheme.bodySmall?.copyWith(color: Colors.white),)
+                        ),
+                        TextButton(
+                            style: const ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(Colors.red)
+                            ),
+                            onPressed: () => managePaymentConfirmation(reservation!),
+                            child: Text('Cancelar',
+                                style: textTheme.bodySmall?.copyWith(color: Colors.white))
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+          ) : const SizedBox.shrink()
+        ]
+      ),
     );
   }
 }
