@@ -16,6 +16,7 @@ class Reservation extends IEntity {
   final bool isPerMajor;
   final bool isActive;
   final List<Product> products;
+  final String? paymentMethod;
 
   Reservation({
     required this.id,
@@ -27,7 +28,8 @@ class Reservation extends IEntity {
     required this.isDelivery,
     required this.isPerMajor,
     required this.isActive,
-    required this.products
+    required this.products,
+    this.paymentMethod
   });
 
   Map<String, dynamic> toMap() {
@@ -41,6 +43,7 @@ class Reservation extends IEntity {
       "isPerMajor": isPerMajor,
       "isActive": isActive,
       "products": products,
+      "paymentMethod": paymentMethod
     };
   }
 
@@ -60,7 +63,8 @@ class Reservation extends IEntity {
         isPerMajor: map['isPerMajor'] as bool,
         isActive: map['isActive'] as bool,
         products: (map['products'] as List<dynamic>)
-            .map((entity) => Product.fromJson(entity)).toList()
+            .map((entity) => Product.fromJson(entity)).toList(),
+        paymentMethod: (map['paymentMethod'] != null) ? map['paymentMethod'] : null
     );
   }
 }
