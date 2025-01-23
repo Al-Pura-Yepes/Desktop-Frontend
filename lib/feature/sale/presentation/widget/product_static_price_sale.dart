@@ -1,3 +1,4 @@
+import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,22 @@ import '../../../shared/widget/buttons/quantity_counter.dart';
 class ProductStaticPriceSale extends ConsumerWidget {
   final Product product;
   final double widgetHeight = 70;
-  const ProductStaticPriceSale({super.key, required this.product});
+  final bool onReservationMode;
+
+  const ProductStaticPriceSale({
+    super.key,
+    required this.product,
+    this.onReservationMode = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final (productState, quantity) =
-        ref.watch(cartProvider).products[product.id]!;
+    var (productState, quantity) = onReservationMode ? (null, 0) : ref.watch(cartProvider).products[product.id]!;
+    
+    if (onReservationMode) {
+      productState = product;
+      quantity = product.quantity;
+    }
 
     final textTheme = Theme.of(context).textTheme;
 
@@ -25,13 +36,15 @@ class ProductStaticPriceSale extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            QuantityCounter(
-              callback: (quantity) {
-                ref
-                    .read(cartProvider.notifier)
-                    .setItemQuantity(product, quantity);
-              },
-            ),
+            onReservationMode
+                ? LabelBorder(text: quantity.toStringAsFixed(2), textStyle: textTheme.bodyMedium!,)
+                : QuantityCounter(
+                  callback: (quantity) {
+                    ref
+                        .read(cartProvider.notifier)
+                        .setItemQuantity(product, quantity);
+                  },
+                ),
             const SizedBox(
               width: 15,
             ),
@@ -54,12 +67,12 @@ class ProductStaticPriceSale extends ConsumerWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('Bs'),
-                  SizedBox(
+                  const Text('Bs'),
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
-                    '${(product.price! * quantity).toStringAsFixed(2)}',
+                    (product.price! * quantity).toStringAsFixed(2),
                     style: textTheme.bodyLarge,
                   ),
                 ],
@@ -68,15 +81,18 @@ class ProductStaticPriceSale extends ConsumerWidget {
             const SizedBox(
               width: 30,
             ),
-            IconButton(
-                onPressed: () {
-                  ref.read(cartProvider.notifier).deleteItemFromCart(product);
-                },
-                icon: const Icon(
-                  Icons.delete,
-                  size: 30,
-                  color: Colors.red,
-                ))
+            onReservationMode
+                ? const SizedBox.shrink()
+                : IconButton(
+                    onPressed: () {
+                      ref.read(cartProvider.notifier).deleteItemFromCart(product);
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      size: 30,
+                      color: Colors.red,
+                    )
+                )
           ],
         ),
       ),

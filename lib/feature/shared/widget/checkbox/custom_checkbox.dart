@@ -6,28 +6,49 @@ class CustomCheckbox extends StatefulWidget {
   final bool value;
   final double size;
   final void Function()? onChange;
+  final bool isEditable;
 
-  const CustomCheckbox(
-      {super.key,
-      this.size = 20,
-      required this.title,
-      this.color = Colors.black,
-      this.value = false,
-      this.onChange});
+  const CustomCheckbox({
+    super.key,
+    this.size = 20,
+    required this.title,
+    this.color = Colors.black,
+    this.value = false,
+    this.onChange,
+    this.isEditable = true
+  });
 
   @override
-  State<CustomCheckbox> createState() => _CustomCheckboxState();
+  State<CustomCheckbox> createState() => _CustomCheckboxState(currentValue: value);
 }
 
 class _CustomCheckboxState extends State<CustomCheckbox> {
-  bool currentValue = false;
+  bool currentValue;
+
+  _CustomCheckboxState({
+    required this.currentValue
+  });
+
+  @override
+  void didUpdateWidget(CustomCheckbox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.value != oldWidget.value) {
+      setState(() {
+        currentValue = widget.value;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => setState(() {
-        currentValue = !currentValue;
-      }),
+      onTap: () {
+        if (widget.isEditable) {
+          setState(() {
+            currentValue = !currentValue;
+          });
+        }
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -45,10 +66,12 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                 side: BorderSide(width: 1, color: widget.color),
                 value: currentValue,
                 onChanged: (value) {
-                  widget.onChange ?? ();
-                  setState(() {
-                    currentValue = value ?? false;
-                  });
+                  if (widget.isEditable) {
+                    widget.onChange ?? ();
+                    setState(() {
+                      currentValue = value ?? false;
+                    });
+                  }
                 },
               ),
             ),
