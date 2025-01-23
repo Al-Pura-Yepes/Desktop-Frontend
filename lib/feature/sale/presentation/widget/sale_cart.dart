@@ -37,11 +37,11 @@ class SaleCart extends ConsumerWidget {
               child: ListView.builder(
                 itemCount: cartProductsKeys.length,
                 itemBuilder: (context, index) {
-                  final (product, quantity) =
-                      cartProducts[cartProductsKeys[index]]!;
+                  final quantity = cartProducts[cartProductsKeys[index]]!;
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    child: ProductStaticPriceSale(product: product),
+                    child: ProductStaticPriceSale(
+                        product: cartProductsKeys[index]),
                   );
                 },
               ),

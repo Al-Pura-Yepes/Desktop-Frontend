@@ -1,4 +1,6 @@
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/confirm_sale.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_back.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
 import 'package:al_pura_frontend/feature/shared/widget/checkbox/custom_checkbox.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +41,7 @@ class SaleInformationFront extends ConsumerWidget {
               const SizedBox(
                 width: 30,
               ),
-              const Flexible(
+              Flexible(
                 child: FittedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -58,6 +60,9 @@ class SaleInformationFront extends ConsumerWidget {
                         filled: false,
                         icon: Icons.delete,
                         iconColor: Colors.red,
+                        onPress: () {
+                          ref.read(cartProvider.notifier).resetCart();
+                        },
                       ),
                     ],
                   ),
@@ -72,11 +77,15 @@ class SaleInformationFront extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Expanded(
+              Expanded(
                   child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: CustomCheckbox(
+                        value: ref.watch(cartProvider).isDelivery,
+                        onChange: () {
+                          ref.read(cartProvider.notifier).toggleIsDelivery();
+                        },
                         title: 'Envio por delivery',
                         size: 20,
                       ))),
@@ -112,6 +121,9 @@ class SaleInformationFront extends ConsumerWidget {
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: CustomCheckbox(
+                        onChange:
+                            ref.read(cartProvider.notifier).toggleIsPerMajor,
+                        value: ref.watch(cartProvider).isPerMajor,
                         color: secondaryColor,
                         title: 'Venta al por mayor',
                         size: 20,
@@ -153,7 +165,15 @@ class SaleInformationFront extends ConsumerWidget {
                     children: [
                       CustomButton(
                         onPress: () {
-                          ref.read(cartProvider.notifier).saleByCash();
+                          if (ref.read(cartProvider).isDelivery) {
+                            ref
+                                .read(cartProvider.notifier)
+                                .changeWidgetOption(SaleInformationBack());
+                          } else {
+                            ref
+                                .read(cartProvider.notifier)
+                                .changeWidgetOption(ConfirmSale());
+                          }
                         },
                         size: 60,
                         color: secondaryColor,

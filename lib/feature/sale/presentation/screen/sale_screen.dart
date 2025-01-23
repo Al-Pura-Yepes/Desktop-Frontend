@@ -1,20 +1,24 @@
+import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/products_board.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_back.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
 import 'package:al_pura_frontend/feature/shared/widget/options_bar/option_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../widget/sale_cart.dart';
 
-class SaleScreen extends StatelessWidget {
+class SaleScreen extends ConsumerWidget {
   const SaleScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
+
+    final widgetOption = ref.watch(cartProvider).widgetOption;
 
     return Scaffold(
       //TODO: CHANGE TO SLIVER APP BAR
@@ -51,7 +55,7 @@ class SaleScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    const SizedBox(height: 300, child: SaleInformationFront()),
+                    SizedBox(height: 300, child: widgetOption),
                   ],
                 ),
               ),

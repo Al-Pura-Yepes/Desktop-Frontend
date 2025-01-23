@@ -1,13 +1,17 @@
+import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/confirm_sale.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
 import 'package:al_pura_frontend/feature/shared/widget/chips/custom_chip.dart';
 import 'package:al_pura_frontend/feature/shared/widget/fields/custom_title_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SaleInformationBack extends StatelessWidget {
+class SaleInformationBack extends ConsumerWidget {
   const SaleInformationBack({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final primaryColor = Theme.of(context).primaryColor;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
@@ -38,7 +42,7 @@ class SaleInformationBack extends StatelessWidget {
                 const SizedBox(
                   width: 30,
                 ),
-                const Flexible(
+                 Flexible(
                   child: FittedBox(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -49,6 +53,9 @@ class SaleInformationBack extends StatelessWidget {
                           filled: false,
                           icon: Icons.delete,
                           iconColor: Colors.red,
+                          onPress: () {
+                            ref.read(cartProvider.notifier).resetCart();
+                          },
                         ),
                       ],
                     ),
@@ -119,7 +126,7 @@ class SaleInformationBack extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const FittedBox(
+                  FittedBox(
                       child: Row(
                     children: [
                       CustomButton(
@@ -128,8 +135,13 @@ class SaleInformationBack extends StatelessWidget {
                         color: Colors.green,
                         icon: Icons.check,
                         iconColor: Colors.green,
+                        onPress: () {
+                          ref
+                              .read(cartProvider.notifier)
+                              .changeWidgetOption(ConfirmSale());
+                        },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       CustomButton(
@@ -138,6 +150,11 @@ class SaleInformationBack extends StatelessWidget {
                         color: Colors.red,
                         icon: Icons.close,
                         iconColor: Colors.red,
+                        onPress: () {
+                          ref
+                              .read(cartProvider.notifier)
+                              .changeWidgetOption(SaleInformationFront());
+                        },
                       ),
                     ],
                   )),

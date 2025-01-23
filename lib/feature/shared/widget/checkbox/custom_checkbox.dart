@@ -20,14 +20,21 @@ class CustomCheckbox extends StatefulWidget {
 }
 
 class _CustomCheckboxState extends State<CustomCheckbox> {
-  bool currentValue = false;
+  late bool currentValue;
+
+  @override
+  void initState() {
+    super.initState();
+    currentValue = widget.value;
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => setState(() {
+      onTap: () {
         currentValue = !currentValue;
-      }),
+        widget.onChange!();
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -45,9 +52,9 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                 side: BorderSide(width: 1, color: widget.color),
                 value: currentValue,
                 onChanged: (value) {
-                  widget.onChange ?? ();
                   setState(() {
                     currentValue = value ?? false;
+                    widget.onChange!();
                   });
                 },
               ),

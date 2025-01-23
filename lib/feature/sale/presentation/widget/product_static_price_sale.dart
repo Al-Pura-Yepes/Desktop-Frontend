@@ -12,8 +12,7 @@ class ProductStaticPriceSale extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final (productState, quantity) =
-        ref.watch(cartProvider).products[product.id]!;
+    final quantity = ref.watch(cartProvider).products[product]!;
 
     final textTheme = Theme.of(context).textTheme;
 
@@ -59,7 +58,7 @@ class ProductStaticPriceSale extends ConsumerWidget {
                     width: 10,
                   ),
                   Text(
-                    '${(product.price! * quantity).toStringAsFixed(2)}',
+                    (product.price! * quantity).toStringAsFixed(2),
                     style: textTheme.bodyLarge,
                   ),
                 ],
