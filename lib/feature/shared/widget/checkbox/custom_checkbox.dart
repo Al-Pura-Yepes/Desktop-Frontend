@@ -55,10 +55,12 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                 side: BorderSide(width: 1, color: widget.color),
                 value: currentValue,
                 onChanged: (value) {
-                  setState(() {
-                    currentValue = value ?? false;
-                    widget.onChange!();
-                  });
+                  if (widget.isEditable) {
+                    widget.onChange ?? ();
+                    setState(() {
+                      currentValue = value ?? false;
+                    });
+                  }
                 },
               ),
             ),

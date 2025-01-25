@@ -19,11 +19,11 @@ class ProductStaticPriceSale extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final quantity = ref.watch(cartProvider).products[product]!;
-    var quantityAux = onReservationMode ? 0 : ref.watch(cartProvider).products[product]!;
+    //final quantity = ref.watch(cartProvider).products[product]!;
+    var quantity = onReservationMode ? 0 : ref.watch(cartProvider).products[product]!;
 
     if (onReservationMode) {
-      quantityAux = quantity;
+      quantity = product.quantity;
     }
 
     final textTheme = Theme.of(context).textTheme;

@@ -72,8 +72,10 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
               child: SingleChildScrollView(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: isLoading ? const Expanded(
-                      child: Center(child: CircularProgressIndicator()))
+                  child: isLoading ? const SizedBox(
+                      height: 150,
+                      child: Center(child: CircularProgressIndicator()),
+                  )
                       : DataTable(
                       dataTextStyle: textTheme.bodySmall,
                       dividerThickness: 1,
