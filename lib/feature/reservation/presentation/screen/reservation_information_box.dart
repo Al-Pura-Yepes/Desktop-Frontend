@@ -1,6 +1,7 @@
 import 'package:al_pura_frontend/feature/reservation/domain/model/reservation.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
+import 'package:al_pura_frontend/feature/reservation/presentation/widget/confirmation_modal.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/state_button.dart';
 import 'package:al_pura_frontend/feature/shared/widget/checkbox/custom_checkbox.dart';
 import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
@@ -20,6 +21,7 @@ class ReservationInformationBox extends ConsumerStatefulWidget {
 
 class _ReservationInformationBoxState extends ConsumerState<ReservationInformationBox> {
   bool isPaymentSectionShown = false;
+  bool isDeletionConfirmationModal = false;
   String? paymentMethod;
 
   Future<void> managePaymentConfirmation(Reservation reservation) async {
@@ -89,22 +91,10 @@ class _ReservationInformationBoxState extends ConsumerState<ReservationInformati
                       filled: false,
                       color: colorScheme.error,
                       iconColor: colorScheme.error,
-                      onPress: () async {
-                        var confirmation = await ref.read(reservationProvider.notifier)
-                            .repository.deleteReservation(reservation!.id);
-                        if (!confirmation) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'We are having trouble removing the product')
-                                ));
-                          }
-                        } else {
-                          ref.read(reservationProvider.notifier).clearReservations();
-                          ref.read(reservationProvider.notifier).loadReservations();
-                        }
+                      onPress: () {
+                        setState(() {
+                          isDeletionConfirmationModal = true;
+                        });
                       },
                     ) : const SizedBox.shrink()
                 ],
@@ -119,7 +109,7 @@ class _ReservationInformationBoxState extends ConsumerState<ReservationInformati
                         child: Column(
                           children: [
                             StateButton(
-                              text: statusToString(reservation!.status),
+                              status: reservation!.status,
                               color: reservation.status == Status.pending
                                   ? Colors.yellow
                                   : reservation.status == Status.ready
@@ -130,6 +120,25 @@ class _ReservationInformationBoxState extends ConsumerState<ReservationInformati
                                   ? Colors.black : Colors.white,
                               onChange: () {
                                 if (reservation.status == Status.pending) {
+                                  var reservationEditable = reservation;
+                                  reservationEditable.status = Status.ready;
+                                  ref.read(reservationProvider.notifier)
+                                      .updateReservation(reservationEditable);
+                                  ref.read(reservationProvider.notifier)
+                                      .repository.updateStatus(reservation.id, Status.ready);
+                                  ref.read(reservationProvider.notifier).loadReservations();
+                                }
+                              },
+                              revertState: () {
+                                if (reservation.status == Status.ready) {
+                                  var reservationEditable = reservation;
+                                  reservationEditable.status = Status.pending;
+                                  ref.read(reservationProvider.notifier)
+                                      .updateReservation(reservationEditable);
+                                  ref.read(reservationProvider.notifier)
+                                      .repository.updateStatus(reservation.id, Status.pending);
+                                  ref.read(reservationProvider.notifier).loadReservations();
+                                } else if (reservation.status == Status.completed) {
                                   var reservationEditable = reservation;
                                   reservationEditable.status = Status.ready;
                                   ref.read(reservationProvider.notifier)
@@ -262,9 +271,9 @@ class _ReservationInformationBoxState extends ConsumerState<ReservationInformati
               bottom: 0,
               left: 0,
               right: 0,
+              top: 0,
               child: Container(
                 color: colorScheme.primary,
-                height: 175,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -279,7 +288,7 @@ class _ReservationInformationBoxState extends ConsumerState<ReservationInformati
                         ),
                         Text(
                           ' $paymentMethod',
-                          style: textTheme.titleSmall?.copyWith(color: Colors.white),
+                          style: textTheme.titleSmall?.copyWith(color: Colors.green),
                         ),
                       ],
                     ),
@@ -287,27 +296,53 @@ class _ReservationInformationBoxState extends ConsumerState<ReservationInformati
                       mainAxisAlignment: MainAxisAlignment.center,
                       spacing: 30,
                       children: [
-                        TextButton(
-                            style: const ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(Colors.green)
-                            ),
-                            onPressed: () => managePaymentConfirmation(reservation!),
-                            child: Text('Confirmar',
-                              style: textTheme.bodySmall?.copyWith(color: Colors.white),)
+                        CustomButton(
+                          size: 60,
+                          color: Colors.green,
+                          icon: Icons.check,
+                          onPress: () => managePaymentConfirmation(reservation!),
                         ),
-                        TextButton(
-                            style: const ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(Colors.red)
-                            ),
-                            onPressed: () => managePaymentConfirmation(reservation!),
-                            child: Text('Cancelar',
-                                style: textTheme.bodySmall?.copyWith(color: Colors.white))
-                        )
+                        CustomButton(
+                          size: 60,
+                          color: Colors.red,
+                          icon: Icons.close,
+                          onPress: () => managePaymentConfirmation(reservation!),
+                        ),
                       ],
                     )
                   ],
                 ),
               )
+          ) : const SizedBox.shrink(),
+          isDeletionConfirmationModal ? ConfirmationModal(
+              leftText: '¿Deseas ',
+              highlightedText: 'eliminar ',
+              rightText: 'la reserva?',
+              onConfirmation: () async {
+                var confirmation = await ref.read(reservationProvider.notifier)
+                    .repository.deleteReservation(reservation!.id);
+                if (!confirmation) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                'We are having trouble removing the product')
+                        ));
+                  }
+                } else {
+                  ref.read(reservationProvider.notifier).clearReservations();
+                  ref.read(reservationProvider.notifier).loadReservations();
+                }
+                setState(() {
+                  isDeletionConfirmationModal = false;
+                });
+              },
+              onCanceled: () {
+                setState(() {
+                  isDeletionConfirmationModal = false;
+                });
+              },
           ) : const SizedBox.shrink()
         ]
       ),

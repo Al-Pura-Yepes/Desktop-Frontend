@@ -7,12 +7,13 @@ class Sale {
   final double totalPrice;
   final double discount;
 
-  Sale(
-      {required this.products,
-      required this.isDelivery,
-      required this.isPerMajor,
-      required this.totalPrice,
-      required this.discount});
+  Sale({
+    required this.products,
+    required this.isDelivery,
+    required this.isPerMajor,
+    required this.totalPrice,
+    required this.discount
+  });
 
   List<Map<String, dynamic>> _productsToJson() {
     List<Map<String, dynamic>> result = [];
