@@ -1,5 +1,6 @@
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/confirm_sale.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/custom_date_picker.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
 import 'package:al_pura_frontend/feature/shared/widget/chips/custom_chip.dart';
@@ -15,6 +16,7 @@ class SaleInformationBack extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final primaryColor = Theme.of(context).primaryColor;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
+    final cartState = ref.watch(cartProvider);
 
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -73,10 +75,10 @@ class SaleInformationBack extends ConsumerWidget {
                 children: [
                   SizedBox(
                       width: constraints.maxWidth * 0.45,
-                      child: const CustomTitleField()),
+                      child: CustomTitleField(title: 'Nombre del cliente', onPress: (value) => ref.read(cartProvider.notifier).setClientName(value),)),
                   SizedBox(
                       width: constraints.maxWidth * 0.45,
-                      child: const CustomTitleField()),
+                      child: CustomTitleField(title: 'Celular del cliente', onPress: (value) => ref.read(cartProvider.notifier).setClientPhone(value))),
                 ],
               ),
             ),
@@ -94,7 +96,7 @@ class SaleInformationBack extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomChip(
+                          if (cartState.isDelivery) CustomChip(
                               color: secondaryColor,
                               text: Text(
                                 'Envio por delivery',
@@ -104,7 +106,7 @@ class SaleInformationBack extends ConsumerWidget {
                           const SizedBox(
                             height: 5,
                           ),
-                          CustomChip(
+                          if (cartState.isReservation) CustomChip(
                               color: secondaryColor,
                               text: Text(
                                 'Reserva',
@@ -115,10 +117,17 @@ class SaleInformationBack extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  if (true)
+                    SizedBox(
                       height: constraints.maxHeight * 0.2,
                       width: constraints.maxWidth * 0.45,
-                      child: const CustomTitleField()),
+                      child: CustomDatePickerField(
+                        title: 'Fecha de reserva',
+                        onDateSelected: (date) {
+                          ref.read(cartProvider.notifier).setReservationDate(date);
+                        },
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -159,13 +168,11 @@ class SaleInformationBack extends ConsumerWidget {
                     ],
                   )),
                   FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      'PRECIO',
-                      style: textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  )
+                      child: Text(
+                        'Total: Bs ${(cartState.totalPrice - cartState.discount).toStringAsFixed(2)}',
+                        style: textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                      ))
                 ],
               ),
             )

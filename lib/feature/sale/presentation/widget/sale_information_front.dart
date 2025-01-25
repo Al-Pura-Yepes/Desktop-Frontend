@@ -165,6 +165,7 @@ class SaleInformationFront extends ConsumerWidget {
                     children: [
                       CustomButton(
                         onPress: () {
+                          ref.read(cartProvider.notifier).setPaymentMethod(true);
                           if (ref.read(cartProvider).isDelivery) {
                             ref
                                 .read(cartProvider.notifier)
@@ -184,6 +185,18 @@ class SaleInformationFront extends ConsumerWidget {
                         size: 60,
                         color: Color(0xff464C59),
                         icon: Icons.qr_code,
+                        onPress: () {
+                          ref.read(cartProvider.notifier).setPaymentMethod(false);
+                          if (ref.read(cartProvider).isDelivery) {
+                            ref
+                                .read(cartProvider.notifier)
+                                .changeWidgetOption(SaleInformationBack());
+                          } else {
+                            ref
+                                .read(cartProvider.notifier)
+                                .changeWidgetOption(ConfirmSale());
+                          }
+                        },
                       ),
                       SizedBox(width: 10),
                       CustomButton(

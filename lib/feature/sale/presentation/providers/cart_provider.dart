@@ -15,6 +15,10 @@ class CartState {
   final double discount;
   final Widget widgetOption;
   final Widget lastWidget;
+  final bool isReservation;
+  final String? clientName;
+  final String? clientPhone;
+  final bool isByCash;
 
   CartState(
       {this.products = const {},
@@ -23,7 +27,11 @@ class CartState {
       this.totalPrice = 0,
       this.discount = 0,
       this.widgetOption = const SaleInformationFront(),
-      this.lastWidget = const SaleInformationFront()});
+      this.lastWidget = const SaleInformationFront(),
+      this.isReservation = false,
+      this.clientName,
+      this.clientPhone,
+      this.isByCash = true});
 
   CartState copyWith(
       {Map<Product, double>? products,
@@ -32,7 +40,11 @@ class CartState {
       double? totalPrice,
       double? discount,
       Widget? widgetOption,
-      Widget? lastWidget}) {
+      Widget? lastWidget,
+      bool? isReservation,
+      String? clientName,
+      String? clientPhone,
+      bool? isByCash}) {
     return CartState(
         products: products ?? this.products,
         isDelivery: isDelivery ?? this.isDelivery,
@@ -40,7 +52,11 @@ class CartState {
         totalPrice: totalPrice ?? this.totalPrice,
         discount: discount ?? this.discount,
         widgetOption: widgetOption ?? this.widgetOption,
-        lastWidget: lastWidget ?? this.lastWidget);
+        lastWidget: lastWidget ?? this.lastWidget,
+        isReservation: isReservation ?? this.isReservation,
+        clientName:  clientName ?? this.clientName,
+        clientPhone: clientPhone ?? this.clientPhone,
+        isByCash: isByCash ?? this.isByCash);
   }
 }
 
@@ -90,16 +106,16 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void saleByCash() async {
-    if (state.isDelivery) {
-      state = state.copyWith(widgetOption: SaleInformationBack());
-    }
-
     await repository.createSale(Sale(
         products: state.products,
         isDelivery: state.isDelivery,
         isPerMajor: state.isPerMajor,
         totalPrice: state.totalPrice,
-        discount: state.discount));
+        discount: state.discount,
+        isReservation: state.isReservation,
+        clientName: state.clientName,
+        clientPhone: state.clientPhone,
+        isByCash: state.isByCash));
   }
 
   void changeWidgetOption(Widget newOption) {
@@ -126,6 +142,28 @@ class CartNotifier extends StateNotifier<CartState> {
         discount: 0,
         widgetOption: const SaleInformationFront(),
         lastWidget: const SaleInformationFront());
+  }
+
+  void setClientName(String newClientName){
+    state = state.copyWith(
+      clientName: newClientName
+    );
+  }
+
+  void setClientPhone(String newClientPhone){
+    state = state.copyWith(
+      clientPhone: newClientPhone
+    );
+  }
+
+  void setPaymentMethod(bool newIsByCash){
+    state = state.copyWith(
+      isByCash: newIsByCash
+    );
+  }
+
+  void setReservationDate(DateTime date){
+
   }
 }
 

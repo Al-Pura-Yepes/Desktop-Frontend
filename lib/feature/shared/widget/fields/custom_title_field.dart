@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class CustomTitleField extends StatelessWidget {
   final Color color;
+  final String title;
+  final void Function(String value) onPress;
 
-  const CustomTitleField({super.key, this.color = Colors.white});
+  const CustomTitleField({super.key, this.color = Colors.white, required this.title, required this.onPress});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +19,14 @@ class CustomTitleField extends StatelessWidget {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                'Nombre del cliente',
+                title,
                 style: TextStyle(fontSize: fontSize + 3, color: color),
               ),
             ),
             Expanded(
               child: TextFormField(
-                cursorColor: color, // Configuración del color del cursor
+                onChanged: (value) => onPress(value),
+                cursorColor: color,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: color),

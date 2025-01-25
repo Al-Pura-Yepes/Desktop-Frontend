@@ -3,124 +3,85 @@ class Assets {
   Assets._();
 
   static const String assetsLogoWhite = 'assets/logo_white.png';
-  static const String buttonsCustomButton =
-      'lib/feature/shared/widget/buttons/custom_button.dart';
-  static const String buttonsQuantityCounter =
-      'lib/feature/shared/widget/buttons/quantity_counter.dart';
-  static const String checkboxCustomCheckbox =
-      'lib/feature/shared/widget/checkbox/custom_checkbox.dart';
-  static const String chipsCustomChip =
-      'lib/feature/shared/widget/chips/custom_chip.dart';
-  static const String datasourceProductDatasource =
-      'lib/feature/shared/domain/datasource/product_datasource.dart';
-  static const String datasourceProductDatasourceImpl =
-      'lib/feature/shared/infrastructure/datasource/product_datasource_impl.dart';
-  static const String datasourceSaleDatasource =
-      'lib/feature/sale/domain/datasource/sale_datasource.dart';
-  static const String datasourceSaleDatasourceFirebase =
-      'lib/feature/sale/infrastructure/datasource/sale_datasource_firebase.dart';
-  static const String fieldsCustomEmptyField =
-      'lib/feature/shared/widget/fields/custom_empty_field.dart';
-  static const String fieldsCustomTextField =
-      'lib/feature/shared/widget/fields/custom_text_field.dart';
-  static const String fieldsCustomTitleField =
-      'lib/feature/shared/widget/fields/custom_title_field.dart';
-  static const String fieldsCustomTitleTextField =
-      'lib/feature/shared/widget/fields/custom_title_text_field.dart';
+  static const String buttonsCustomButton = 'lib/feature/shared/widget/buttons/custom_button.dart';
+  static const String buttonsQuantityCounter = 'lib/feature/shared/widget/buttons/quantity_counter.dart';
+  static const String buttonsStateButton = 'lib/feature/shared/widget/buttons/state_button.dart';
+  static const String checkboxCustomCheckbox = 'lib/feature/shared/widget/checkbox/custom_checkbox.dart';
+  static const String chipsCustomChip = 'lib/feature/shared/widget/chips/custom_chip.dart';
+  static const String datasourceProductDatasource = 'lib/feature/shared/domain/datasource/product_datasource.dart';
+  static const String datasourceProductDatasourceImpl = 'lib/feature/shared/infrastructure/datasource/product_datasource_impl.dart';
+  static const String datasourceReservationDatasource = 'lib/feature/reservation/domain/datasource/reservation_datasource.dart';
+  static const String datasourceReservationDatasourceImpl = 'lib/feature/reservation/infrastructure/datasource/reservation_datasource_impl.dart';
+  static const String datasourceSaleDatasource = 'lib/feature/sale/domain/datasource/sale_datasource.dart';
+  static const String datasourceSaleDatasourceFirebase = 'lib/feature/sale/infrastructure/datasource/sale_datasource_firebase.dart';
+  static const String fieldsCustomEmptyField = 'lib/feature/shared/widget/fields/custom_empty_field.dart';
+  static const String fieldsCustomTextField = 'lib/feature/shared/widget/fields/custom_text_field.dart';
+  static const String fieldsCustomTitleField = 'lib/feature/shared/widget/fields/custom_title_field.dart';
+  static const String fieldsCustomTitleTextField = 'lib/feature/shared/widget/fields/custom_title_text_field.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String libFirebaseOptions = 'lib/firebase_options.dart';
   static const String libMain = 'lib/main.dart';
-  static const String modelIEntity =
-      'lib/feature/shared/domain/model/i_entity.dart';
-  static const String modelProduct =
-      'lib/feature/shared/domain/model/product.dart';
+  static const String modelIEntity = 'lib/feature/shared/domain/model/i_entity.dart';
+  static const String modelProduct = 'lib/feature/shared/domain/model/product.dart';
+  static const String modelReservation = 'lib/feature/reservation/domain/model/reservation.dart';
   static const String modelSale = 'lib/feature/sale/domain/model/sale.dart';
-  static const String navbarCustomNavigationItem =
-      'lib/feature/shared/widget/navbar/custom_navigation_item.dart';
-  static const String navbarCustomNavigationItemModel =
-      'lib/feature/shared/widget/navbar/custom_navigation_item_model.dart';
-  static const String navbarCustomNavigationRail =
-      'lib/feature/shared/widget/navbar/custom_navigation_rail.dart';
-  static const String optionsBarOptionBar =
-      'lib/feature/shared/widget/options_bar/option_bar.dart';
+  static const String modelStatus = 'lib/feature/reservation/domain/model/status.dart';
+  static const String modelUser = 'lib/feature/shared/domain/model/user.dart';
+  static const String navbarCustomNavigationItem = 'lib/feature/shared/widget/navbar/custom_navigation_item.dart';
+  static const String navbarCustomNavigationItemModel = 'lib/feature/shared/widget/navbar/custom_navigation_item_model.dart';
+  static const String navbarCustomNavigationRail = 'lib/feature/shared/widget/navbar/custom_navigation_rail.dart';
+  static const String optionsBarOptionBar = 'lib/feature/shared/widget/options_bar/option_bar.dart';
   static const String poppinsOFL = 'google_fonts/Poppins/OFL.txt';
-  static const String poppinsPoppinsBlack =
-      'google_fonts/Poppins/Poppins-Black.ttf';
-  static const String poppinsPoppinsBlackItalic =
-      'google_fonts/Poppins/Poppins-BlackItalic.ttf';
-  static const String poppinsPoppinsBold =
-      'google_fonts/Poppins/Poppins-Bold.ttf';
-  static const String poppinsPoppinsBoldItalic =
-      'google_fonts/Poppins/Poppins-BoldItalic.ttf';
-  static const String poppinsPoppinsExtraBold =
-      'google_fonts/Poppins/Poppins-ExtraBold.ttf';
-  static const String poppinsPoppinsExtraBoldItalic =
-      'google_fonts/Poppins/Poppins-ExtraBoldItalic.ttf';
-  static const String poppinsPoppinsExtraLight =
-      'google_fonts/Poppins/Poppins-ExtraLight.ttf';
-  static const String poppinsPoppinsExtraLightItalic =
-      'google_fonts/Poppins/Poppins-ExtraLightItalic.ttf';
-  static const String poppinsPoppinsItalic =
-      'google_fonts/Poppins/Poppins-Italic.ttf';
-  static const String poppinsPoppinsLight =
-      'google_fonts/Poppins/Poppins-Light.ttf';
-  static const String poppinsPoppinsLightItalic =
-      'google_fonts/Poppins/Poppins-LightItalic.ttf';
-  static const String poppinsPoppinsMedium =
-      'google_fonts/Poppins/Poppins-Medium.ttf';
-  static const String poppinsPoppinsMediumItalic =
-      'google_fonts/Poppins/Poppins-MediumItalic.ttf';
-  static const String poppinsPoppinsRegular =
-      'google_fonts/Poppins/Poppins-Regular.ttf';
-  static const String poppinsPoppinsSemiBold =
-      'google_fonts/Poppins/Poppins-SemiBold.ttf';
-  static const String poppinsPoppinsSemiBoldItalic =
-      'google_fonts/Poppins/Poppins-SemiBoldItalic.ttf';
-  static const String poppinsPoppinsThin =
-      'google_fonts/Poppins/Poppins-Thin.ttf';
-  static const String poppinsPoppinsThinItalic =
-      'google_fonts/Poppins/Poppins-ThinItalic.ttf';
-  static const String providerProductRepositoryProvider =
-      'lib/feature/shared/Provider/product_repository_provider.dart';
-  static const String providerProductsProvider =
-      'lib/feature/shared/Provider/products_provider.dart';
-  static const String providersCartProvider =
-      'lib/feature/sale/presentation/providers/cart_provider.dart';
-  static const String providersSaleRespositoryProvider =
-      'lib/feature/sale/presentation/providers/sale_respository_provider.dart';
-  static const String repositoryProductRepository =
-      'lib/feature/shared/domain/repository/product_repository.dart';
-  static const String repositoryProductRepositoryImpl =
-      'lib/feature/shared/infrastructure/repository/product_repository_impl.dart';
-  static const String repositorySaleRepository =
-      'lib/feature/sale/domain/repository/sale_repository.dart';
-  static const String repositorySaleRepositoryImpl =
-      'lib/feature/sale/infrastructure/repository/sale_repository_impl.dart';
+  static const String poppinsPoppinsBlack = 'google_fonts/Poppins/Poppins-Black.ttf';
+  static const String poppinsPoppinsBlackItalic = 'google_fonts/Poppins/Poppins-BlackItalic.ttf';
+  static const String poppinsPoppinsBold = 'google_fonts/Poppins/Poppins-Bold.ttf';
+  static const String poppinsPoppinsBoldItalic = 'google_fonts/Poppins/Poppins-BoldItalic.ttf';
+  static const String poppinsPoppinsExtraBold = 'google_fonts/Poppins/Poppins-ExtraBold.ttf';
+  static const String poppinsPoppinsExtraBoldItalic = 'google_fonts/Poppins/Poppins-ExtraBoldItalic.ttf';
+  static const String poppinsPoppinsExtraLight = 'google_fonts/Poppins/Poppins-ExtraLight.ttf';
+  static const String poppinsPoppinsExtraLightItalic = 'google_fonts/Poppins/Poppins-ExtraLightItalic.ttf';
+  static const String poppinsPoppinsItalic = 'google_fonts/Poppins/Poppins-Italic.ttf';
+  static const String poppinsPoppinsLight = 'google_fonts/Poppins/Poppins-Light.ttf';
+  static const String poppinsPoppinsLightItalic = 'google_fonts/Poppins/Poppins-LightItalic.ttf';
+  static const String poppinsPoppinsMedium = 'google_fonts/Poppins/Poppins-Medium.ttf';
+  static const String poppinsPoppinsMediumItalic = 'google_fonts/Poppins/Poppins-MediumItalic.ttf';
+  static const String poppinsPoppinsRegular = 'google_fonts/Poppins/Poppins-Regular.ttf';
+  static const String poppinsPoppinsSemiBold = 'google_fonts/Poppins/Poppins-SemiBold.ttf';
+  static const String poppinsPoppinsSemiBoldItalic = 'google_fonts/Poppins/Poppins-SemiBoldItalic.ttf';
+  static const String poppinsPoppinsThin = 'google_fonts/Poppins/Poppins-Thin.ttf';
+  static const String poppinsPoppinsThinItalic = 'google_fonts/Poppins/Poppins-ThinItalic.ttf';
+  static const String providerProductRepositoryProvider = 'lib/feature/shared/Provider/product_repository_provider.dart';
+  static const String providerProductsProvider = 'lib/feature/shared/Provider/products_provider.dart';
+  static const String providerReservationProvider = 'lib/feature/reservation/presentation/provider/reservation_provider.dart';
+  static const String providersCartProvider = 'lib/feature/sale/presentation/providers/cart_provider.dart';
+  static const String providersSaleRespositoryProvider = 'lib/feature/sale/presentation/providers/sale_respository_provider.dart';
+  static const String repositoryProductRepository = 'lib/feature/shared/domain/repository/product_repository.dart';
+  static const String repositoryProductRepositoryImpl = 'lib/feature/shared/infrastructure/repository/product_repository_impl.dart';
+  static const String repositoryReservationRepository = 'lib/feature/reservation/domain/repository/reservation_repository.dart';
+  static const String repositoryReservationRepositoryImpl = 'lib/feature/reservation/infrastructure/repository/reservation_repository_impl.dart';
+  static const String repositorySaleRepository = 'lib/feature/sale/domain/repository/sale_repository.dart';
+  static const String repositorySaleRepositoryImpl = 'lib/feature/sale/infrastructure/repository/sale_repository_impl.dart';
   static const String routerAppRouter = 'lib/config/router/app_router.dart';
-  static const String screenInventoryScreen =
-      'lib/feature/inventory/presentation/screen/inventory_screen.dart';
-  static const String screenSaleScreen =
-      'lib/feature/sale/presentation/screen/sale_screen.dart';
+  static const String screenClientInformationBox = 'lib/feature/reservation/presentation/screen/client_information_box.dart';
+  static const String screenInventoryScreen = 'lib/feature/inventory/presentation/screen/inventory_screen.dart';
+  static const String screenReservationInformationBox = 'lib/feature/reservation/presentation/screen/reservation_information_box.dart';
+  static const String screenReservationScreen = 'lib/feature/reservation/presentation/screen/reservation_screen.dart';
+  static const String screenSaleScreen = 'lib/feature/sale/presentation/screen/sale_screen.dart';
   static const String sharedTestPage = 'lib/feature/shared/test_page.dart';
-  static const String textAdaptableText =
-      'lib/feature/shared/widget/text/adaptable_text.dart';
+  static const String textAdaptableText = 'lib/feature/shared/widget/text/adaptable_text.dart';
+  static const String textDateVisualizer = 'lib/feature/shared/widget/text/date_visualizer.dart';
+  static const String textLabelBorder = 'lib/feature/shared/widget/text/label_border.dart';
   static const String themeAppTheme = 'lib/config/theme/app_theme.dart';
-  static const String widgetConfirmSale =
-      'lib/feature/sale/presentation/widget/confirm_sale.dart';
-  static const String widgetProductCard =
-      'lib/feature/shared/widget/product_card.dart';
-  static const String widgetProductStaticPriceSale =
-      'lib/feature/sale/presentation/widget/product_static_price_sale.dart';
-  static const String widgetProductsBoard =
-      'lib/feature/sale/presentation/widget/products_board.dart';
-  static const String widgetSaleCart =
-      'lib/feature/sale/presentation/widget/sale_cart.dart';
-  static const String widgetSaleInformationBack =
-      'lib/feature/sale/presentation/widget/sale_information_back.dart';
-  static const String widgetSaleInformationFront =
-      'lib/feature/sale/presentation/widget/sale_information_front.dart';
-  static const String widgetsProductInfo =
-      'lib/feature/inventory/presentation/widgets/product_info.dart';
-  static const String widgetsProductStock =
-      'lib/feature/inventory/presentation/widgets/product_stock.dart';
+  static const String widgetConfirmSale = 'lib/feature/sale/presentation/widget/confirm_sale.dart';
+  static const String widgetCustomDatePicker = 'lib/feature/sale/presentation/widget/custom_date_picker.dart';
+  static const String widgetProductCard = 'lib/feature/shared/widget/product_card.dart';
+  static const String widgetProductStaticPriceSale = 'lib/feature/sale/presentation/widget/product_static_price_sale.dart';
+  static const String widgetProductsBoard = 'lib/feature/sale/presentation/widget/products_board.dart';
+  static const String widgetReservationCart = 'lib/feature/reservation/presentation/widget/reservation_cart.dart';
+  static const String widgetSaleCart = 'lib/feature/sale/presentation/widget/sale_cart.dart';
+  static const String widgetSaleInformationBack = 'lib/feature/sale/presentation/widget/sale_information_back.dart';
+  static const String widgetSaleInformationFront = 'lib/feature/sale/presentation/widget/sale_information_front.dart';
+  static const String widgetsProductInfo = 'lib/feature/inventory/presentation/widgets/product_info.dart';
+  static const String widgetsProductStock = 'lib/feature/inventory/presentation/widgets/product_stock.dart';
+
 }

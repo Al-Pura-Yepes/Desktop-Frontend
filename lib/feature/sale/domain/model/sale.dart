@@ -6,13 +6,21 @@ class Sale {
   final bool isPerMajor;
   final double totalPrice;
   final double discount;
+  final bool isReservation;
+  final String? clientName;
+  final String? clientPhone;
+  final bool? isByCash;
 
   Sale(
       {required this.products,
       required this.isDelivery,
       required this.isPerMajor,
       required this.totalPrice,
-      required this.discount});
+      required this.discount,
+      required this.isReservation,
+      this.clientName,
+      this.clientPhone,
+      required this.isByCash});
 
   List<Map<String, dynamic>> _productsToJson() {
     List<Map<String, dynamic>> result = [];
@@ -30,6 +38,10 @@ class Sale {
       "isPerMajor": this.isPerMajor,
       "totalPrice": this.totalPrice,
       "discount": this.discount,
+      "isReservation": this.isReservation,
+      "clientName": this.clientName,
+      "clientPhone": this.clientPhone,
+      "isByCash": this.isByCash,
     };
   }
 
@@ -49,6 +61,10 @@ class Sale {
       isPerMajor: json["isPerMajor"],
       totalPrice: json["totalPrice"],
       discount: json["discount"],
+      isReservation: json['isReservation'],
+      clientName: json['clientName'],
+      clientPhone: json['clientPhone'],
+      isByCash: json['isByCash']
     );
   }
 
