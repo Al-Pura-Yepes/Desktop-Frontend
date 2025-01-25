@@ -6,17 +6,20 @@ class CustomCheckbox extends StatefulWidget {
   final bool value;
   final double size;
   final void Function()? onChange;
+  final bool isEditable;
 
-  const CustomCheckbox(
-      {super.key,
-      this.size = 20,
-      required this.title,
-      this.color = Colors.black,
-      this.value = false,
-      this.onChange});
+  const CustomCheckbox({
+    super.key,
+    this.size = 20,
+    required this.title,
+    this.color = Colors.black,
+    this.value = false,
+    this.onChange,
+    this.isEditable = true
+  });
 
   @override
-  State<CustomCheckbox> createState() => _CustomCheckboxState();
+  State<CustomCheckbox> createState() => _CustomCheckboxState(currentValue: value);
 }
 
 class _CustomCheckboxState extends State<CustomCheckbox> {

@@ -1,12 +1,16 @@
+import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SaleCart extends ConsumerWidget {
-  const SaleCart({required this.textTheme});
-
   final TextTheme textTheme;
+
+  const SaleCart({
+    super.key,
+    required this.textTheme,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,12 +20,10 @@ class SaleCart extends ConsumerWidget {
 
     return Container(
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            )),
+            borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

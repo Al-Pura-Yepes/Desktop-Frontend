@@ -15,8 +15,9 @@ class _CustomNavigationRailState extends State<CustomNavigationRail> {
     CustomNavigationItemModel(
         title: 'Venta', icon: Icons.shopping_cart, goTo: '/'),
     CustomNavigationItemModel(
-        title: 'Reserva', icon: Icons.receipt, goTo: '/history'),
-    CustomNavigationItemModel(title: 'Historial', icon: Icons.book),
+        title: 'Reserva', icon: Icons.receipt, goTo: '/reservation'),
+    CustomNavigationItemModel(
+        title: 'Historial', icon: Icons.book, goTo: '/history'),
     CustomNavigationItemModel(
         title: 'Inventario', icon: Icons.inventory, goTo: '/inventory')
   ];
