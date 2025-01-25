@@ -12,7 +12,6 @@ class ConfirmSale extends ConsumerWidget {
     final secondaryColor = Theme.of(context).colorScheme.secondary;
     final textTheme = Theme.of(context).textTheme;
 
-
     return Container(
       decoration: BoxDecoration(
           color: primaryColor,
@@ -23,7 +22,6 @@ class ConfirmSale extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -44,26 +42,33 @@ class ConfirmSale extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: 40,),
+          SizedBox(
+            height: 40,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FittedBox(fit: BoxFit.scaleDown, child: CustomButton(
-                  size: 60,
-                  color: Colors.green,
-                  icon: Icons.check,
-              )),
+              FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: CustomButton(
+                    size: 60,
+                    color: Colors.green,
+                    icon: Icons.check,
+                  )),
               SizedBox(
                 width: 70,
               ),
-              FittedBox(fit: BoxFit.scaleDown, child: CustomButton(
-                  size: 60,
-                  color: Colors.red,
-                  icon: Icons.close,
-                  onPress: () {
-                    ref.read(cartProvider.notifier).changeWidgetOption(ref.read(cartProvider).lastWidget);
-                  },
-              )),
+              FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: CustomButton(
+                    size: 60,
+                    color: Colors.red,
+                    icon: Icons.close,
+                    onPress: () {
+                      ref.read(cartProvider.notifier).changeWidgetOption(
+                          ref.read(cartProvider).lastWidget);
+                    },
+                  )),
             ],
           )
         ],

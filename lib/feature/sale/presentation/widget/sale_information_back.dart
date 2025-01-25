@@ -42,7 +42,7 @@ class SaleInformationBack extends ConsumerWidget {
                 const SizedBox(
                   width: 30,
                 ),
-                 Flexible(
+                Flexible(
                   child: FittedBox(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,

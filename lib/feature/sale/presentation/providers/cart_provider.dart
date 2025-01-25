@@ -32,7 +32,7 @@ class CartState {
       double? totalPrice,
       double? discount,
       Widget? widgetOption,
-        Widget? lastWidget}) {
+      Widget? lastWidget}) {
     return CartState(
         products: products ?? this.products,
         isDelivery: isDelivery ?? this.isDelivery,
@@ -50,18 +50,19 @@ class CartNotifier extends StateNotifier<CartState> {
   CartNotifier({required this.repository}) : super(CartState());
 
   void addItemToCart(Product product) {
-    if (state.widgetOption is SaleInformationFront || state.widgetOption is SaleInformationBack){
+    if (state.widgetOption is SaleInformationFront ||
+        state.widgetOption is SaleInformationBack) {
       if (state.products[product] == null) {
         state = state.copyWith(
             products: {...state.products, product: 1},
             totalPrice: state.totalPrice + (product.price ?? 0));
       }
     }
-
   }
 
   void deleteItemFromCart(Product product) {
-    if (state.widgetOption is SaleInformationFront || state.widgetOption is SaleInformationBack) {
+    if (state.widgetOption is SaleInformationFront ||
+        state.widgetOption is SaleInformationBack) {
       Map<Product, double> auxMap = {...state.products};
       final quantity = auxMap.remove(product)!;
       state = state.copyWith(
@@ -71,7 +72,8 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void setItemQuantity(Product product, int newQuantity) {
-    if (state.widgetOption is SaleInformationFront || state.widgetOption is SaleInformationBack) {
+    if (state.widgetOption is SaleInformationFront ||
+        state.widgetOption is SaleInformationBack) {
       if (state.products.containsKey(product)) {
         final auxMap = {...state.products};
         final lastQuantity = auxMap[product]!;
@@ -80,9 +82,9 @@ class CartNotifier extends StateNotifier<CartState> {
             products: {...auxMap},
             totalPrice: lastQuantity < newQuantity
                 ? state.totalPrice +
-                ((product.price ?? 0) * (newQuantity - lastQuantity))
+                    ((product.price ?? 0) * (newQuantity - lastQuantity))
                 : state.totalPrice -
-                ((product.price ?? 0) * (lastQuantity - newQuantity)));
+                    ((product.price ?? 0) * (lastQuantity - newQuantity)));
       }
     }
   }
@@ -101,13 +103,10 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void changeWidgetOption(Widget newOption) {
-
     if (state.products.isEmpty) return;
 
-    state = state.copyWith(
-        lastWidget: state.widgetOption,
-        widgetOption: newOption
-    );
+    state =
+        state.copyWith(lastWidget: state.widgetOption, widgetOption: newOption);
   }
 
   void toggleIsDelivery() {
@@ -118,16 +117,15 @@ class CartNotifier extends StateNotifier<CartState> {
     state = state.copyWith(isPerMajor: !state.isPerMajor);
   }
 
-  void resetCart(){
+  void resetCart() {
     state = state.copyWith(
-        products : const {},
-        isDelivery : false,
-        isPerMajor : false,
-        totalPrice : 0,
-        discount : 0,
-        widgetOption : const SaleInformationFront(),
-        lastWidget : const SaleInformationFront()
-    );
+        products: const {},
+        isDelivery: false,
+        isPerMajor: false,
+        totalPrice: 0,
+        discount: 0,
+        widgetOption: const SaleInformationFront(),
+        lastWidget: const SaleInformationFront());
   }
 }
 
