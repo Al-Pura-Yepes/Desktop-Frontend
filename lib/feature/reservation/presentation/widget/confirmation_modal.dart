@@ -1,10 +1,22 @@
-import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ConfirmSale extends ConsumerWidget {
-  const ConfirmSale({super.key});
+class ConfirmationModal extends ConsumerWidget {
+  final String leftText;
+  final String rightText;
+  final String highlightedText;
+  final Function? onConfirmation;
+  final Function? onCanceled;
+
+  const ConfirmationModal({
+    super.key,
+    required this.leftText,
+    required this.highlightedText,
+    required this.rightText,
+    this.onConfirmation,
+    this.onCanceled
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,23 +38,23 @@ class ConfirmSale extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Deseas  ',
+                leftText,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyMedium?.copyWith(color: Colors.white),
               ),
               Text(
-                'CONFIRMAR',
+                highlightedText.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: textTheme.bodyLarge?.copyWith(color: Colors.green),
               ),
               Text(
-                ' el pedido?',
+                rightText,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyMedium?.copyWith(color: Colors.white),
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Row(
@@ -55,8 +67,9 @@ class ConfirmSale extends ConsumerWidget {
                     color: Colors.green,
                     icon: Icons.check,
                     onPress: () {
-                      ref.read(cartProvider.notifier).saleByCash();
-                      ref.read(cartProvider.notifier).resetCart();
+                      if (onConfirmation != null) {
+                        onConfirmation!();
+                      }
                     },
                   )),
               SizedBox(
@@ -69,8 +82,9 @@ class ConfirmSale extends ConsumerWidget {
                     color: Colors.red,
                     icon: Icons.close,
                     onPress: () {
-                      ref.read(cartProvider.notifier).changeWidgetOption(
-                          ref.read(cartProvider).lastWidget);
+                      if (onCanceled != null) {
+                        onCanceled!();
+                      }
                     },
                   )),
             ],
