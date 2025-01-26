@@ -1,3 +1,4 @@
+import 'package:al_pura_frontend/feature/history/presentation/screen/history_screen.dart';
 import 'package:al_pura_frontend/feature/inventory/presentation/screen/inventory_screen.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/screen/reservation_screen.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/screen/sale_screen.dart';
@@ -24,10 +25,7 @@ final GoRouter router =
         ),
         GoRoute(
           path: '/history',
-          builder: (context, state) => Scaffold(
-            appBar: AppBar(),
-            body: const Text('hola'),
-          ),
+          builder: (context, state) => const HistoryScreen(),
         ),
         GoRoute(
           path: '/inventory',

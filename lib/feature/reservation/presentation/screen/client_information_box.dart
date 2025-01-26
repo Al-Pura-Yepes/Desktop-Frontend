@@ -1,17 +1,28 @@
+import 'package:al_pura_frontend/feature/history/presentation/provider/sales_provider.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../provider/reservation_provider.dart';
 
 class ClientInformationBox extends ConsumerWidget {
-  const ClientInformationBox({super.key});
+  final bool onHistoryScreen;
+
+  const ClientInformationBox({super.key, required this.onHistoryScreen});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final isInformationLoaded = ref.watch(reservationProvider).isReservationSelected;
-    final client = ref.watch(reservationProvider).reservation?.client;
+    late bool isInformationLoaded;
+    late User? client;
+    if (onHistoryScreen) {
+      isInformationLoaded = ref.watch(salesProvider).isSaleSelected;
+      client = ref.watch(salesProvider).client;
+    } else {
+      isInformationLoaded = ref.watch(reservationProvider).isReservationSelected;
+      client = ref.watch(reservationProvider).reservation?.client;
+    }
 
     return SizedBox(
         height: 100,

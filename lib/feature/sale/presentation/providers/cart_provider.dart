@@ -115,7 +115,9 @@ class CartNotifier extends StateNotifier<CartState> {
         isReservation: state.isReservation,
         clientName: state.clientName,
         clientPhone: state.clientPhone,
-        isByCash: state.isByCash));
+        isByCash: state.isByCash,
+        dateTime: DateTime.now()
+    ));
   }
 
   void changeWidgetOption(Widget newOption) {

@@ -1,28 +1,27 @@
-import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
-import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
-import 'package:al_pura_frontend/feature/reservation/presentation/screen/reservation_information_box.dart';
+import 'package:al_pura_frontend/feature/history/presentation/provider/sales_provider.dart';
+import 'package:al_pura_frontend/feature/history/presentation/widget/sales_information_box.dart';
+import 'package:al_pura_frontend/feature/reservation/presentation/screen/client_information_box.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/widget/no_editable_cart.dart';
 import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
-import 'package:al_pura_frontend/feature/shared/widget/text/date_visualizer.dart';
+import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
-import 'client_information_box.dart';
-
-class ReservationScreen extends ConsumerStatefulWidget {
-  const ReservationScreen({super.key});
+class HistoryScreen extends ConsumerStatefulWidget {
+  const HistoryScreen({super.key});
 
   @override
-  ConsumerState<ReservationScreen> createState() => _ReservationScreenState();
+  ConsumerState<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _ReservationScreenState extends ConsumerState<ReservationScreen> {
+class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    ref.read(reservationProvider.notifier).loadReservations();
+    ref.read(salesProvider.notifier).loadSales();
   }
 
   @override
@@ -30,9 +29,9 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
-    final indexSelected = ref.watch(reservationProvider).indexSelected;
-    final reservations = ref.watch(reservationProvider).reservations;
-    final sortStatus = ref.watch(reservationProvider).isStatusAscending;
+    final indexSelected = ref.watch(salesProvider).indexSelected;
+    final sales = ref.watch(salesProvider).sales;
+    final sortDate = ref.watch(salesProvider).isDateAscending;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +40,7 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
         title: Row(
           spacing: 20,
             children: [
-              const Text('Reservas'),
+              const Text('Historial'),
               CustomButton(
                 size: 40,
                 filled: true,
@@ -52,7 +51,7 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                   setState(() {
                     isLoading = true;
                   });
-                  await ref.read(reservationProvider.notifier).loadReservations();
+                  await ref.read(salesProvider.notifier).loadSales();
                   setState(() {
                     isLoading = false;
                   });
@@ -97,58 +96,51 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                         const DataColumn(
                             label: Text('Cliente:'),
                         ),
-                        const DataColumn(
-                            label: Text('Fecha de Entrega:'),
-                            headingRowAlignment: MainAxisAlignment.center
-                        ),
-                        const DataColumn(
-                            label: Text('Tipo de Entrega:')),
                         DataColumn(
                             label: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               spacing: 10,
                               children: [
                                 Icon(
-                                  sortStatus == null
-                                      ? Icons.compare_arrows
-                                      : sortStatus == true
-                                        ? Icons.arrow_upward_rounded
-                                        : Icons.arrow_downward_rounded,
+                                  sortDate == true
+                                      ? Icons.arrow_upward_rounded
+                                      : Icons.arrow_downward_rounded,
                                   color: Colors.white,
                                 ),
-                                const Text('Estado:')
+                                const Text('Fecha de venta:')
                               ],
                             ),
-                            onSort: (columnIndex, ascending) async {
-                              ref.read(reservationProvider.notifier).iterateSortByStatus();
-                              await ref.read(reservationProvider.notifier).loadReservations();
-                            },
-                        )
+                            headingRowAlignment: MainAxisAlignment.center
+                        ),
+                        const DataColumn(
+                            label: Text('Tipo de pago:')),
+                        const DataColumn(
+                            label: Text('Total:')),
                       ],
                       rows: List<DataRow>.generate(
-                        reservations.length,
+                        sales.length,
                         (int index) {
-                          var reservation = reservations[index];
+                          var sale = sales[index];
                           return DataRow(
                               cells: <DataCell>[
                                 DataCell(Center(child: Text(index.toString()))),
-                                DataCell(Text(reservation.client.fullName)),
+                                DataCell(Text(sale.clientName ?? 'N/C')),
                                 DataCell(
-                                    DateVisualizer(
-                                        dateTime: reservation.deliveryDate,
-                                        status: reservation.status,
+                                    LabelBorder(
+                                      text: DateFormat('dd-MM-yyyy').format(sale.dateTime),
+                                      textStyle: textTheme.bodySmall!.copyWith(color: Colors.white),
+                                      color: Colors.green,
+                                      filled: true,
                                     )
                                 ),
-                                DataCell(Text(
-                                        reservation.isDelivery
-                                            ? "Entrega"
-                                            : "Delivery"
-                                )),
-                                DataCell(Text(statusToString(reservation.status))),
+                                DataCell(Text(sale.isByCash != null
+                                    ? (sale.isByCash! ? 'Efectivo' : 'QR')
+                                    : 'Efectivo')),
+                                DataCell(Text(sale.totalPrice.toString())),
                               ],
                               selected: index == indexSelected,
                               onSelectChanged: (bool? value) {
-                                ref.read(reservationProvider.notifier).changeItemSelected(index);
+                                ref.read(salesProvider.notifier).changeItemSelected(index);
                               }
                           );
                         }
@@ -164,10 +156,10 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                     spacing: 10,
                     children: [
                       Expanded(
-                          child: NoEditableCart(textTheme: textTheme, onHistoryScreen: false,)
+                          child: NoEditableCart(textTheme: textTheme, onHistoryScreen: true,)
                       ),
-                      const ClientInformationBox(onHistoryScreen: false,),
-                      const ReservationInformationBox()
+                      const ClientInformationBox(onHistoryScreen: true,),
+                      const SalesInformationBox()
                     ],
                   ),
                 ),
