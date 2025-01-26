@@ -14,6 +14,7 @@ class SalesState {
   final List<Sale> sales;
   final Sale? sale;
   final User? client;
+  final DateTime? dayFiltered;
 
   SalesState({
     this.isSaleSelected = false,
@@ -21,7 +22,8 @@ class SalesState {
     this.indexSelected,
     this.sales = const [],
     this.sale,
-    this.client
+    this.client,
+    this.dayFiltered
   });
 
   SalesState copyWith({
@@ -30,7 +32,8 @@ class SalesState {
     int? indexSelected,
     List<Sale>? sales,
     Sale? sale,
-    User? client
+    User? client,
+    DateTime? dayFiltered
   }) {
     return SalesState(
       isSaleSelected: isSaleSelected ?? this.isSaleSelected,
@@ -38,7 +41,8 @@ class SalesState {
       indexSelected: indexSelected ?? this.indexSelected,
       sales: sales ?? this.sales,
       sale: sale ?? this.sale,
-      client: client ?? this.client
+      client: client ?? this.client,
+      dayFiltered: dayFiltered
     );
   }
 }
@@ -51,6 +55,7 @@ class SalesNotifier extends StateNotifier<SalesState> {
   toggleSale() {
     state = state.copyWith(
         isSaleSelected: !state.isSaleSelected,
+        dayFiltered: state.dayFiltered
     );
   }
 
@@ -65,23 +70,29 @@ class SalesNotifier extends StateNotifier<SalesState> {
         indexSelected: index,
         isSaleSelected: true,
         sale: state.sales[index],
-        client: user
+        client: user,
+        dayFiltered: state.dayFiltered
     );
   }
 
   Future<void> loadSales() async {
     state = state.copyWith(
-        sales: await repository.getAllSales(state.isDateAscending),
+        sales: await repository.getAllSales(state.isDateAscending, state.dayFiltered),
+        dayFiltered: state.dayFiltered
     );
   }
 
   iterateSortByStatus() {
-    state = state.copyWith(isDateAscending: !state.isDateAscending);
+    state = state.copyWith(
+        isDateAscending: !state.isDateAscending,
+        dayFiltered: state.dayFiltered,
+    );
   }
 
   updateReservation(Sale sale) {
     state = state.copyWith(
         sale: sale,
+        dayFiltered: state.dayFiltered
     );
   }
 
@@ -89,7 +100,14 @@ class SalesNotifier extends StateNotifier<SalesState> {
     state = state.copyWith(
       sale: null,
       indexSelected: null,
-      isSaleSelected: false
+      isSaleSelected: false,
+      dayFiltered: state.dayFiltered
+    );
+  }
+
+  selectDay(DateTime? day) {
+    state = state.copyWith(
+      dayFiltered: day
     );
   }
 }

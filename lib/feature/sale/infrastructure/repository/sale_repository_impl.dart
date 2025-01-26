@@ -13,8 +13,8 @@ class SaleRepositoryImpl implements SaleRepository {
   }
 
   @override
-  Future<List<Sale>> getAllSales(bool isStatusAscending) {
-    return datasource.getAllSales(isStatusAscending);
+  Future<List<Sale>> getAllSales(bool isStatusAscending, DateTime? dayFiltered) {
+    return datasource.getAllSales(isStatusAscending, dayFiltered);
   }
 
   @override

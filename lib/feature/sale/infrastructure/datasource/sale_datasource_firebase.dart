@@ -21,10 +21,17 @@ class SaleDatasourceFirebase implements SaleDatasource {
   }
 
   @override
-  Future<List<Sale>> getAllSales(bool isDateAscending) async {
+  Future<List<Sale>> getAllSales(bool isDateAscending, DateTime? dayFiltered) async {
     late Query<Object?> query;
 
     query = sales.orderBy('dateTime', descending: !isDateAscending);
+
+    if (dayFiltered != null) {
+      var initOfDay = DateTime(dayFiltered.year, dayFiltered.month, dayFiltered.day);
+      var endOfDay = dayFiltered.add(const Duration(days: 1));
+      query = query.where('dateTime', isGreaterThan: initOfDay);
+      query = query.where('dateTime', isLessThan: endOfDay);
+    }
 
     var querySnapshot = await query.get();
 

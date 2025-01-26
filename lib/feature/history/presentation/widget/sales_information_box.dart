@@ -29,6 +29,7 @@ class _SalesInformationBoxState extends ConsumerState<SalesInformationBox> {
 
     return Container(
       height: 330,
+      width: double.maxFinite,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: const BoxDecoration(
           color: Colors.white,
