@@ -19,6 +19,8 @@ class CartState {
   final String? clientName;
   final String? clientPhone;
   final bool isByCash;
+  final DateTime? reservationDate;
+  final DateTime? saleDate;
 
   CartState(
       {this.products = const {},
@@ -31,7 +33,9 @@ class CartState {
       this.isReservation = false,
       this.clientName,
       this.clientPhone,
-      this.isByCash = true});
+      this.isByCash = true,
+      this.reservationDate,
+      this.saleDate});
 
   CartState copyWith(
       {Map<Product, double>? products,
@@ -44,7 +48,9 @@ class CartState {
       bool? isReservation,
       String? clientName,
       String? clientPhone,
-      bool? isByCash}) {
+      bool? isByCash,
+      DateTime? reservationDate,
+      DateTime? saleDate}) {
     return CartState(
         products: products ?? this.products,
         isDelivery: isDelivery ?? this.isDelivery,
@@ -56,7 +62,9 @@ class CartState {
         isReservation: isReservation ?? this.isReservation,
         clientName:  clientName ?? this.clientName,
         clientPhone: clientPhone ?? this.clientPhone,
-        isByCash: isByCash ?? this.isByCash);
+        isByCash: isByCash ?? this.isByCash,
+        reservationDate: reservationDate ?? this.reservationDate,
+        saleDate: saleDate ?? this.saleDate);
   }
 }
 
@@ -115,7 +123,8 @@ class CartNotifier extends StateNotifier<CartState> {
         isReservation: state.isReservation,
         clientName: state.clientName,
         clientPhone: state.clientPhone,
-        isByCash: state.isByCash));
+        isByCash: state.isByCash,
+        saleDate: state.saleDate ?? DateTime.now()));
   }
 
   void changeWidgetOption(Widget newOption) {
@@ -141,7 +150,13 @@ class CartNotifier extends StateNotifier<CartState> {
         totalPrice: 0,
         discount: 0,
         widgetOption: const SaleInformationFront(),
-        lastWidget: const SaleInformationFront());
+        lastWidget: const SaleInformationFront(),
+        saleDate: null,
+        reservationDate: null,
+        isByCash: true,
+        clientPhone: null,
+        clientName: null,
+        isReservation: false);
   }
 
   void setClientName(String newClientName){

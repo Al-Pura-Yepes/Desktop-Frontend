@@ -1,6 +1,8 @@
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Sale {
+  final String id;
   final Map<Product, double> products;
   final bool isDelivery;
   final bool isPerMajor;
@@ -9,10 +11,13 @@ class Sale {
   final bool isReservation;
   final String? clientName;
   final String? clientPhone;
-  final bool? isByCash;
+  final bool isByCash;
+  final DateTime? reservationDate;
+  final DateTime saleDate;
 
   Sale(
-      {required this.products,
+      {this.id = '',
+        required this.products,
       required this.isDelivery,
       required this.isPerMajor,
       required this.totalPrice,
@@ -20,7 +25,9 @@ class Sale {
       required this.isReservation,
       this.clientName,
       this.clientPhone,
-      required this.isByCash});
+      required this.isByCash,
+      this.reservationDate,
+      required this.saleDate});
 
   List<Map<String, dynamic>> _productsToJson() {
     List<Map<String, dynamic>> result = [];
@@ -42,6 +49,8 @@ class Sale {
       "clientName": this.clientName,
       "clientPhone": this.clientPhone,
       "isByCash": this.isByCash,
+      "reservationDate": this.reservationDate,
+      "saleDate": this.saleDate
     };
   }
 
@@ -54,8 +63,9 @@ class Sale {
     return result;
   }
 
-  factory Sale.fromJson(Map<String, dynamic> json) {
+  factory Sale.fromJson(Map<String, dynamic> json, String id) {
     return Sale(
+      id: id,
       products: _productFromJson(json["products"]),
       isDelivery: json["isDelivery"],
       isPerMajor: json["isPerMajor"],
@@ -64,7 +74,9 @@ class Sale {
       isReservation: json['isReservation'],
       clientName: json['clientName'],
       clientPhone: json['clientPhone'],
-      isByCash: json['isByCash']
+      isByCash: json['isByCash'],
+      reservationDate: (json['reservationDate'] as Timestamp).toDate(),
+      saleDate: (json['saleDate'] as Timestamp).toDate(),
     );
   }
 
