@@ -9,21 +9,28 @@ import '../../../shared/widget/buttons/quantity_counter.dart';
 class ProductStaticPriceSale extends ConsumerWidget {
   final Product product;
   final double widgetHeight = 70;
-  final bool onReservationMode;
+  final bool isEditable;
+  final double? quantity;
 
   const ProductStaticPriceSale({
     super.key,
     required this.product,
-    this.onReservationMode = false,
+    this.isEditable = true,
+    this.quantity
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //final quantity = ref.watch(cartProvider).products[product]!;
-    var quantity = onReservationMode ? 0 : ref.watch(cartProvider).products[product]!;
+    double productQuantity = quantity ?? 0;
+    if (quantity == null) {
+      productQuantity = !isEditable ? 0 : ref
+          .watch(cartProvider)
+          .products[product] ?? 0;
 
-    if (onReservationMode) {
-      quantity = product.quantity;
+      if (!isEditable) {
+        productQuantity = product.quantity;
+      }
     }
 
     final textTheme = Theme.of(context).textTheme;
@@ -36,8 +43,8 @@ class ProductStaticPriceSale extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            onReservationMode
-                ? LabelBorder(text: quantity.toStringAsFixed(2), textStyle: textTheme.bodyMedium!,)
+            !isEditable
+                ? LabelBorder(text: productQuantity.toStringAsFixed(2), textStyle: textTheme.bodyMedium!,)
                 : QuantityCounter(
                   callback: (quantity) {
                     ref
@@ -72,7 +79,7 @@ class ProductStaticPriceSale extends ConsumerWidget {
                     width: 10,
                   ),
                   Text(
-                    (product.price! * quantity).toStringAsFixed(2),
+                    (product.price! * productQuantity).toStringAsFixed(2),
                     style: textTheme.bodyLarge,
                   ),
                 ],
@@ -81,7 +88,7 @@ class ProductStaticPriceSale extends ConsumerWidget {
             const SizedBox(
               width: 30,
             ),
-            onReservationMode
+            !isEditable
                 ? const SizedBox.shrink()
                 : IconButton(
                     onPressed: () {

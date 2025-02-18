@@ -1,3 +1,4 @@
+import 'package:al_pura_frontend/feature/history/presentation/screen/history_screen.dart';
 import 'package:al_pura_frontend/feature/inventory/presentation/screen/inventory_screen.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/screen/reservation_screen.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/screen/sale_screen.dart';
@@ -20,22 +21,63 @@ final GoRouter router =
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const SaleScreen(),
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const SaleScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            );
+          }
         ),
         GoRoute(
           path: '/history',
-          builder: (context, state) => Scaffold(
-            appBar: AppBar(),
-            body: const Text('hola'),
-          ),
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const HistoryScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            );
+          }
         ),
         GoRoute(
           path: '/inventory',
-          builder: (context, state) => const InventoryScreen(),
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const InventoryScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            );
+          }
         ),
         GoRoute(
           path: '/reservation',
-          builder: (context, state) => const ReservationScreen(),
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const ReservationScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            );
+          }
         ),
       ])
 ]);

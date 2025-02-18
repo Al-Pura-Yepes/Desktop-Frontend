@@ -19,4 +19,36 @@ class SaleDatasourceFirebase implements SaleDatasource {
       rethrow;
     }
   }
+
+  @override
+  Future<List<Sale>> getAllSales(bool isDateAscending, DateTime? dayFiltered) async {
+    late Query<Object?> query;
+
+    query = sales.orderBy('dateTime', descending: !isDateAscending);
+
+    if (dayFiltered != null) {
+      var initOfDay = DateTime(dayFiltered.year, dayFiltered.month, dayFiltered.day);
+      var endOfDay = dayFiltered.add(const Duration(days: 1));
+      query = query.where('dateTime', isGreaterThan: initOfDay);
+      query = query.where('dateTime', isLessThan: endOfDay);
+    }
+
+    var querySnapshot = await query.get();
+
+    var reservations = querySnapshot.docs
+        .map((element) => Sale.fromJson(element.data() as Map<String, dynamic>))
+        .toList();
+    return reservations;
+  }
+
+  @override
+  Future<Sale?> getSalesById(String id) async {
+    var docSnapshot = await sales.doc(id).get();
+    if (docSnapshot.exists) {
+      var sale = Sale.fromJson(docSnapshot.data()! as Map<String, dynamic>);
+      return sale;
+    } else {
+      return null;
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:al_pura_frontend/feature/shared/domain/model/i_entity.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product implements IEntity {
   @override
@@ -39,7 +40,9 @@ class Product implements IEntity {
             : json["quantity"],
         weight: json["weight"] ?? 0.0,
         imageURL: json["imageURL"],
-        expirationDateList: json["expirationDateList"] ?? [],
+        expirationDateList: (json["expirationDateList"] as List<dynamic>?)?.map((element) {
+          return (element as Timestamp).toDate();
+        }).toList() ?? [],
         isReturnable: json["isReturnable"] ?? false,
         isFixedPrice: json["isFixedPrice"] ?? false);
   }

@@ -52,7 +52,7 @@ class Assets {
   static const String poppinsPoppinsThinItalic = 'google_fonts/Poppins/Poppins-ThinItalic.ttf';
   static const String providerProductRepositoryProvider = 'lib/feature/shared/Provider/product_repository_provider.dart';
   static const String providerProductsProvider = 'lib/feature/shared/Provider/products_provider.dart';
-  static const String providerReservationProvider = 'lib/feature/reservation/presentation/provider/reservation_provider.dart';
+  static const String providerReservationProvider = 'lib/feature/reservation/presentation/provider/sales_provider.dart';
   static const String providersCartProvider = 'lib/feature/sale/presentation/providers/cart_provider.dart';
   static const String providersSaleRespositoryProvider = 'lib/feature/sale/presentation/providers/sale_respository_provider.dart';
   static const String repositoryProductRepository = 'lib/feature/shared/domain/repository/product_repository.dart';
@@ -64,8 +64,8 @@ class Assets {
   static const String routerAppRouter = 'lib/config/router/app_router.dart';
   static const String screenClientInformationBox = 'lib/feature/reservation/presentation/screen/client_information_box.dart';
   static const String screenInventoryScreen = 'lib/feature/inventory/presentation/screen/inventory_screen.dart';
-  static const String screenReservationInformationBox = 'lib/feature/reservation/presentation/screen/reservation_information_box.dart';
-  static const String screenReservationScreen = 'lib/feature/reservation/presentation/screen/reservation_screen.dart';
+  static const String screenReservationInformationBox = 'lib/feature/reservation/presentation/screen/sales_information_box.dart';
+  static const String screenReservationScreen = 'lib/feature/reservation/presentation/screen/history_screen.dart';
   static const String screenSaleScreen = 'lib/feature/sale/presentation/screen/sale_screen.dart';
   static const String sharedTestPage = 'lib/feature/shared/test_page.dart';
   static const String textAdaptableText = 'lib/feature/shared/widget/text/adaptable_text.dart';
@@ -77,7 +77,7 @@ class Assets {
   static const String widgetProductCard = 'lib/feature/shared/widget/product_card.dart';
   static const String widgetProductStaticPriceSale = 'lib/feature/sale/presentation/widget/product_static_price_sale.dart';
   static const String widgetProductsBoard = 'lib/feature/sale/presentation/widget/products_board.dart';
-  static const String widgetReservationCart = 'lib/feature/reservation/presentation/widget/reservation_cart.dart';
+  static const String widgetReservationCart = 'lib/feature/reservation/presentation/widget/no_editable_cart.dart';
   static const String widgetSaleCart = 'lib/feature/sale/presentation/widget/sale_cart.dart';
   static const String widgetSaleInformationBack = 'lib/feature/sale/presentation/widget/sale_information_back.dart';
   static const String widgetSaleInformationFront = 'lib/feature/sale/presentation/widget/sale_information_front.dart';

@@ -11,8 +11,8 @@ class ReservationRepositoryImpl extends ReservationRepository {
   });
 
   @override
-  Future<List<Reservation>> getAllReservations(bool? isStatusAscending) {
-    return datasource.getAllReservations(isStatusAscending);
+  Future<List<Reservation>> getAllReservations(bool? isStatusAscending, DateTime? dayFiltered) {
+    return datasource.getAllReservations(isStatusAscending, dayFiltered);
   }
 
   @override

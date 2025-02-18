@@ -1,4 +1,5 @@
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Sale {
   final Map<Product, double> products;
@@ -10,9 +11,9 @@ class Sale {
   final String? clientName;
   final String? clientPhone;
   final bool? isByCash;
+  final DateTime dateTime;
 
-  Sale(
-      {required this.products,
+  Sale({required this.products,
       required this.isDelivery,
       required this.isPerMajor,
       required this.totalPrice,
@@ -20,7 +21,9 @@ class Sale {
       required this.isReservation,
       this.clientName,
       this.clientPhone,
-      required this.isByCash});
+      required this.isByCash,
+      required this.dateTime
+  });
 
   List<Map<String, dynamic>> _productsToJson() {
     List<Map<String, dynamic>> result = [];
@@ -42,6 +45,7 @@ class Sale {
       "clientName": this.clientName,
       "clientPhone": this.clientPhone,
       "isByCash": this.isByCash,
+      "dateTime": this.dateTime
     };
   }
 
@@ -56,7 +60,8 @@ class Sale {
 
   factory Sale.fromJson(Map<String, dynamic> json) {
     return Sale(
-      products: _productFromJson(json["products"]),
+      products: _productFromJson((json["products"] as List<dynamic>)
+          .map((element) => element as Map<String, dynamic>).toList()),
       isDelivery: json["isDelivery"],
       isPerMajor: json["isPerMajor"],
       totalPrice: json["totalPrice"],
@@ -64,7 +69,8 @@ class Sale {
       isReservation: json['isReservation'],
       clientName: json['clientName'],
       clientPhone: json['clientPhone'],
-      isByCash: json['isByCash']
+      isByCash: json['isByCash'],
+      dateTime: (json['dateTime'] as Timestamp).toDate()
     );
   }
 
