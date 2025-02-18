@@ -11,4 +11,14 @@ class SaleRepositoryImpl implements SaleRepository {
   Future<Sale> createSale(Sale sale) {
     return datasource.createSale(sale);
   }
+
+  @override
+  Future<List<Sale>> getAllSales(bool isStatusAscending, DateTime? dayFiltered) {
+    return datasource.getAllSales(isStatusAscending, dayFiltered);
+  }
+
+  @override
+  Future<Sale?> getSalesById(String id) {
+    return datasource.getSalesById(id);
+  }
 }

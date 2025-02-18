@@ -7,12 +7,19 @@ class ReservationDatasourceImpl extends ReservationDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
-  Future<List<Reservation>> getAllReservations(bool? isStatusAscending) async {
+  Future<List<Reservation>> getAllReservations(bool? isStatusAscending, DateTime? dayFiltered) async {
     var query = firestore.collection('Reservations')
         .where('isActive', isEqualTo: true);
 
     if (isStatusAscending != null) {
       query = query.orderBy('status', descending: !isStatusAscending);
+    }
+
+    if (dayFiltered != null) {
+      var initOfDay = DateTime(dayFiltered.year, dayFiltered.month, dayFiltered.day);
+      var endOfDay = dayFiltered.add(const Duration(days: 1));
+      query = query.where('deliveryDate', isGreaterThan: initOfDay);
+      query = query.where('deliveryDate', isLessThan: endOfDay);
     }
 
     query = query.orderBy('deliveryDate');
