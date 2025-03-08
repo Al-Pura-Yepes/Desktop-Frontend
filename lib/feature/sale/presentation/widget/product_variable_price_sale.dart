@@ -2,17 +2,18 @@ import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provid
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/widget/buttons/quantity_counter.dart';
 
-class ProductStaticPriceSale extends ConsumerWidget {
+class ProductVariablePriceSale extends ConsumerWidget {
   final Product product;
   final double widgetHeight = 70;
   final bool isEditable;
   final double? quantity;
 
-  const ProductStaticPriceSale({
+  const ProductVariablePriceSale({
     super.key,
     required this.product,
     this.isEditable = true,
@@ -32,7 +33,6 @@ class ProductStaticPriceSale extends ConsumerWidget {
         productQuantity = product.quantity;
       }
     }
-
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
@@ -40,15 +40,7 @@ class ProductStaticPriceSale extends ConsumerWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          !isEditable
-              ? LabelBorder(text: productQuantity.toStringAsFixed(2), textStyle: textTheme.bodyMedium!,)
-              : QuantityCounter(
-                callback: (quantity) {
-                  ref
-                      .read(cartProvider.notifier)
-                      .setItemQuantity(product, quantity);
-                },
-              ),
+
           const SizedBox(
             width: 15,
           ),
@@ -64,37 +56,57 @@ class ProductStaticPriceSale extends ConsumerWidget {
             ],
           ),
           Spacer(),
-          SizedBox(
-            width: 130,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const Text('Bs', style: TextStyle(fontWeight: FontWeight.bold),),
-                SizedBox(
-                  width: 15,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text('Bs.', style: TextStyle(fontWeight: FontWeight.bold),),
+              SizedBox(
+                width: 15,
+              ),
+              SizedBox(
+                width: 100,
+                child: TextFormField(
+                  onChanged: (value) {
+
+                    print(int.parse(value));
+
+                    ref.read(cartProvider.notifier).setItemPrice(product, int.tryParse(value) ?? 0);
+                  },
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d{0,3}(?:\.\d*)?$')),
+                  ],
+                  style: TextStyle(fontSize: widgetHeight * 0.4),
+                  textAlign: TextAlign.center,
+                  textAlignVertical: TextAlignVertical.center,
+                  cursorHeight:  widgetHeight * 0.4,
+                  decoration: InputDecoration(
+
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
-                Text(
-                  (product.price! * productQuantity).toStringAsFixed(2),
-                  style: textTheme.bodyLarge,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+          
           SizedBox(
             width: 40,
           ),
           !isEditable
               ? const SizedBox.shrink()
               : IconButton(
-                  onPressed: () {
-                    ref.read(cartProvider.notifier).deleteItemFromCart(product);
-                  },
-                  icon: const Icon(
-                    Icons.delete,
-                    size: 30,
-                    color: Colors.red,
-                  )
+              onPressed: () {
+                ref.read(cartProvider.notifier).deleteItemFromCart(product);
+              },
+              icon: const Icon(
+                Icons.delete,
+                size: 30,
+                color: Colors.red,
               )
+          )
         ],
       ),
     );

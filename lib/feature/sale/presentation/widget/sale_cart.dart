@@ -1,6 +1,7 @@
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/product_variable_price_sale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -39,11 +40,13 @@ class SaleCart extends ConsumerWidget {
               child: ListView.builder(
                 itemCount: cartProductsKeys.length,
                 itemBuilder: (context, index) {
+
                   final quantity = cartProducts[cartProductsKeys[index]]!;
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    child: ProductStaticPriceSale(
-                        product: cartProductsKeys[index]),
+                    child: cartProductsKeys[index].weight == null ? ProductVariablePriceSale(
+                        product: cartProductsKeys[index])
+                    : ProductStaticPriceSale(product: cartProductsKeys[index]),
                   );
                 },
               ),

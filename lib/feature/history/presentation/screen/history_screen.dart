@@ -190,7 +190,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                                         DataCell(Text(sale.clientName ?? 'N/C')),
                                         DataCell(
                                             LabelBorder(
-                                              text: DateFormat('dd-MM-yyyy').format(sale.dateTime),
+                                              text: DateFormat('dd-MM-yyyy').format(sale.saleDate),
                                               textStyle: textTheme.bodySmall!.copyWith(color: Colors.white),
                                               color: Colors.green,
                                               filled: true,

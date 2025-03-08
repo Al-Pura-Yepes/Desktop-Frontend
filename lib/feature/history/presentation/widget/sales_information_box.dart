@@ -91,7 +91,7 @@ class _SalesInformationBoxState extends ConsumerState<SalesInformationBox> {
                                   border: Border.all(color: const Color(0xffC8C8C8)),
                                   borderRadius: BorderRadius.circular(8)),
                               child: Text(
-                                  DateFormat('dd-MM-yyyy').format(sale!.dateTime),
+                                  DateFormat('dd-MM-yyyy').format(sale!.saleDate),
                                   style: textTheme.bodySmall
                               ),
                             )

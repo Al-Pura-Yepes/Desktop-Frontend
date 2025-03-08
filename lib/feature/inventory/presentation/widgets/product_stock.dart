@@ -1,4 +1,4 @@
-import 'package:al_pura_frontend/feature/shared/Domain/model/product.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:al_pura_frontend/feature/shared/widget/fields/custom_empty_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

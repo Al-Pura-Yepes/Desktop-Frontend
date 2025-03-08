@@ -78,8 +78,8 @@ class CartNotifier extends StateNotifier<CartState> {
         state.widgetOption is SaleInformationBack) {
       if (state.products[product] == null) {
         state = state.copyWith(
-            products: {...state.products, product: 1},
-            totalPrice: state.totalPrice + (product.price ?? 0));
+            products: {...state.products, product: product.weight == null ? 0 : 1},
+            totalPrice: state.totalPrice + (product.weight == null ? 0 : product.price!));
       }
     }
   }
@@ -91,7 +91,9 @@ class CartNotifier extends StateNotifier<CartState> {
       final quantity = auxMap.remove(product)!;
       state = state.copyWith(
           products: {...auxMap},
-          totalPrice: state.totalPrice - ((product.price ?? 0) * quantity));
+          totalPrice: product.price == null
+            ? state.totalPrice - quantity
+            : state.totalPrice - ((product.price ?? 0) * quantity));
     }
   }
 
@@ -113,7 +115,23 @@ class CartNotifier extends StateNotifier<CartState> {
     }
   }
 
-  void saleByCash() async {
+  void setItemPrice(Product product, int newPrice) {
+
+    if (state.widgetOption is SaleInformationFront ||
+        state.widgetOption is SaleInformationBack) {
+      if (state.products.containsKey(product)) {
+        final auxMap = {...state.products};
+        final lastPrice = auxMap[product]!;
+        auxMap[product] = newPrice.toDouble();
+        state = state.copyWith(
+            products: {...auxMap},
+            totalPrice: state.totalPrice - lastPrice + newPrice);
+      }
+      print(state.totalPrice);
+    }
+  }
+
+  void sale() async {
     await repository.createSale(Sale(
         products: state.products,
         isDelivery: state.isDelivery,
@@ -124,7 +142,9 @@ class CartNotifier extends StateNotifier<CartState> {
         clientName: state.clientName,
         clientPhone: state.clientPhone,
         isByCash: state.isByCash,
+        reservationDate: state.reservationDate,
         saleDate: state.saleDate ?? DateTime.now()));
+
   }
 
   void changeWidgetOption(Widget newOption) {
@@ -132,6 +152,10 @@ class CartNotifier extends StateNotifier<CartState> {
 
     state =
         state.copyWith(lastWidget: state.widgetOption, widgetOption: newOption);
+  }
+
+  void setIsReservation(bool status){
+    state = state.copyWith(isReservation: status);
   }
 
   void toggleIsDelivery() {

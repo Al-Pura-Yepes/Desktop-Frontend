@@ -202,7 +202,13 @@ class SaleInformationFront extends ConsumerWidget {
                       CustomButton(
                           size: 60,
                           color: Color(0xff1C1897),
-                          icon: Icons.bookmark),
+                          icon: Icons.bookmark,
+                          onPress: () {
+                            ref.read(cartProvider.notifier).setIsReservation(true);
+                            ref
+                                .read(cartProvider.notifier)
+                                .changeWidgetOption(SaleInformationBack());
+                          },),
                     ],
                   ),
                 ),

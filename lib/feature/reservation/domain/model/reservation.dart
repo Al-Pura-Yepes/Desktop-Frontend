@@ -19,7 +19,7 @@ class Reservation extends IEntity {
   final String? paymentMethod;
 
   Reservation({
-    required this.id,
+    this.id = '',
     required this.client,
     required this.deliveryDate,
     required this.discount,

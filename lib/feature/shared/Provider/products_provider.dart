@@ -75,6 +75,8 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
 final productsProvider =
     StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
+
+
   final repository = ref.read(productRepositoryProvider);
   return ProductsNotifier(repository: repository);
 });

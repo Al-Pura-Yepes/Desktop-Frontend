@@ -64,7 +64,7 @@ class _FrontCard extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Text(
-                  product.flavor,
+                  '${product.flavor} - ${product.weight?.toStringAsFixed(0) ?? 0}${product.weightValue}',
                   style: textTheme.bodySmall?.copyWith(color: Colors.white),
                 ),
               )),

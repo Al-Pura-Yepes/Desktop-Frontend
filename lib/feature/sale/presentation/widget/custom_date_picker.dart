@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class CustomDatePickerField extends StatelessWidget {
+class CustomDatePickerField extends StatefulWidget {
   final Color color;
   final String title;
   final void Function(DateTime date) onDateSelected;
@@ -13,6 +14,12 @@ class CustomDatePickerField extends StatelessWidget {
   });
 
   @override
+  State<CustomDatePickerField> createState() => _CustomDatePickerFieldState();
+}
+
+class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
+  DateTime? date;
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -24,8 +31,8 @@ class CustomDatePickerField extends StatelessWidget {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                title,
-                style: TextStyle(fontSize: fontSize + 3, color: color),
+                widget.title,
+                style: TextStyle(fontSize: fontSize + 3, color: Colors.white),
               ),
             ),
             Expanded(
@@ -39,8 +46,8 @@ class CustomDatePickerField extends StatelessWidget {
                     builder: (context, child) {
                       return Theme(
                         data: ThemeData.light().copyWith(
-                          primaryColor: color,
-                          colorScheme: ColorScheme.light(primary: color),
+                          primaryColor: widget.color,
+                          colorScheme: ColorScheme.light(primary: widget.color),
                           buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
                         ),
                         child: child!,
@@ -48,7 +55,10 @@ class CustomDatePickerField extends StatelessWidget {
                     },
                   );
                   if (pickedDate != null) {
-                    onDateSelected(pickedDate);
+                    widget.onDateSelected(pickedDate);
+                    setState(() {
+                      date = pickedDate;
+                    });
                   }
                 },
                 child: Container(
@@ -58,14 +68,14 @@ class CustomDatePickerField extends StatelessWidget {
                     horizontal: constraints.maxWidth * 0.05,
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: color),
+                    border: Border.all(color: Colors.white),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    'Seleccionar fecha',
+                    date == null ? 'Seleccionar fecha' : DateFormat('dd/MM/yyyy').format(date!),
                     style: TextStyle(
                       fontSize: fontSize,
-                      color: color,
+                      color: Colors.white,
                       fontWeight: FontWeight.normal,
                     ),
                   ),

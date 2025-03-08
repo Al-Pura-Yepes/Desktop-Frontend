@@ -68,7 +68,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                   if (widget.isEditable) {
                     widget.onChange ?? ();
                     setState(() {
-                      currentValue = value ?? false;
+                      currentValue = !currentValue;
                     });
                   }
                 },

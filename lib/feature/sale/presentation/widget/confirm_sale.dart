@@ -55,7 +55,7 @@ class ConfirmSale extends ConsumerWidget {
                     color: Colors.green,
                     icon: Icons.check,
                     onPress: () {
-                      ref.read(cartProvider.notifier).saleByCash();
+                      ref.read(cartProvider.notifier).sale();
                       ref.read(cartProvider.notifier).resetCart();
                     },
                   )),

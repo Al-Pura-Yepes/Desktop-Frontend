@@ -1,3 +1,4 @@
+import 'package:al_pura_frontend/feature/history/presentation/provider/sales_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/confirm_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/custom_date_picker.dart';
@@ -117,11 +118,12 @@ class SaleInformationBack extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  if (true)
+                  if (ref.read(cartProvider).isReservation)
                     SizedBox(
-                      height: constraints.maxHeight * 0.2,
+                      height: constraints.maxHeight * 0.22,
                       width: constraints.maxWidth * 0.45,
                       child: CustomDatePickerField(
+                        color: Colors.black,
                         title: 'Fecha de reserva',
                         onDateSelected: (date) {
                           ref.read(cartProvider.notifier).setReservationDate(date);
@@ -160,6 +162,7 @@ class SaleInformationBack extends ConsumerWidget {
                         icon: Icons.close,
                         iconColor: Colors.red,
                         onPress: () {
+                          ref.read(cartProvider.notifier).setIsReservation(false);
                           ref
                               .read(cartProvider.notifier)
                               .changeWidgetOption(SaleInformationFront());

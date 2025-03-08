@@ -14,18 +14,20 @@ class Product implements IEntity {
   final List<DateTime> expirationDateList;
   final bool isReturnable;
   final bool isFixedPrice;
+  final String weightValue;
 
   const Product(
       {this.id = '',
       required this.category,
       required this.flavor,
-      this.price = 0.0,
+      required this.price,
       required this.quantity,
-      this.weight = 0.0,
+      this.weight,
       required this.imageURL,
       this.expirationDateList = const [],
       this.isReturnable = false,
-      this.isFixedPrice = false});
+      this.isFixedPrice = false,
+      required this.weightValue});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -38,13 +40,16 @@ class Product implements IEntity {
         quantity: (json["quantity"] is int)
             ? (json["quantity"] as int).toDouble()
             : json["quantity"],
-        weight: json["weight"] ?? 0.0,
+        weight: (json["weight"] is int)
+            ? (json["weight"] as int).toDouble()
+            : json["weight"],
         imageURL: json["imageURL"],
         expirationDateList: (json["expirationDateList"] as List<dynamic>?)?.map((element) {
           return (element as Timestamp).toDate();
         }).toList() ?? [],
         isReturnable: json["isReturnable"] ?? false,
-        isFixedPrice: json["isFixedPrice"] ?? false);
+        isFixedPrice: json["isFixedPrice"] ?? false,
+        weightValue: json["weightValue"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -57,7 +62,8 @@ class Product implements IEntity {
       "imageURL": this.imageURL,
       "expirationDateList": this.expirationDateList,
       "isReturnable": this.isReturnable,
-      "isFixedPrice": this.isFixedPrice
+      "isFixedPrice": this.isFixedPrice,
+      "weightValue": this.weightValue,
     };
   }
 

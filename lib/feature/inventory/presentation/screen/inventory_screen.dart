@@ -1,6 +1,6 @@
 import 'package:al_pura_frontend/feature/inventory/presentation/widgets/product_info.dart';
 import 'package:al_pura_frontend/feature/inventory/presentation/widgets/product_stock.dart';
-import 'package:al_pura_frontend/feature/shared/Domain/model/product.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter/material.dart';
 
 import '../../../sale/presentation/widget/products_board.dart';
@@ -46,6 +46,8 @@ class InventoryScreen extends StatelessWidget {
                     Expanded(
                       child: ProductInfo(
                           product: Product(
+                              price: 13,
+                              weightValue: 'L',
                               category: 'categoria',
                               flavor: 'flavor',
                               quantity: 2.0,
@@ -58,11 +60,13 @@ class InventoryScreen extends StatelessWidget {
                     ),
                     ProductStock(
                       product: Product(
+                          price: 13,
+                          weightValue: 'L',
                           category: 'categoria',
                           flavor: 'flavor',
                           quantity: 2.0,
                           imageURL:
-                              'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
+                          'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
                           expirationDateList: []),
                     )
                   ],
