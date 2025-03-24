@@ -22,7 +22,7 @@ class CustomEmptyField extends StatelessWidget {
                 cursorWidth: 1,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: height * 0.6),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   contentPadding: EdgeInsets.zero,
                   border: InputBorder.none,
                 ),

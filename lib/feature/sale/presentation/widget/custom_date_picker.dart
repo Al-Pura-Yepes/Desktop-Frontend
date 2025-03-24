@@ -48,7 +48,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
                         data: ThemeData.light().copyWith(
                           primaryColor: widget.color,
                           colorScheme: ColorScheme.light(primary: widget.color),
-                          buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                          buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
                         ),
                         child: child!,
                       );

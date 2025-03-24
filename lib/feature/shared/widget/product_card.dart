@@ -20,7 +20,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: _FrontCard(
           product: widget.product,
           callback: widget.callback,
@@ -38,7 +38,7 @@ class _FrontCard extends StatelessWidget {
   final Product product;
   final void Function()? callback;
   final int? quantity;
-  const _FrontCard({this.callback, this.quantity, required this.product});
+  const _FrontCard({this.callback, required this.product, this.quantity});
 
   @override
   Widget build(BuildContext context) {

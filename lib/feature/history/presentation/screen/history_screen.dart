@@ -197,7 +197,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                                             )
                                         ),
                                         DataCell(Text(sale.isByCash != null
-                                            ? (sale.isByCash! ? 'Efectivo' : 'QR')
+                                            ? (sale.isByCash ? 'Efectivo' : 'QR')
                                             : 'Efectivo')),
                                         DataCell(Text(sale.totalPrice.toString())),
                                       ],

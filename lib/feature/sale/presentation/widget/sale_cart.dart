@@ -1,4 +1,3 @@
-import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_variable_price_sale.dart';

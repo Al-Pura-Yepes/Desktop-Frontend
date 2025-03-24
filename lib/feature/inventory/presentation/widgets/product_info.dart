@@ -12,7 +12,7 @@ class ProductInfo extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -29,7 +29,7 @@ class ProductInfo extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: textTheme.titleSmall,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Column(
@@ -43,10 +43,10 @@ class ProductInfo extends StatelessWidget {
                             width: 250,
                             height: 250,
                           )),
-                      TextButton(onPressed: () {}, child: Text('Editar imagen'))
+                      TextButton(onPressed: () {}, child: const Text('Editar imagen'))
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   FittedBox(
@@ -66,13 +66,13 @@ class ProductInfo extends StatelessWidget {
                             principalText: 'Precio',
                             secondaryText:
                                 product.price?.toString() ?? 'Sin precio fijo'),
-                        _Label(
+                        const _Label(
                             principalText: 'Fecha de expiracion proxima',
                             secondaryText: ''),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        Wrap(
+                        const Wrap(
                           spacing: 10,
                           alignment: WrapAlignment.center,
                           children: [
@@ -100,7 +100,7 @@ class _Label extends StatelessWidget {
   final String secondaryText;
 
   const _Label(
-      {super.key, required this.principalText, required this.secondaryText});
+      {required this.principalText, required this.secondaryText});
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class _Label extends StatelessWidget {
     final primaryColor = Theme.of(context).colorScheme.primary;
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: FittedBox(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -120,13 +120,13 @@ class _Label extends StatelessWidget {
                   color: primaryColor,
                   border: Border.all(color: primaryColor),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                 child: Text(
                   principalText,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 )),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                 decoration: BoxDecoration(border: Border.all()),
                 child: Text(secondaryText)),
           ],

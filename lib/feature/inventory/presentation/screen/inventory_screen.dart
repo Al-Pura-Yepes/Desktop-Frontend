@@ -38,9 +38,9 @@ class InventoryScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
+            const Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
                     Expanded(
@@ -55,7 +55,7 @@ class InventoryScreen extends StatelessWidget {
                                   'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
                               expirationDateList: [])),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 10,
                     ),
                     ProductStock(

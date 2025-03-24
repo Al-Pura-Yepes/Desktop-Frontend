@@ -54,16 +54,16 @@ class Product implements IEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      "category": this.category,
-      "flavor": this.flavor,
-      "price": this.price,
-      "quantity": this.quantity,
-      "weight": this.weight,
-      "imageURL": this.imageURL,
-      "expirationDateList": this.expirationDateList,
-      "isReturnable": this.isReturnable,
-      "isFixedPrice": this.isFixedPrice,
-      "weightValue": this.weightValue,
+      "category": category,
+      "flavor": flavor,
+      "price": price,
+      "quantity": quantity,
+      "weight": weight,
+      "imageURL": imageURL,
+      "expirationDateList": expirationDateList,
+      "isReturnable": isReturnable,
+      "isFixedPrice": isFixedPrice,
+      "weightValue": weightValue,
     };
   }
 

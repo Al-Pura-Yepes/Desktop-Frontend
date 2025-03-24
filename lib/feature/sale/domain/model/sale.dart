@@ -41,16 +41,16 @@ class Sale {
   Map<String, dynamic> toJson() {
     return {
       "products": _productsToJson(),
-      "isDelivery": this.isDelivery,
-      "isPerMajor": this.isPerMajor,
-      "totalPrice": this.totalPrice,
-      "discount": this.discount,
-      "isReservation": this.isReservation,
-      "clientName": this.clientName,
-      "clientPhone": this.clientPhone,
-      "isByCash": this.isByCash,
-      "reservationDate": this.reservationDate,
-      "saleDate": this.saleDate
+      "isDelivery": isDelivery,
+      "isPerMajor": isPerMajor,
+      "totalPrice": totalPrice,
+      "discount": discount,
+      "isReservation": isReservation,
+      "clientName": clientName,
+      "clientPhone": clientPhone,
+      "isByCash": isByCash,
+      "reservationDate": reservationDate,
+      "saleDate": saleDate
     };
   }
 

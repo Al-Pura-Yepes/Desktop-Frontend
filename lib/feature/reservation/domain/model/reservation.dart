@@ -1,5 +1,5 @@
 import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
-import 'package:al_pura_frontend/feature/shared/Domain/model/i_entity.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/i_entity.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

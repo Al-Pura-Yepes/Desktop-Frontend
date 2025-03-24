@@ -46,14 +46,14 @@ class SaleInformationFront extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      CustomButton(
+                      const CustomButton(
                         size: 40,
                         color: Color(0xff464C59),
                         filled: false,
                         icon: Icons.notification_add,
                         iconColor: Color(0xff464C59),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       CustomButton(
                         size: 40,
                         color: Colors.red,
@@ -169,45 +169,45 @@ class SaleInformationFront extends ConsumerWidget {
                           if (ref.read(cartProvider).isDelivery) {
                             ref
                                 .read(cartProvider.notifier)
-                                .changeWidgetOption(SaleInformationBack());
+                                .changeWidgetOption(const SaleInformationBack());
                           } else {
                             ref
                                 .read(cartProvider.notifier)
-                                .changeWidgetOption(ConfirmSale());
+                                .changeWidgetOption(const ConfirmSale());
                           }
                         },
                         size: 60,
                         color: secondaryColor,
                         icon: Icons.attach_money,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       CustomButton(
                         size: 60,
-                        color: Color(0xff464C59),
+                        color: const Color(0xff464C59),
                         icon: Icons.qr_code,
                         onPress: () {
                           ref.read(cartProvider.notifier).setPaymentMethod(false);
                           if (ref.read(cartProvider).isDelivery) {
                             ref
                                 .read(cartProvider.notifier)
-                                .changeWidgetOption(SaleInformationBack());
+                                .changeWidgetOption(const SaleInformationBack());
                           } else {
                             ref
                                 .read(cartProvider.notifier)
-                                .changeWidgetOption(ConfirmSale());
+                                .changeWidgetOption(const ConfirmSale());
                           }
                         },
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       CustomButton(
                           size: 60,
-                          color: Color(0xff1C1897),
+                          color: const Color(0xff1C1897),
                           icon: Icons.bookmark,
                           onPress: () {
                             ref.read(cartProvider.notifier).setIsReservation(true);
                             ref
                                 .read(cartProvider.notifier)
-                                .changeWidgetOption(SaleInformationBack());
+                                .changeWidgetOption(const SaleInformationBack());
                           },),
                     ],
                   ),

@@ -13,10 +13,11 @@ class ProductsBoard extends ConsumerWidget {
     final productsState = ref.watch(productsProvider).products;
     final categories = productsState.keys.toList();
 
-    if (productsState.isEmpty)
-      return Center(
+    if (productsState.isEmpty) {
+      return const Center(
         child: CircularProgressIndicator(),
       );
+    }
 
     return ListView.builder(
       itemCount: categories.length,

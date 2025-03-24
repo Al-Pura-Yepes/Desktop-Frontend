@@ -1,8 +1,5 @@
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
-import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/products_board.dart';
-import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_back.dart';
-import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
 import 'package:al_pura_frontend/feature/shared/widget/options_bar/option_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

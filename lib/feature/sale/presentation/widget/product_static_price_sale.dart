@@ -63,14 +63,14 @@ class ProductStaticPriceSale extends ConsumerWidget {
               )
             ],
           ),
-          Spacer(),
+          const Spacer(),
           SizedBox(
             width: 130,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 const Text('Bs', style: TextStyle(fontWeight: FontWeight.bold),),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Text(
@@ -80,7 +80,7 @@ class ProductStaticPriceSale extends ConsumerWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 40,
           ),
           !isEditable

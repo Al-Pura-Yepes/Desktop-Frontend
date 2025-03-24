@@ -27,7 +27,7 @@ class ConfirmationModal extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
           color: primaryColor,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8))),
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -72,7 +72,7 @@ class ConfirmationModal extends ConsumerWidget {
                       }
                     },
                   )),
-              SizedBox(
+              const SizedBox(
                 width: 70,
               ),
               FittedBox(

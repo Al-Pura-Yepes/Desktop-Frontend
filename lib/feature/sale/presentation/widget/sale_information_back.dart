@@ -1,4 +1,3 @@
-import 'package:al_pura_frontend/feature/history/presentation/provider/sales_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/confirm_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/custom_date_picker.dart';
@@ -149,7 +148,7 @@ class SaleInformationBack extends ConsumerWidget {
                         onPress: () {
                           ref
                               .read(cartProvider.notifier)
-                              .changeWidgetOption(ConfirmSale());
+                              .changeWidgetOption(const ConfirmSale());
                         },
                       ),
                       const SizedBox(
@@ -165,7 +164,7 @@ class SaleInformationBack extends ConsumerWidget {
                           ref.read(cartProvider.notifier).setIsReservation(false);
                           ref
                               .read(cartProvider.notifier)
-                              .changeWidgetOption(SaleInformationFront());
+                              .changeWidgetOption(const SaleInformationFront());
                         },
                       ),
                     ],

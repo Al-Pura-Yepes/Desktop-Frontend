@@ -1,4 +1,4 @@
-import 'package:al_pura_frontend/feature/shared/Domain/model/i_entity.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/i_entity.dart';
 
 class User extends IEntity {
   @override

@@ -1,7 +1,6 @@
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:al_pura_frontend/feature/shared/widget/fields/custom_empty_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ProductStock extends StatelessWidget {
   final Product product;
@@ -74,7 +73,6 @@ class _StockCounter extends StatefulWidget {
   final bool isFixedPrice;
 
   const _StockCounter({
-    super.key,
     required this.isFixedPrice,
     required this.primaryColor,
     required this.textTheme,
@@ -102,16 +100,12 @@ class _StockCounterState extends State<_StockCounter> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border:
                   Border.symmetric(horizontal: BorderSide(color: Colors.red))),
           child: TextButton(
             onPressed: () {},
-            child: Text(
-              'Reducir',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            style: ButtonStyle(
+            style: const ButtonStyle(
               fixedSize: WidgetStatePropertyAll(Size(100, 40)),
               backgroundColor: WidgetStatePropertyAll(Colors.red),
               shape: WidgetStatePropertyAll(
@@ -120,17 +114,21 @@ class _StockCounterState extends State<_StockCounter> {
                 ),
               ),
             ),
+            child: const Text(
+              'Reducir',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
         ),
         Container(
           decoration:
-              BoxDecoration(border: Border.symmetric(horizontal: BorderSide())),
+              const BoxDecoration(border: Border.symmetric(horizontal: BorderSide())),
           child: Container(
               width: 200,
               height: 40,
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: CustomEmptyField(
+              child: const CustomEmptyField(
                 suffix: 'Kg',
               )),
         ),
@@ -140,18 +138,18 @@ class _StockCounterState extends State<_StockCounter> {
                   horizontal: BorderSide(color: widget.primaryColor))),
           child: TextButton(
             onPressed: () {},
-            child: Text(
-              'Agregar',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
             style: ButtonStyle(
-              fixedSize: WidgetStatePropertyAll(Size(100, 40)),
+              fixedSize: const WidgetStatePropertyAll(Size(100, 40)),
               backgroundColor: WidgetStatePropertyAll(widget.primaryColor),
-              shape: WidgetStatePropertyAll(
+              shape: const WidgetStatePropertyAll(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.zero,
                 ),
               ),
+            ),
+            child: const Text(
+              'Agregar',
+              style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           ),
         )

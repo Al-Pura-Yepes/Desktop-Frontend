@@ -1,11 +1,9 @@
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
-import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../shared/widget/buttons/quantity_counter.dart';
 
 class ProductVariablePriceSale extends ConsumerWidget {
   final Product product;
@@ -55,12 +53,12 @@ class ProductVariablePriceSale extends ConsumerWidget {
               )
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text('Bs.', style: TextStyle(fontWeight: FontWeight.bold),),
-              SizedBox(
+              const Text('Bs.', style: TextStyle(fontWeight: FontWeight.bold),),
+              const SizedBox(
                 width: 15,
               ),
               SizedBox(
@@ -92,7 +90,7 @@ class ProductVariablePriceSale extends ConsumerWidget {
             ],
           ),
           
-          SizedBox(
+          const SizedBox(
             width: 40,
           ),
           !isEditable
