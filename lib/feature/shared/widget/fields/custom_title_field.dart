@@ -5,7 +5,11 @@ class CustomTitleField extends StatelessWidget {
   final String title;
   final void Function(String value) onPress;
 
-  const CustomTitleField({super.key, this.color = Colors.white, required this.title, required this.onPress});
+  const CustomTitleField(
+      {super.key,
+      this.color = Colors.white,
+      required this.title,
+      required this.onPress});
 
   @override
   Widget build(BuildContext context) {

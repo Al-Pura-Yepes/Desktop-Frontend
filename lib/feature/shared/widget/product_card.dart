@@ -16,15 +16,63 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
+  Color _getQuantityColor() {
+    switch (widget.product.quantity) {
+      case >= 10:
+        return Colors.green;
+      case > 5:
+        return Colors.yellow;
+      default:
+        return Colors.red;
+    }
+  }
+
   bool isFront = true;
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        child: _FrontCard(
-          product: widget.product,
-          callback: widget.callback,
-        ));
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: _getQuantityColor(), width: 3)),
+      child: Stack(
+        children: [
+          ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              child: _FrontCard(
+                product: widget.product,
+                callback: widget.callback,
+              )),
+          Align(
+              alignment: Alignment.topRight,
+              child: FractionallySizedBox(
+                widthFactor: 0.3,
+                heightFactor: 0.3,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: _getQuantityColor(),
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(10))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "${widget.product.quantity}",
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        widget.product.weight == null ? "Kg" : "u",
+                        style: const TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                ),
+              ))
+        ],
+      ),
+    );
   }
 
   void setDisplay(bool isFront) {

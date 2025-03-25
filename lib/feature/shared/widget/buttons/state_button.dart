@@ -9,15 +9,14 @@ class StateButton extends StatelessWidget {
   final Function? onChange;
   final Function? revertState;
 
-  const StateButton({
-    super.key,
-    required this.status,
-    this.color = Colors.blue,
-    this.secondaryColor = Colors.black38,
-    this.textColor = Colors.white,
-    this.onChange,
-    this.revertState
-  });
+  const StateButton(
+      {super.key,
+      required this.status,
+      this.color = Colors.blue,
+      this.secondaryColor = Colors.black38,
+      this.textColor = Colors.white,
+      this.onChange,
+      this.revertState});
 
   bool existForward() {
     switch (status) {
@@ -49,60 +48,73 @@ class StateButton extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: Row(
         children: [
-          existBack() ? GestureDetector(
-            onTap: () {
-              if (revertState != null) {
-                revertState!();
-              }
-            },
-            child: Container(
-                width: 50,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: secondaryColor,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        bottomLeft: Radius.circular(5)
-                    )
-                ),
-                child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white,)
-            ),
-          ) : const SizedBox.shrink(),
+          existBack()
+              ? GestureDetector(
+                  onTap: () {
+                    if (revertState != null) {
+                      revertState!();
+                    }
+                  },
+                  child: Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: secondaryColor,
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(5),
+                              bottomLeft: Radius.circular(5))),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                      )),
+                )
+              : const SizedBox.shrink(),
           Expanded(
             child: Container(
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.only(
-                    topLeft: status == Status.pending ? const Radius.circular(5) : const Radius.circular(0),
-                    topRight: status == Status.pending ? const Radius.circular(0) : const Radius.circular(5),
-                    bottomLeft: status == Status.pending ? const Radius.circular(5) : const Radius.circular(0),
-                    bottomRight: status == Status.pending ? const Radius.circular(0) : const Radius.circular(5),
-                )
-              ),
-              child: Text(statusToString(status), style: textTheme.titleSmall!.copyWith(color: textColor),)
-            ),
+                height: 40,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.only(
+                      topLeft: status == Status.pending
+                          ? const Radius.circular(5)
+                          : const Radius.circular(0),
+                      topRight: status == Status.pending
+                          ? const Radius.circular(0)
+                          : const Radius.circular(5),
+                      bottomLeft: status == Status.pending
+                          ? const Radius.circular(5)
+                          : const Radius.circular(0),
+                      bottomRight: status == Status.pending
+                          ? const Radius.circular(0)
+                          : const Radius.circular(5),
+                    )),
+                child: Text(
+                  statusToString(status),
+                  style: textTheme.titleSmall!.copyWith(color: textColor),
+                )),
           ),
-          existForward() ? GestureDetector(
-            onTap: () {
-              if (onChange != null) {
-                onChange!();
-              }
-            },
-            child: Container(
-              width: 50,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: secondaryColor,
-                  borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(5),
-                      bottomRight: Radius.circular(5)
-                  )
-              ),
-              child: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white,)
-            ),
-          ) : const SizedBox.shrink()
+          existForward()
+              ? GestureDetector(
+                  onTap: () {
+                    if (onChange != null) {
+                      onChange!();
+                    }
+                  },
+                  child: Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: secondaryColor,
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(5),
+                              bottomRight: Radius.circular(5))),
+                      child: const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white,
+                      )),
+                )
+              : const SizedBox.shrink()
         ],
       ),
     );

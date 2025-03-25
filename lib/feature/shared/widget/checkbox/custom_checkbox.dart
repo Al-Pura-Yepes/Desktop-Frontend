@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 
 class CustomCheckbox extends StatefulWidget {
   final String title;
@@ -8,15 +9,14 @@ class CustomCheckbox extends StatefulWidget {
   final void Function()? onChange;
   final bool isEditable;
 
-  const CustomCheckbox({
-    super.key,
-    this.size = 20,
-    required this.title,
-    this.color = Colors.black,
-    this.value = false,
-    this.onChange,
-    this.isEditable = true
-  });
+  const CustomCheckbox(
+      {super.key,
+      this.size = 20,
+      required this.title,
+      this.color = Colors.black,
+      this.value = false,
+      this.onChange,
+      this.isEditable = true});
 
   @override
   State<CustomCheckbox> createState() => _CustomCheckboxState();
@@ -66,9 +66,9 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                 value: currentValue,
                 onChanged: (value) {
                   if (widget.isEditable) {
-                    widget.onChange ?? ();
                     setState(() {
                       currentValue = !currentValue;
+                      widget.onChange!();
                     });
                   }
                 },

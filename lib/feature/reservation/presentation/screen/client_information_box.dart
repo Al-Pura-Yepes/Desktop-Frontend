@@ -20,7 +20,8 @@ class ClientInformationBox extends ConsumerWidget {
       isInformationLoaded = ref.watch(salesProvider).isSaleSelected;
       client = ref.watch(salesProvider).client;
     } else {
-      isInformationLoaded = ref.watch(reservationProvider).isReservationSelected;
+      isInformationLoaded =
+          ref.watch(reservationProvider).isReservationSelected;
       client = ref.watch(reservationProvider).reservation?.client;
     }
 
@@ -30,8 +31,7 @@ class ClientInformationBox extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10))
-          ),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -50,57 +50,71 @@ class ClientInformationBox extends ConsumerWidget {
                 ),
                 isInformationLoaded
                     ? Row(
-                      spacing: 10,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Nombre del cliente:',
-                                style: textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w300),),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                height: 30,
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: const Color(0xffC8C8C8)),
-                                    borderRadius: BorderRadius.circular(8)),
-                                child: Text(client?.fullName ?? 'undefined', style: textTheme.bodySmall,),
-                              )
-                            ],
+                        spacing: 10,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Nombre del cliente:',
+                                  style: textTheme.titleSmall!
+                                      .copyWith(fontWeight: FontWeight.w300),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  height: 30,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xffC8C8C8)),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    client?.fullName ?? 'undefined',
+                                    style: textTheme.bodySmall,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Celular del cliente:',
-                                style: textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w300),),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                height: 30,
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: const Color(0xffC8C8C8)),
-                                    borderRadius: BorderRadius.circular(8)),
-                                child: Text(client?.phoneNumber.toString() ?? 'undefined', style: textTheme.bodySmall,),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    )
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Celular del cliente:',
+                                  style: textTheme.titleSmall!
+                                      .copyWith(fontWeight: FontWeight.w300),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  height: 30,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xffC8C8C8)),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    client?.phoneNumber.toString() ??
+                                        'undefined',
+                                    style: textTheme.bodySmall,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      )
                     : Icon(
-                      Icons.person,
-                      color: colorScheme.secondary,
-                      size: 40,
-                    ),
+                        Icons.person,
+                        color: colorScheme.secondary,
+                        size: 40,
+                      ),
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 }

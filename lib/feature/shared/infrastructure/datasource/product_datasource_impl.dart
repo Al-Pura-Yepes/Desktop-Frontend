@@ -51,7 +51,6 @@ class ProductDatasourceImpl implements ProductDatasource {
       QuerySnapshot snapshot = await products.get();
       for (DocumentSnapshot doc in snapshot.docs) {
         Map<String, dynamic> productData = doc.data() as Map<String, dynamic>;
-        print(productData);
         fetchProduct.add(Product.fromJson({"id": doc.id, ...productData}));
       }
     } catch (e) {

@@ -12,21 +12,19 @@ class ProductStaticPriceSale extends ConsumerWidget {
   final bool isEditable;
   final double? quantity;
 
-  const ProductStaticPriceSale({
-    super.key,
-    required this.product,
-    this.isEditable = true,
-    this.quantity
-  });
+  const ProductStaticPriceSale(
+      {super.key,
+      required this.product,
+      this.isEditable = true,
+      this.quantity});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //final quantity = ref.watch(cartProvider).products[product]!;
     double productQuantity = quantity ?? 0;
     if (quantity == null) {
-      productQuantity = !isEditable ? 0 : ref
-          .watch(cartProvider)
-          .products[product] ?? 0;
+      productQuantity =
+          !isEditable ? 0 : ref.watch(cartProvider).products[product] ?? 0;
 
       if (!isEditable) {
         productQuantity = product.quantity;
@@ -41,14 +39,17 @@ class ProductStaticPriceSale extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           !isEditable
-              ? LabelBorder(text: productQuantity.toStringAsFixed(2), textStyle: textTheme.bodyMedium!,)
+              ? LabelBorder(
+                  text: productQuantity.toStringAsFixed(2),
+                  textStyle: textTheme.bodyMedium!,
+                )
               : QuantityCounter(
-                callback: (quantity) {
-                  ref
-                      .read(cartProvider.notifier)
-                      .setItemQuantity(product, quantity);
-                },
-              ),
+                  callback: (quantity) {
+                    ref
+                        .read(cartProvider.notifier)
+                        .setItemQuantity(product, quantity);
+                  },
+                ),
           const SizedBox(
             width: 15,
           ),
@@ -69,7 +70,10 @@ class ProductStaticPriceSale extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text('Bs', style: TextStyle(fontWeight: FontWeight.bold),),
+                const Text(
+                  'Bs',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(
                   width: 15,
                 ),
@@ -93,8 +97,7 @@ class ProductStaticPriceSale extends ConsumerWidget {
                     Icons.delete,
                     size: 30,
                     color: Colors.red,
-                  )
-              )
+                  ))
         ],
       ),
     );

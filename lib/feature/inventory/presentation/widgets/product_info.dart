@@ -43,7 +43,8 @@ class ProductInfo extends StatelessWidget {
                             width: 250,
                             height: 250,
                           )),
-                      TextButton(onPressed: () {}, child: const Text('Editar imagen'))
+                      TextButton(
+                          onPressed: () {}, child: const Text('Editar imagen'))
                     ],
                   ),
                   const SizedBox(
@@ -99,8 +100,7 @@ class _Label extends StatelessWidget {
   final String principalText;
   final String secondaryText;
 
-  const _Label(
-      {required this.principalText, required this.secondaryText});
+  const _Label({required this.principalText, required this.secondaryText});
 
   @override
   Widget build(BuildContext context) {
@@ -120,13 +120,15 @@ class _Label extends StatelessWidget {
                   color: primaryColor,
                   border: Border.all(color: primaryColor),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                 child: Text(
                   principalText,
                   style: const TextStyle(color: Colors.white),
                 )),
             Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                 decoration: BoxDecoration(border: Border.all()),
                 child: Text(secondaryText)),
           ],

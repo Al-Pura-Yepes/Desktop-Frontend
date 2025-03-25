@@ -13,31 +13,29 @@ class ReservationState {
   final Reservation? reservation;
   final DateTime? dayFiltered;
 
-  ReservationState({
-    this.isReservationSelected = false,
-    this.isStatusAscending,
-    this.indexSelected,
-    this.reservations = const [],
-    this.reservation,
-    this.dayFiltered
-  });
+  ReservationState(
+      {this.isReservationSelected = false,
+      this.isStatusAscending,
+      this.indexSelected,
+      this.reservations = const [],
+      this.reservation,
+      this.dayFiltered});
 
-  ReservationState copyWith({
-    bool? isReservationSelected,
-    bool? isStatusAscending,
-    int? indexSelected,
-    List<Reservation>? reservations,
-    Reservation? reservation,
-    DateTime? dayFiltered
-  }) {
+  ReservationState copyWith(
+      {bool? isReservationSelected,
+      bool? isStatusAscending,
+      int? indexSelected,
+      List<Reservation>? reservations,
+      Reservation? reservation,
+      DateTime? dayFiltered}) {
     return ReservationState(
-      isReservationSelected: isReservationSelected ?? this.isReservationSelected,
-      isStatusAscending: isStatusAscending,
-      indexSelected: indexSelected ?? this.indexSelected,
-      reservations: reservations ?? this.reservations,
-      reservation: reservation ?? this.reservation,
-      dayFiltered: dayFiltered
-    );
+        isReservationSelected:
+            isReservationSelected ?? this.isReservationSelected,
+        isStatusAscending: isStatusAscending,
+        indexSelected: indexSelected ?? this.indexSelected,
+        reservations: reservations ?? this.reservations,
+        reservation: reservation ?? this.reservation,
+        dayFiltered: dayFiltered);
   }
 }
 
@@ -50,8 +48,7 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
     state = state.copyWith(
         isReservationSelected: !state.isReservationSelected,
         isStatusAscending: state.isStatusAscending,
-        dayFiltered: state.dayFiltered
-    );
+        dayFiltered: state.dayFiltered);
   }
 
   changeItemSelected(int index) {
@@ -60,28 +57,26 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
         isReservationSelected: true,
         isStatusAscending: state.isStatusAscending,
         reservation: state.reservations[index],
-        dayFiltered: state.dayFiltered
-    );
+        dayFiltered: state.dayFiltered);
   }
 
   changeItemSelectedById(String id) {
-    var index = state.reservations
-        .indexWhere((reservation) => reservation.id == id);
+    var index =
+        state.reservations.indexWhere((reservation) => reservation.id == id);
     state = state.copyWith(
         indexSelected: index,
         isReservationSelected: true,
         isStatusAscending: state.isStatusAscending,
         reservation: state.reservations[index],
-        dayFiltered: state.dayFiltered
-    );
+        dayFiltered: state.dayFiltered);
   }
 
   Future<void> loadReservations() async {
     state = state.copyWith(
-        reservations: await repository.getAllReservations(state.isStatusAscending, state.dayFiltered),
+        reservations: await repository.getAllReservations(
+            state.isStatusAscending, state.dayFiltered),
         isStatusAscending: state.isStatusAscending,
-        dayFiltered: state.dayFiltered
-    );
+        dayFiltered: state.dayFiltered);
   }
 
   iterateSortByStatus() {
@@ -94,37 +89,33 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
       filterStatus = null;
     }
     state = state.copyWith(
-        isStatusAscending: filterStatus,
-        dayFiltered: state.dayFiltered
-    );
+        isStatusAscending: filterStatus, dayFiltered: state.dayFiltered);
   }
 
   updateReservation(Reservation reservation) {
     state = state.copyWith(
         reservation: reservation,
         isStatusAscending: state.isStatusAscending,
-        dayFiltered: state.dayFiltered
-    );
+        dayFiltered: state.dayFiltered);
   }
 
   clearReservations() {
     state = state.copyWith(
-      reservation: null,
-      indexSelected: null,
-      isReservationSelected: false,
-      dayFiltered: state.dayFiltered
-    );
+        reservation: null,
+        indexSelected: null,
+        isReservationSelected: false,
+        dayFiltered: state.dayFiltered);
   }
 
   selectDay(DateTime? day) {
-    state = state.copyWith(
-      dayFiltered: day
-    );
+    state = state.copyWith(dayFiltered: day);
   }
 }
 
-final reservationProvider = StateNotifierProvider<ReservationNotifier, ReservationState>((ref) {
+final reservationProvider =
+    StateNotifierProvider<ReservationNotifier, ReservationState>((ref) {
   final ReservationDatasource datasource = ReservationDatasourceImpl();
-  final ReservationRepository repository = ReservationRepositoryImpl(datasource: datasource);
+  final ReservationRepository repository =
+      ReservationRepositoryImpl(datasource: datasource);
   return ReservationNotifier(ReservationState(), repository);
 });

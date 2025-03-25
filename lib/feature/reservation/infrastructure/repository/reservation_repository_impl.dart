@@ -6,12 +6,11 @@ import 'package:al_pura_frontend/feature/reservation/domain/repository/reservati
 class ReservationRepositoryImpl extends ReservationRepository {
   final ReservationDatasource datasource;
 
-  ReservationRepositoryImpl({
-    required this.datasource
-  });
+  ReservationRepositoryImpl({required this.datasource});
 
   @override
-  Future<List<Reservation>> getAllReservations(bool? isStatusAscending, DateTime? dayFiltered) {
+  Future<List<Reservation>> getAllReservations(
+      bool? isStatusAscending, DateTime? dayFiltered) {
     return datasource.getAllReservations(isStatusAscending, dayFiltered);
   }
 
@@ -34,5 +33,4 @@ class ReservationRepositoryImpl extends ReservationRepository {
   Future<bool> deleteReservation(String id) {
     return datasource.deleteReservation(id);
   }
-  
 }

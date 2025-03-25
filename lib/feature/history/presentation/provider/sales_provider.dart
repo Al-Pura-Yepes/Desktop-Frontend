@@ -16,34 +16,31 @@ class SalesState {
   final User? client;
   final DateTime? dayFiltered;
 
-  SalesState({
-    this.isSaleSelected = false,
-    this.isDateAscending = true,
-    this.indexSelected,
-    this.sales = const [],
-    this.sale,
-    this.client,
-    this.dayFiltered
-  });
+  SalesState(
+      {this.isSaleSelected = false,
+      this.isDateAscending = true,
+      this.indexSelected,
+      this.sales = const [],
+      this.sale,
+      this.client,
+      this.dayFiltered});
 
-  SalesState copyWith({
-    bool? isSaleSelected,
-    bool? isDateAscending,
-    int? indexSelected,
-    List<Sale>? sales,
-    Sale? sale,
-    User? client,
-    DateTime? dayFiltered
-  }) {
+  SalesState copyWith(
+      {bool? isSaleSelected,
+      bool? isDateAscending,
+      int? indexSelected,
+      List<Sale>? sales,
+      Sale? sale,
+      User? client,
+      DateTime? dayFiltered}) {
     return SalesState(
-      isSaleSelected: isSaleSelected ?? this.isSaleSelected,
-      isDateAscending: isDateAscending ?? this.isDateAscending,
-      indexSelected: indexSelected ?? this.indexSelected,
-      sales: sales ?? this.sales,
-      sale: sale ?? this.sale,
-      client: client ?? this.client,
-      dayFiltered: dayFiltered
-    );
+        isSaleSelected: isSaleSelected ?? this.isSaleSelected,
+        isDateAscending: isDateAscending ?? this.isDateAscending,
+        indexSelected: indexSelected ?? this.indexSelected,
+        sales: sales ?? this.sales,
+        sale: sale ?? this.sale,
+        client: client ?? this.client,
+        dayFiltered: dayFiltered);
   }
 }
 
@@ -54,9 +51,7 @@ class SalesNotifier extends StateNotifier<SalesState> {
 
   toggleSale() {
     state = state.copyWith(
-        isSaleSelected: !state.isSaleSelected,
-        dayFiltered: state.dayFiltered
-    );
+        isSaleSelected: !state.isSaleSelected, dayFiltered: state.dayFiltered);
   }
 
   changeItemSelected(int index) {
@@ -64,51 +59,44 @@ class SalesNotifier extends StateNotifier<SalesState> {
         id: index.toString(),
         fullName: state.sales[index].clientName ?? 'No definido',
         phoneNumber: state.sales[index].clientPhone != null
-            ? int.parse(state.sales[index].clientPhone!) : 0
-    );
+            ? int.parse(state.sales[index].clientPhone!)
+            : 0);
     state = state.copyWith(
         indexSelected: index,
         isSaleSelected: true,
         sale: state.sales[index],
         client: user,
-        dayFiltered: state.dayFiltered
-    );
+        dayFiltered: state.dayFiltered);
   }
 
   Future<void> loadSales() async {
     state = state.copyWith(
-        sales: await repository.getAllSales(state.isDateAscending, state.dayFiltered),
-        dayFiltered: state.dayFiltered
-    );
+        sales: await repository.getAllSales(
+            state.isDateAscending, state.dayFiltered),
+        dayFiltered: state.dayFiltered);
   }
 
   iterateSortByStatus() {
     state = state.copyWith(
-        isDateAscending: !state.isDateAscending,
-        dayFiltered: state.dayFiltered,
+      isDateAscending: !state.isDateAscending,
+      dayFiltered: state.dayFiltered,
     );
   }
 
   updateReservation(Sale sale) {
-    state = state.copyWith(
-        sale: sale,
-        dayFiltered: state.dayFiltered
-    );
+    state = state.copyWith(sale: sale, dayFiltered: state.dayFiltered);
   }
 
   clearReservations() {
     state = state.copyWith(
-      sale: null,
-      indexSelected: null,
-      isSaleSelected: false,
-      dayFiltered: state.dayFiltered
-    );
+        sale: null,
+        indexSelected: null,
+        isSaleSelected: false,
+        dayFiltered: state.dayFiltered);
   }
 
   selectDay(DateTime? day) {
-    state = state.copyWith(
-      dayFiltered: day
-    );
+    state = state.copyWith(dayFiltered: day);
   }
 }
 

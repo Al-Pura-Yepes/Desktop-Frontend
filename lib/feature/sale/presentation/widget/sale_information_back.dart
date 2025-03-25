@@ -75,10 +75,19 @@ class SaleInformationBack extends ConsumerWidget {
                 children: [
                   SizedBox(
                       width: constraints.maxWidth * 0.45,
-                      child: CustomTitleField(title: 'Nombre del cliente', onPress: (value) => ref.read(cartProvider.notifier).setClientName(value),)),
+                      child: CustomTitleField(
+                        title: 'Nombre del cliente',
+                        onPress: (value) => ref
+                            .read(cartProvider.notifier)
+                            .setClientName(value),
+                      )),
                   SizedBox(
                       width: constraints.maxWidth * 0.45,
-                      child: CustomTitleField(title: 'Celular del cliente', onPress: (value) => ref.read(cartProvider.notifier).setClientPhone(value))),
+                      child: CustomTitleField(
+                          title: 'Celular del cliente',
+                          onPress: (value) => ref
+                              .read(cartProvider.notifier)
+                              .setClientPhone(value))),
                 ],
               ),
             ),
@@ -96,23 +105,25 @@ class SaleInformationBack extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (cartState.isDelivery) CustomChip(
-                              color: secondaryColor,
-                              text: Text(
-                                'Envio por delivery',
-                                style: textTheme.bodySmall
-                                    ?.copyWith(color: Colors.white),
-                              )),
+                          if (cartState.isDelivery)
+                            CustomChip(
+                                color: secondaryColor,
+                                text: Text(
+                                  'Envio por delivery',
+                                  style: textTheme.bodySmall
+                                      ?.copyWith(color: Colors.white),
+                                )),
                           const SizedBox(
                             height: 5,
                           ),
-                          if (cartState.isReservation) CustomChip(
-                              color: secondaryColor,
-                              text: Text(
-                                'Reserva',
-                                style: textTheme.bodySmall
-                                    ?.copyWith(color: Colors.white),
-                              ))
+                          if (cartState.isReservation)
+                            CustomChip(
+                                color: secondaryColor,
+                                text: Text(
+                                  'Reserva',
+                                  style: textTheme.bodySmall
+                                      ?.copyWith(color: Colors.white),
+                                ))
                         ],
                       ),
                     ),
@@ -125,7 +136,9 @@ class SaleInformationBack extends ConsumerWidget {
                         color: Colors.black,
                         title: 'Fecha de reserva',
                         onDateSelected: (date) {
-                          ref.read(cartProvider.notifier).setReservationDate(date);
+                          ref
+                              .read(cartProvider.notifier)
+                              .setReservationDate(date);
                         },
                       ),
                     ),
@@ -161,7 +174,9 @@ class SaleInformationBack extends ConsumerWidget {
                         icon: Icons.close,
                         iconColor: Colors.red,
                         onPress: () {
-                          ref.read(cartProvider.notifier).setIsReservation(false);
+                          ref
+                              .read(cartProvider.notifier)
+                              .setIsReservation(false);
                           ref
                               .read(cartProvider.notifier)
                               .changeWidgetOption(const SaleInformationFront());
@@ -171,10 +186,10 @@ class SaleInformationBack extends ConsumerWidget {
                   )),
                   FittedBox(
                       child: Text(
-                        'Total: Bs ${(cartState.totalPrice - cartState.discount).toStringAsFixed(2)}',
-                        style: textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
-                      ))
+                    'Total: Bs ${(cartState.totalPrice - cartState.discount).toStringAsFixed(2)}',
+                    style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ))
                 ],
               ),
             )

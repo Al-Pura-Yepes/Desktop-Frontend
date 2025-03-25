@@ -48,7 +48,8 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
                         data: ThemeData.light().copyWith(
                           primaryColor: widget.color,
                           colorScheme: ColorScheme.light(primary: widget.color),
-                          buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                          buttonTheme: const ButtonThemeData(
+                              textTheme: ButtonTextTheme.primary),
                         ),
                         child: child!,
                       );
@@ -72,7 +73,9 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    date == null ? 'Seleccionar fecha' : DateFormat('dd/MM/yyyy').format(date!),
+                    date == null
+                        ? 'Seleccionar fecha'
+                        : DateFormat('dd/MM/yyyy').format(date!),
                     style: TextStyle(
                       fontSize: fontSize,
                       color: Colors.white,

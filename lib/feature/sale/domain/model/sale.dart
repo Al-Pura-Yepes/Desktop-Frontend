@@ -17,7 +17,7 @@ class Sale {
 
   Sale(
       {this.id = '',
-        required this.products,
+      required this.products,
       required this.isDelivery,
       required this.isPerMajor,
       required this.totalPrice,

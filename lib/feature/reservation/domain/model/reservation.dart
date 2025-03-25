@@ -18,19 +18,18 @@ class Reservation extends IEntity {
   final List<Product> products;
   final String? paymentMethod;
 
-  Reservation({
-    this.id = '',
-    required this.client,
-    required this.deliveryDate,
-    required this.discount,
-    required this.totalPrice,
-    required this.status,
-    required this.isDelivery,
-    required this.isPerMajor,
-    required this.isActive,
-    required this.products,
-    this.paymentMethod
-  });
+  Reservation(
+      {this.id = '',
+      required this.client,
+      required this.deliveryDate,
+      required this.discount,
+      required this.totalPrice,
+      required this.status,
+      required this.isDelivery,
+      required this.isPerMajor,
+      required this.isActive,
+      required this.products,
+      this.paymentMethod});
 
   Map<String, dynamic> toMap() {
     return {
@@ -63,8 +62,9 @@ class Reservation extends IEntity {
         isPerMajor: map['isPerMajor'] as bool,
         isActive: map['isActive'] as bool,
         products: (map['products'] as List<dynamic>)
-            .map((entity) => Product.fromJson(entity)).toList(),
-        paymentMethod: (map['paymentMethod'] != null) ? map['paymentMethod'] : null
-    );
+            .map((entity) => Product.fromJson(entity))
+            .toList(),
+        paymentMethod:
+            (map['paymentMethod'] != null) ? map['paymentMethod'] : null);
   }
 }

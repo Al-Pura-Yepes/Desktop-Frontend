@@ -6,24 +6,16 @@ class User extends IEntity {
   final String fullName;
   final int phoneNumber;
 
-  User({
-    required this.id,
-    required this.fullName,
-    required this.phoneNumber
-  });
+  User({required this.id, required this.fullName, required this.phoneNumber});
 
   Map<String, dynamic> toMap() {
-    return {
-      "fullName": fullName,
-      "phoneNumber": phoneNumber
-    };
+    return {"fullName": fullName, "phoneNumber": phoneNumber};
   }
 
   factory User.fromMap(Map<String, dynamic> map, String id) {
     return User(
         id: id,
         fullName: map['fullName'] as String,
-        phoneNumber: map['phoneNumber'] as int
-    );
+        phoneNumber: map['phoneNumber'] as int);
   }
 }

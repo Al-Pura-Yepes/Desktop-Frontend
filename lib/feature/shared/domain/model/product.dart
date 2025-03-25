@@ -44,9 +44,11 @@ class Product implements IEntity {
             ? (json["weight"] as int).toDouble()
             : json["weight"],
         imageURL: json["imageURL"],
-        expirationDateList: (json["expirationDateList"] as List<dynamic>?)?.map((element) {
-          return (element as Timestamp).toDate();
-        }).toList() ?? [],
+        expirationDateList:
+            (json["expirationDateList"] as List<dynamic>?)?.map((element) {
+                  return (element as Timestamp).toDate();
+                }).toList() ??
+                [],
         isReturnable: json["isReturnable"] ?? false,
         isFixedPrice: json["isFixedPrice"] ?? false,
         weightValue: json["weightValue"]);
@@ -79,4 +81,32 @@ class Product implements IEntity {
 
   @override
   int get hashCode => id.hashCode;
+
+  Product copyWith({
+    @override final String? id,
+    final String? category,
+    final String? flavor,
+    final double? price,
+    final double? quantity,
+    final double? weight,
+    final String? imageURL,
+    final List<DateTime>? expirationDateList,
+    final bool? isReturnable,
+    final bool? isFixedPrice,
+    final String? weightValue,
+  }) {
+    return Product(
+      id: id ?? this.id,
+      category: category ?? this.category,
+      flavor: flavor ?? this.flavor,
+      price: price ?? this.price,
+      quantity: quantity ?? this.quantity,
+      weight: weight ?? this.weight,
+      imageURL: imageURL ?? this.imageURL,
+      expirationDateList: expirationDateList ?? this.expirationDateList,
+      isReturnable: isReturnable ?? this.isReturnable,
+      isFixedPrice: isFixedPrice ?? this.isFixedPrice,
+      weightValue: weightValue ?? this.weightValue,
+    );
+  }
 }

@@ -82,8 +82,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                       alignment: Alignment.centerRight,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.white
-                      ),
+                          color: Colors.white),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -97,7 +96,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                               setState(() {
                                 isLoading = true;
                               });
-                              await ref.read(salesProvider.notifier).loadSales();
+                              await ref
+                                  .read(salesProvider.notifier)
+                                  .loadSales();
                               setState(() {
                                 isLoading = false;
                               });
@@ -105,7 +106,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                           ),
                           TextButton.icon(
                             style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 8.0),
                               backgroundColor: Colors.blueGrey.shade50,
                               foregroundColor: Colors.blueGrey,
                               shape: RoundedRectangleBorder(
@@ -116,99 +118,107 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                                 ),
                               ),
                             ),
-                            label: Text(
-                                dayFiltered != null
-                                    ? DateFormat('dd-MM-yyyy').format(dayFiltered)
-                                    : 'dd-MM-yyyy'
-                            ),
-                            icon: const Icon(Icons.calendar_month_rounded, size: 20),
+                            label: Text(dayFiltered != null
+                                ? DateFormat('dd-MM-yyyy').format(dayFiltered)
+                                : 'dd-MM-yyyy'),
+                            icon: const Icon(Icons.calendar_month_rounded,
+                                size: 20),
                             onPressed: () => _showCustomDatePicker(context),
                           ),
                         ],
                       )
-                    //DatePickerDialog(firstDate: DateTime.now(), lastDate: dayFiltered ?? DateTime.now().add(const Duration(days: 1))),
-                  ),
+                      //DatePickerDialog(firstDate: DateTime.now(), lastDate: dayFiltered ?? DateTime.now().add(const Duration(days: 1))),
+                      ),
                   SingleChildScrollView(
                     child: LayoutBuilder(
                       builder: (context, constrains) => SizedBox(
                         width: constrains.maxWidth,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: isLoading ? const SizedBox(
-                              height: 150,
-                              child: Center(child: CircularProgressIndicator()),
-                          )
+                          child: isLoading
+                              ? const SizedBox(
+                                  height: 150,
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                )
                               : DataTable(
-                              dataTextStyle: textTheme.bodySmall,
-                              dividerThickness: 1,
-                              headingRowColor: WidgetStatePropertyAll(colorScheme.primary),
-                              headingTextStyle: textTheme.bodySmall?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                              ),
-                              decoration: const BoxDecoration(
-                                color: Colors.white
-                              ),
-                              border: TableBorder.all(color: colorScheme.secondary),
-                              columns: [
-                                const DataColumn(
-                                    label: Text('N°'),
-                                    headingRowAlignment: MainAxisAlignment.center,
-                                    numeric: true,
-                                ),
-                                const DataColumn(
-                                    label: Text('Cliente:'),
-                                ),
-                                DataColumn(
-                                    label: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      spacing: 10,
-                                      children: [
-                                        Icon(
-                                          sortDate == true
-                                              ? Icons.arrow_upward_rounded
-                                              : Icons.arrow_downward_rounded,
-                                          color: Colors.white,
-                                        ),
-                                        const Text('Fecha de venta:')
-                                      ],
+                                  dataTextStyle: textTheme.bodySmall,
+                                  dividerThickness: 1,
+                                  headingRowColor: WidgetStatePropertyAll(
+                                      colorScheme.primary),
+                                  headingTextStyle:
+                                      textTheme.bodySmall?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  decoration:
+                                      const BoxDecoration(color: Colors.white),
+                                  border: TableBorder.all(
+                                      color: colorScheme.secondary),
+                                  columns: [
+                                    const DataColumn(
+                                      label: Text('N°'),
+                                      headingRowAlignment:
+                                          MainAxisAlignment.center,
+                                      numeric: true,
                                     ),
-                                    headingRowAlignment: MainAxisAlignment.center
-                                ),
-                                const DataColumn(
-                                    label: Text('Tipo de pago:')),
-                                const DataColumn(
-                                    label: Text('Total:')),
-                              ],
-                              rows: List<DataRow>.generate(
-                                sales.length,
-                                (int index) {
-                                  var sale = sales[index];
-                                  return DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(Center(child: Text(index.toString()))),
-                                        DataCell(Text(sale.clientName ?? 'N/C')),
-                                        DataCell(
-                                            LabelBorder(
-                                              text: DateFormat('dd-MM-yyyy').format(sale.saleDate),
-                                              textStyle: textTheme.bodySmall!.copyWith(color: Colors.white),
-                                              color: Colors.green,
-                                              filled: true,
-                                            )
+                                    const DataColumn(
+                                      label: Text('Cliente:'),
+                                    ),
+                                    DataColumn(
+                                        label: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          spacing: 10,
+                                          children: [
+                                            Icon(
+                                              sortDate == true
+                                                  ? Icons.arrow_upward_rounded
+                                                  : Icons
+                                                      .arrow_downward_rounded,
+                                              color: Colors.white,
+                                            ),
+                                            const Text('Fecha de venta:')
+                                          ],
                                         ),
-                                        DataCell(Text(sale.isByCash != null
-                                            ? (sale.isByCash ? 'Efectivo' : 'QR')
-                                            : 'Efectivo')),
-                                        DataCell(Text(sale.totalPrice.toString())),
-                                      ],
-                                      selected: index == indexSelected,
-                                      onSelectChanged: (bool? value) {
-                                        ref.read(salesProvider.notifier).changeItemSelected(index);
-                                      }
-                                  );
-                                }
-                              )
-                          ),
+                                        headingRowAlignment:
+                                            MainAxisAlignment.center),
+                                    const DataColumn(
+                                        label: Text('Tipo de pago:')),
+                                    const DataColumn(label: Text('Total:')),
+                                  ],
+                                  rows: List<DataRow>.generate(sales.length,
+                                      (int index) {
+                                    var sale = sales[index];
+                                    return DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(Center(
+                                              child: Text(index.toString()))),
+                                          DataCell(
+                                              Text(sale.clientName ?? 'N/C')),
+                                          DataCell(LabelBorder(
+                                            text: DateFormat('dd-MM-yyyy')
+                                                .format(sale.saleDate),
+                                            textStyle: textTheme.bodySmall!
+                                                .copyWith(color: Colors.white),
+                                            color: Colors.green,
+                                            filled: true,
+                                          )),
+                                          DataCell(Text(sale.isByCash != null
+                                              ? (sale.isByCash
+                                                  ? 'Efectivo'
+                                                  : 'QR')
+                                              : 'Efectivo')),
+                                          DataCell(
+                                              Text(sale.totalPrice.toString())),
+                                        ],
+                                        selected: index == indexSelected,
+                                        onSelectChanged: (bool? value) {
+                                          ref
+                                              .read(salesProvider.notifier)
+                                              .changeItemSelected(index);
+                                        });
+                                  })),
                         ),
                       ),
                     ),
@@ -217,19 +227,23 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               ),
             ),
             Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    spacing: 10,
-                    children: [
-                      Expanded(
-                          child: NoEditableCart(textTheme: textTheme, onHistoryScreen: true,)
-                      ),
-                      const ClientInformationBox(onHistoryScreen: true,),
-                      const SalesInformationBox()
-                    ],
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  spacing: 10,
+                  children: [
+                    Expanded(
+                        child: NoEditableCart(
+                      textTheme: textTheme,
+                      onHistoryScreen: true,
+                    )),
+                    const ClientInformationBox(
+                      onHistoryScreen: true,
+                    ),
+                    const SalesInformationBox()
+                  ],
                 ),
+              ),
             )
           ],
         ),
@@ -237,4 +251,3 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     );
   }
 }
-

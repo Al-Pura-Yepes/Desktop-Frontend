@@ -21,8 +21,8 @@ class SaleCart extends ConsumerWidget {
     return Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,13 +39,14 @@ class SaleCart extends ConsumerWidget {
               child: ListView.builder(
                 itemCount: cartProductsKeys.length,
                 itemBuilder: (context, index) {
-
                   final quantity = cartProducts[cartProductsKeys[index]]!;
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    child: cartProductsKeys[index].weight == null ? ProductVariablePriceSale(
-                        product: cartProductsKeys[index])
-                    : ProductStaticPriceSale(product: cartProductsKeys[index]),
+                    child: cartProductsKeys[index].weight == null
+                        ? ProductVariablePriceSale(
+                            product: cartProductsKeys[index])
+                        : ProductStaticPriceSale(
+                            product: cartProductsKeys[index]),
                   );
                 },
               ),

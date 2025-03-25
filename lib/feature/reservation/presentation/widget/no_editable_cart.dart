@@ -9,11 +9,8 @@ class NoEditableCart extends ConsumerWidget {
   final TextTheme textTheme;
   final bool onHistoryScreen;
 
-  const NoEditableCart({
-    super.key,
-    required this.textTheme,
-    required this.onHistoryScreen
-  });
+  const NoEditableCart(
+      {super.key, required this.textTheme, required this.onHistoryScreen});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,7 +24,8 @@ class NoEditableCart extends ConsumerWidget {
       final sale = ref.watch(salesProvider).sale;
       productsOnMap = sale?.products ?? {};
     } else {
-      isInformationLoaded = ref.watch(reservationProvider).isReservationSelected;
+      isInformationLoaded =
+          ref.watch(reservationProvider).isReservationSelected;
       final reservation = ref.watch(reservationProvider).reservation;
       products = reservation?.products ?? [];
     }
@@ -51,37 +49,42 @@ class NoEditableCart extends ConsumerWidget {
             ),
             Expanded(
               child: isInformationLoaded
-                  ? (onHistoryScreen ? productsOnMap.keys.toList().isEmpty : products.isEmpty)
-                    ? Center(
-                      child: Icon(
-                      Icons.shopping_cart,
-                      color: colorScheme.secondary,
-                      size: 40,
-                      ),
-                    ) : ListView.builder(
-                      itemCount: onHistoryScreen
-                          ? productsOnMap.keys.toList().length
-                          : products.length,
-                      itemBuilder: (context, index) {
-                        var product = onHistoryScreen
-                            ? productsOnMap.keys.toList()[index]
-                            : products[index];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: ProductStaticPriceSale(
-                            product: product,
-                            isEditable: false,
-                            quantity: onHistoryScreen ? productsOnMap[product] : null),
-                        );
-                      },
-                    )
+                  ? (onHistoryScreen
+                          ? productsOnMap.keys.toList().isEmpty
+                          : products.isEmpty)
+                      ? Center(
+                          child: Icon(
+                            Icons.shopping_cart,
+                            color: colorScheme.secondary,
+                            size: 40,
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: onHistoryScreen
+                              ? productsOnMap.keys.toList().length
+                              : products.length,
+                          itemBuilder: (context, index) {
+                            var product = onHistoryScreen
+                                ? productsOnMap.keys.toList()[index]
+                                : products[index];
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: ProductStaticPriceSale(
+                                  product: product,
+                                  isEditable: false,
+                                  quantity: onHistoryScreen
+                                      ? productsOnMap[product]
+                                      : null),
+                            );
+                          },
+                        )
                   : Center(
                       child: Icon(
                         Icons.shopping_cart,
                         color: colorScheme.secondary,
                         size: 40,
                       ),
-              ),
+                    ),
             )
           ],
         ));

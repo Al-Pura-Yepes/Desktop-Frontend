@@ -1,6 +1,4 @@
-enum Status {
-  pending, ready, completed
-}
+enum Status { pending, ready, completed }
 
 Status getStatusFromInt(int statusInteger) {
   switch (statusInteger) {
@@ -23,7 +21,7 @@ int getIntFromStatus(Status status) {
       return 1;
     case Status.completed:
       return 2;
-    }
+  }
 }
 
 String statusToString(Status status) {

@@ -66,7 +66,7 @@ class InventoryScreen extends StatelessWidget {
                           flavor: 'flavor',
                           quantity: 2.0,
                           imageURL:
-                          'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
+                              'https://i.ibb.co/mBtTHMC/probiotico-2l-st-mora.jpg',
                           expirationDateList: []),
                     )
                   ],

@@ -121,8 +121,8 @@ class _StockCounterState extends State<_StockCounter> {
           ),
         ),
         Container(
-          decoration:
-              const BoxDecoration(border: Border.symmetric(horizontal: BorderSide())),
+          decoration: const BoxDecoration(
+              border: Border.symmetric(horizontal: BorderSide())),
           child: Container(
               width: 200,
               height: 40,

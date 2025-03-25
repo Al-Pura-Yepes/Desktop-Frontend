@@ -7,11 +7,8 @@ class DateVisualizer extends StatelessWidget {
   final DateTime dateTime;
   final Status status;
 
-  const DateVisualizer({
-    super.key,
-    required this.dateTime,
-    required this.status
-  });
+  const DateVisualizer(
+      {super.key, required this.dateTime, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +17,19 @@ class DateVisualizer extends StatelessWidget {
     return LabelBorder(
       text: DateFormat('dd-MM-yyyy').format(dateTime),
       textStyle: textTheme.bodySmall!.copyWith(
-          color: status == Status.completed ? Colors.white : determinateColorText(dateTime)),
-      color: status == Status.completed ? Colors.green : determinateColor(dateTime),
+          color: status == Status.completed
+              ? Colors.white
+              : determinateColorText(dateTime)),
+      color: status == Status.completed
+          ? Colors.green
+          : determinateColor(dateTime),
       filled: true,
     );
   }
 
   determinateColor(DateTime date) {
     final now = DateTime.now();
-    
+
     if (date.isAfter(now)) {
       bool isSameDay = date.year == now.year &&
           date.month == now.month &&

@@ -9,14 +9,13 @@ class ConfirmationModal extends ConsumerWidget {
   final Function? onConfirmation;
   final Function? onCanceled;
 
-  const ConfirmationModal({
-    super.key,
-    required this.leftText,
-    required this.highlightedText,
-    required this.rightText,
-    this.onConfirmation,
-    this.onCanceled
-  });
+  const ConfirmationModal(
+      {super.key,
+      required this.leftText,
+      required this.highlightedText,
+      required this.rightText,
+      this.onConfirmation,
+      this.onCanceled});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

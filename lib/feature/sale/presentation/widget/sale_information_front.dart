@@ -165,15 +165,16 @@ class SaleInformationFront extends ConsumerWidget {
                     children: [
                       CustomButton(
                         onPress: () {
-                          ref.read(cartProvider.notifier).setPaymentMethod(true);
+                          ref
+                              .read(cartProvider.notifier)
+                              .setPaymentMethod(true);
                           if (ref.read(cartProvider).isDelivery) {
-                            ref
-                                .read(cartProvider.notifier)
-                                .changeWidgetOption(const SaleInformationBack());
+                            ref.read(cartProvider.notifier).changeWidgetOption(
+                                const SaleInformationBack(), context: context);
                           } else {
                             ref
                                 .read(cartProvider.notifier)
-                                .changeWidgetOption(const ConfirmSale());
+                                .changeWidgetOption(const ConfirmSale(), context: context);
                           }
                         },
                         size: 60,
@@ -186,29 +187,33 @@ class SaleInformationFront extends ConsumerWidget {
                         color: const Color(0xff464C59),
                         icon: Icons.qr_code,
                         onPress: () {
-                          ref.read(cartProvider.notifier).setPaymentMethod(false);
+                          ref
+                              .read(cartProvider.notifier)
+                              .setPaymentMethod(false);
                           if (ref.read(cartProvider).isDelivery) {
-                            ref
-                                .read(cartProvider.notifier)
-                                .changeWidgetOption(const SaleInformationBack());
+                            ref.read(cartProvider.notifier).changeWidgetOption(
+                                const SaleInformationBack(), context: context);
                           } else {
                             ref
                                 .read(cartProvider.notifier)
-                                .changeWidgetOption(const ConfirmSale());
+                                .changeWidgetOption(const ConfirmSale(), context: context);
                           }
                         },
                       ),
                       const SizedBox(width: 10),
                       CustomButton(
-                          size: 60,
-                          color: const Color(0xff1C1897),
-                          icon: Icons.bookmark,
-                          onPress: () {
-                            ref.read(cartProvider.notifier).setIsReservation(true);
-                            ref
-                                .read(cartProvider.notifier)
-                                .changeWidgetOption(const SaleInformationBack());
-                          },),
+                        size: 60,
+                        color: const Color(0xff1C1897),
+                        icon: Icons.bookmark,
+                        onPress: () {
+                          ref
+                              .read(cartProvider.notifier)
+                              .setIsReservation(true);
+                          ref
+                              .read(cartProvider.notifier)
+                              .changeWidgetOption(const SaleInformationBack());
+                        },
+                      ),
                     ],
                   ),
                 ),

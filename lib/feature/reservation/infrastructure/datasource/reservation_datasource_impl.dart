@@ -7,16 +7,18 @@ class ReservationDatasourceImpl extends ReservationDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
-  Future<List<Reservation>> getAllReservations(bool? isStatusAscending, DateTime? dayFiltered) async {
-    var query = firestore.collection('Reservations')
-        .where('isActive', isEqualTo: true);
+  Future<List<Reservation>> getAllReservations(
+      bool? isStatusAscending, DateTime? dayFiltered) async {
+    var query =
+        firestore.collection('Reservations').where('isActive', isEqualTo: true);
 
     if (isStatusAscending != null) {
       query = query.orderBy('status', descending: !isStatusAscending);
     }
 
     if (dayFiltered != null) {
-      var initOfDay = DateTime(dayFiltered.year, dayFiltered.month, dayFiltered.day);
+      var initOfDay =
+          DateTime(dayFiltered.year, dayFiltered.month, dayFiltered.day);
       var endOfDay = dayFiltered.add(const Duration(days: 1));
       query = query.where('deliveryDate', isGreaterThan: initOfDay);
       query = query.where('deliveryDate', isLessThan: endOfDay);
@@ -36,8 +38,8 @@ class ReservationDatasourceImpl extends ReservationDatasource {
   Future<Reservation?> getReservationById(String id) async {
     var docSnapshot = await firestore.collection('Reservations').doc(id).get();
     if (docSnapshot.exists) {
-      var reservation = Reservation.fromMap(
-          docSnapshot.data()!, docSnapshot.id);
+      var reservation =
+          Reservation.fromMap(docSnapshot.data()!, docSnapshot.id);
       return reservation;
     }
     return null;
@@ -49,9 +51,7 @@ class ReservationDatasourceImpl extends ReservationDatasource {
       await firestore
           .collection('Reservations')
           .doc(id)
-          .update({
-        'status': getIntFromStatus(status)
-      });
+          .update({'status': getIntFromStatus(status)});
       return true;
     } on Exception {
       return false;
@@ -61,10 +61,7 @@ class ReservationDatasourceImpl extends ReservationDatasource {
   @override
   Future<bool> confirmPayment(String id, String paymentMethod) async {
     try {
-      await firestore
-          .collection('Reservations')
-          .doc(id)
-          .update({
+      await firestore.collection('Reservations').doc(id).update({
         'status': getIntFromStatus(Status.completed),
         'paymentMethod': paymentMethod
       });
@@ -80,13 +77,10 @@ class ReservationDatasourceImpl extends ReservationDatasource {
       await firestore
           .collection('Reservations')
           .doc(id)
-          .update({
-        'isActive': false
-      });
+          .update({'isActive': false});
       return true;
     } on Exception {
       return false;
     }
   }
-
 }
