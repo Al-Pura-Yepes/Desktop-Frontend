@@ -1,4 +1,5 @@
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -67,10 +68,12 @@ class ProductVariablePriceSale extends ConsumerWidget {
                   validator: (value) {
                     return "error";
                   },
+                  enabled: ref.read(cartProvider).widgetOption is SaleInformationFront,
                   onChanged: (value) {
-                    ref
-                        .read(cartProvider.notifier)
-                        .setItemPrice(product, int.tryParse(value) ?? 0);
+                      ref
+                          .read(cartProvider.notifier)
+                          .setItemPrice(product, int.tryParse(value) ?? 0);
+
                   },
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),

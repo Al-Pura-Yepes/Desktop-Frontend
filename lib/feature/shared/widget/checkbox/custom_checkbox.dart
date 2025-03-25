@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toastification/toastification.dart';
 
 class CustomCheckbox extends StatefulWidget {
   final String title;

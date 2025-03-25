@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomTitleField extends StatelessWidget {
   final Color color;
+  final String? initialValue;
   final String title;
   final void Function(String value) onPress;
 
@@ -9,7 +10,8 @@ class CustomTitleField extends StatelessWidget {
       {super.key,
       this.color = Colors.white,
       required this.title,
-      required this.onPress});
+      required this.onPress,
+      this.initialValue});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class CustomTitleField extends StatelessWidget {
             ),
             Expanded(
               child: TextFormField(
+                initialValue: initialValue,
                 onChanged: (value) => onPress(value),
                 cursorColor: color,
                 decoration: InputDecoration(

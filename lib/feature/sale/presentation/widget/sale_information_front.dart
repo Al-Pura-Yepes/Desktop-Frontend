@@ -211,7 +211,7 @@ class SaleInformationFront extends ConsumerWidget {
                               .setIsReservation(true);
                           ref
                               .read(cartProvider.notifier)
-                              .changeWidgetOption(const SaleInformationBack());
+                              .changeWidgetOption(const SaleInformationBack(), context: context);
                         },
                       ),
                     ],

@@ -2,6 +2,7 @@
 import 'package:al_pura_frontend/feature/sale/domain/model/sale.dart';
 import 'package:al_pura_frontend/feature/sale/domain/repository/sale_repository.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/sale_respository_provider.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/widget/confirm_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_back.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
@@ -42,6 +43,23 @@ class CartState {
       this.variablesItems = const {}
       });
 
+  CartState resetValues(){
+    return CartState(
+        products: const {},
+        isDelivery: false,
+        isPerMajor: false,
+        totalPrice: 0,
+        discount: 0,
+        widgetOption: const SaleInformationFront(),
+        lastWidget: const SaleInformationFront(),
+        saleDate: null,
+        reservationDate: null,
+        isByCash: true,
+        clientPhone: null,
+        clientName: null,
+        isReservation: false);
+  }
+
   CartState copyWith(
       {Map<Product, double>? products,
       bool? isDelivery,
@@ -71,7 +89,7 @@ class CartState {
         isByCash: isByCash ?? this.isByCash,
         reservationDate: reservationDate ?? this.reservationDate,
         saleDate: saleDate ?? this.saleDate,
-        variablesItems: variableItems ?? this.variablesItems);
+        variablesItems: variableItems ?? variablesItems);
   }
 }
 
@@ -81,8 +99,7 @@ class CartNotifier extends StateNotifier<CartState> {
   CartNotifier({required this.repository}) : super(CartState());
 
   void addItemToCart(Product product) {
-    if (state.widgetOption is SaleInformationFront ||
-        state.widgetOption is SaleInformationBack) {
+    if (state.widgetOption is SaleInformationFront) {
       if (state.products[product] == null) {
 
         if (product.weight == null){
@@ -103,8 +120,7 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void deleteItemFromCart(Product product) {
-    if (state.widgetOption is SaleInformationFront ||
-        state.widgetOption is SaleInformationBack) {
+    if (state.widgetOption is SaleInformationFront) {
       Map<Product, double> auxMap = {...state.products};
       final quantity = auxMap.remove(product)!;
 
@@ -125,8 +141,7 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void setItemQuantity(Product product, int newQuantity) {
-    if (state.widgetOption is SaleInformationFront ||
-        state.widgetOption is SaleInformationBack) {
+    if (state.widgetOption is SaleInformationFront) {
       if (state.products.containsKey(product)) {
         final auxMap = {...state.products};
         final lastQuantity = auxMap[product]!;
@@ -143,8 +158,7 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void setItemPrice(Product product, int newPrice) {
-    if (state.widgetOption is SaleInformationFront ||
-        state.widgetOption is SaleInformationBack) {
+    if (state.widgetOption is SaleInformationFront) {
       if (state.products.containsKey(product)) {
         final auxMap = {...state.products};
         final lastPrice = auxMap[product]!;
@@ -190,16 +204,61 @@ class CartNotifier extends StateNotifier<CartState> {
       return;
     }
 
-    for (double value in state.variablesItems.values){
-      if (value == 0 && context != null){
+
+    if (newOption is SaleInformationBack || newOption is ConfirmSale){
+      for (double value in state.variablesItems.values){
+        if (value == 0 && context != null){
+          CustomToast.showToastNotification(
+              context,
+              icon: const Icon(Icons.error),
+              title: 'Productos sin precio',
+              description: 'Revisa el carrito, hay productos sin precio',
+              bgColor: Colors.red
+          );
+          return;
+        }
+      }
+    }
+
+    if (newOption is ConfirmSale && state.isReservation){
+      if (state.reservationDate == null && context != null){
         CustomToast.showToastNotification(
             context,
             icon: const Icon(Icons.error),
-            title: 'Productos sin precio',
-            description: 'Revisa el carrito, hay productos sin precio',
+            title: 'Ingresa la fecha de reserva',
+            description: 'Debes introducir la fecha par la reserva',
             bgColor: Colors.red
         );
         return;
+      }
+    }
+
+
+    if (newOption is ConfirmSale && (state.isReservation || state.isDelivery)){
+      if ((state.clientName == null || state.clientName == "") && context != null){
+        CustomToast.showToastNotification(
+            context,
+            icon: const Icon(Icons.error),
+            title: 'Ingresa el nombre del cliente',
+            description: 'Debes introducir el nombre del cliente',
+            bgColor: Colors.red
+        );
+        return;
+      }
+    }
+
+    if (newOption is SaleInformationBack || newOption is ConfirmSale){
+      for (var entry in state.products.entries){
+        if ((entry.key.quantity < entry.value) && context != null){
+          CustomToast.showToastNotification(
+              context,
+              icon: const Icon(Icons.warning),
+              title: 'Producto sin stock',
+              description: 'Estas agregando productos sin tenerlos en stock',
+              bgColor: Colors.deepOrangeAccent
+          );
+          break;
+        }
       }
     }
 
@@ -220,20 +279,7 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void resetCart() {
-    state = state.copyWith(
-        products: const {},
-        isDelivery: false,
-        isPerMajor: false,
-        totalPrice: 0,
-        discount: 0,
-        widgetOption: const SaleInformationFront(),
-        lastWidget: const SaleInformationFront(),
-        saleDate: null,
-        reservationDate: null,
-        isByCash: true,
-        clientPhone: null,
-        clientName: null,
-        isReservation: false);
+    state = state.resetValues();
   }
 
   void setClientName(String newClientName) {
@@ -248,7 +294,9 @@ class CartNotifier extends StateNotifier<CartState> {
     state = state.copyWith(isByCash: newIsByCash);
   }
 
-  void setReservationDate(DateTime date) {}
+  void setReservationDate(DateTime date) {
+    state = state.copyWith(reservationDate: date);
+  }
 }
 
 final cartProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {

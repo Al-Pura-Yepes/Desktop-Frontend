@@ -1,3 +1,4 @@
+import 'package:al_pura_frontend/config/theme/app_theme.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,7 @@ class _ProductCardState extends State<ProductCard> {
     return Container(
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
+          color: _getQuantityColor(),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: _getQuantityColor(), width: 3)),
       child: Stack(
@@ -101,6 +103,12 @@ class _FrontCard extends StatelessWidget {
           Image.network(
             product.imageURL,
             fit: BoxFit.fill,
+            loadingBuilder: (context, child, loadingProgress) {
+              return Container(
+                color: Colors.grey,
+                child: child,
+              );
+            },
           ),
           Positioned(
               bottom: 0,

@@ -33,72 +33,76 @@ class ProductStaticPriceSale extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          !isEditable
-              ? LabelBorder(
-                  text: productQuantity.toStringAsFixed(2),
-                  textStyle: textTheme.bodyMedium!,
-                )
-              : QuantityCounter(
-                  callback: (quantity) {
-                    ref
-                        .read(cartProvider.notifier)
-                        .setItemQuantity(product, quantity);
-                  },
-                ),
-          const SizedBox(
-            width: 15,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(product.category, style: textTheme.titleSmall),
-              Text(
-                '${product.flavor} - ${product.weight}',
-                style: textTheme.bodySmall,
-              )
-            ],
-          ),
-          const Spacer(),
-          SizedBox(
-            width: 130,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+    return Container(
+      color: product.quantity < (ref.watch(cartProvider).products[product] ?? 0) ? Colors.deepOrangeAccent : Colors.transparent,
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            !isEditable
+                ? LabelBorder(
+                    text: productQuantity.toStringAsFixed(2),
+                    textStyle: textTheme.bodyMedium!,
+                  )
+                : QuantityCounter(
+                    callback: (quantity) {
+                      ref
+                          .read(cartProvider.notifier)
+                          .setItemQuantity(product, quantity);
+                    },
+                  ),
+            const SizedBox(
+              width: 15,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Bs',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
+                Text(product.category, style: textTheme.titleSmall),
                 Text(
-                  (product.price! * productQuantity).toStringAsFixed(2),
-                  style: textTheme.bodyLarge,
-                ),
+                  '${product.flavor} - ${product.weight}',
+                  style: textTheme.bodySmall,
+                )
               ],
             ),
-          ),
-          const SizedBox(
-            width: 40,
-          ),
-          !isEditable
-              ? const SizedBox.shrink()
-              : IconButton(
-                  onPressed: () {
-                    ref.read(cartProvider.notifier).deleteItemFromCart(product);
-                  },
-                  icon: const Icon(
-                    Icons.delete,
-                    size: 30,
-                    color: Colors.red,
-                  ))
-        ],
+            const Spacer(),
+            SizedBox(
+              width: 130,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    'Bs',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    (product.price! * productQuantity).toStringAsFixed(2),
+                    style: textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            !isEditable
+                ? const SizedBox.shrink()
+                : IconButton(
+                    onPressed: () {
+                      ref.read(cartProvider.notifier).deleteItemFromCart(product);
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      size: 30,
+                      color: Colors.red,
+                    ))
+          ],
+        ),
       ),
     );
   }

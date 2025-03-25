@@ -77,6 +77,7 @@ class SaleInformationBack extends ConsumerWidget {
                       width: constraints.maxWidth * 0.45,
                       child: CustomTitleField(
                         title: 'Nombre del cliente',
+                        initialValue: ref.watch(cartProvider).clientName,
                         onPress: (value) => ref
                             .read(cartProvider.notifier)
                             .setClientName(value),
@@ -85,6 +86,7 @@ class SaleInformationBack extends ConsumerWidget {
                       width: constraints.maxWidth * 0.45,
                       child: CustomTitleField(
                           title: 'Celular del cliente',
+                          initialValue: ref.watch(cartProvider).clientPhone,
                           onPress: (value) => ref
                               .read(cartProvider.notifier)
                               .setClientPhone(value))),
@@ -133,6 +135,7 @@ class SaleInformationBack extends ConsumerWidget {
                       height: constraints.maxHeight * 0.22,
                       width: constraints.maxWidth * 0.45,
                       child: CustomDatePickerField(
+                        initialDate: ref.watch(cartProvider).reservationDate,
                         color: Colors.black,
                         title: 'Fecha de reserva',
                         onDateSelected: (date) {
@@ -161,7 +164,7 @@ class SaleInformationBack extends ConsumerWidget {
                         onPress: () {
                           ref
                               .read(cartProvider.notifier)
-                              .changeWidgetOption(const ConfirmSale());
+                              .changeWidgetOption(const ConfirmSale(), context: context);
                         },
                       ),
                       const SizedBox(
@@ -179,7 +182,7 @@ class SaleInformationBack extends ConsumerWidget {
                               .setIsReservation(false);
                           ref
                               .read(cartProvider.notifier)
-                              .changeWidgetOption(const SaleInformationFront());
+                              .changeWidgetOption(const SaleInformationFront(), context: context);
                         },
                       ),
                     ],

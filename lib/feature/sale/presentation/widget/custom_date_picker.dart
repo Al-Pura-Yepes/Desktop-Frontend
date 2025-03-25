@@ -1,9 +1,12 @@
+import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class CustomDatePickerField extends StatefulWidget {
+class CustomDatePickerField extends ConsumerStatefulWidget {
   final Color color;
   final String title;
+  final DateTime? initialDate;
   final void Function(DateTime date) onDateSelected;
 
   const CustomDatePickerField({
@@ -11,14 +14,21 @@ class CustomDatePickerField extends StatefulWidget {
     this.color = Colors.white,
     required this.title,
     required this.onDateSelected,
+    this.initialDate
   });
 
   @override
-  State<CustomDatePickerField> createState() => _CustomDatePickerFieldState();
+  _CustomDatePickerFieldState createState() => _CustomDatePickerFieldState();
 }
 
-class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
+class _CustomDatePickerFieldState extends ConsumerState<CustomDatePickerField> {
   DateTime? date;
+
+  @override
+  void initState() {
+    super.initState();
+    date = widget.initialDate;
+  }
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -58,6 +68,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
                   if (pickedDate != null) {
                     widget.onDateSelected(pickedDate);
                     setState(() {
+                      ref.read(cartProvider.notifier).setReservationDate(pickedDate);
                       date = pickedDate;
                     });
                   }
