@@ -1,8 +1,6 @@
 import 'package:al_pura_frontend/feature/reservation/domain/model/reservation.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
-import 'package:al_pura_frontend/feature/reservation/domain/repository/reservation_repository.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
-import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_repository_provider.dart';
 import 'package:al_pura_frontend/feature/sale/domain/repository/sale_repository.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/sale_respository_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/confirm_sale.dart';
@@ -40,7 +38,7 @@ class CartState {
       this.isPerMajor = false,
       this.totalPrice = 0,
       this.discount = 0,
-        this.subtotal = 0,
+      this.subtotal = 0,
       this.widgetOption = const SaleInformationFront(),
       this.lastWidget = const SaleInformationFront(),
       this.isReservation = false,
@@ -49,10 +47,9 @@ class CartState {
       this.isByCash = true,
       this.reservationDate,
       this.saleDate,
-      this.variablesItems = const {}
-      });
+      this.variablesItems = const {}});
 
-  CartState resetValues(){
+  CartState resetValues() {
     return CartState(
         products: const {},
         isDelivery: false,
@@ -76,7 +73,7 @@ class CartState {
       bool? isPerMajor,
       double? totalPrice,
       double? discount,
-        double? subtotal,
+      double? subtotal,
       Widget? widgetOption,
       Widget? lastWidget,
       bool? isReservation,
@@ -86,7 +83,6 @@ class CartState {
       DateTime? reservationDate,
       DateTime? saleDate,
       Map<String, double>? variableItems}) {
-
     return CartState(
         products: products ?? this.products,
         isDelivery: isDelivery ?? this.isDelivery,
@@ -111,16 +107,18 @@ class CartNotifier extends StateNotifier<CartState> {
   final void Function(Reservation reservation) createReservationCallback;
   final void Function(Map<Product, double>) decreaseItemsCallback;
 
-  CartNotifier({required this.saleRepository, required this.decreaseItemsCallback, required this.createReservationCallback}) : super(CartState());
+  CartNotifier(
+      {required this.saleRepository,
+      required this.decreaseItemsCallback,
+      required this.createReservationCallback})
+      : super(CartState());
 
   void addItemToCart(Product product) {
     if (state.widgetOption is SaleInformationFront) {
       if (state.products[product] == null) {
-
-        if (product.weight == null){
+        if (product.weight == null) {
           state = state.copyWith(
-            variableItems: {...state.variablesItems, product.id: 0}
-          );
+              variableItems: {...state.variablesItems, product.id: 0});
         }
 
         state = state.copyWith(
@@ -128,10 +126,12 @@ class CartNotifier extends StateNotifier<CartState> {
               ...state.products,
               product: product.weight == null ? 0 : 1
             },
-            subtotal: state.subtotal +
-                (product.weight == null ? 0 : product.price!),
-            totalPrice: state.totalPrice + state.discount +
-                (product.weight == null ? 0 : product.price!) - state.discount);
+            subtotal:
+                state.subtotal + (product.weight == null ? 0 : product.price!),
+            totalPrice: state.totalPrice +
+                state.discount +
+                (product.weight == null ? 0 : product.price!) -
+                state.discount);
       }
     }
   }
@@ -141,12 +141,10 @@ class CartNotifier extends StateNotifier<CartState> {
       Map<Product, double> auxMap = {...state.products};
       final quantity = auxMap.remove(product)!;
 
-      if (product.weight == null){
+      if (product.weight == null) {
         final auxVariableMap = {...state.variablesItems};
         auxVariableMap.remove(product.id);
-        state = state.copyWith(
-            variableItems: {...auxVariableMap}
-        );
+        state = state.copyWith(variableItems: {...auxVariableMap});
       }
 
       state = state.copyWith(
@@ -170,14 +168,16 @@ class CartNotifier extends StateNotifier<CartState> {
             products: {...auxMap},
             subtotal: lastQuantity < newQuantity
                 ? state.subtotal +
-                ((product.price ?? 0) * (newQuantity - lastQuantity))
+                    ((product.price ?? 0) * (newQuantity - lastQuantity))
                 : state.subtotal -
-                ((product.price ?? 0) * (lastQuantity - newQuantity)),
+                    ((product.price ?? 0) * (lastQuantity - newQuantity)),
             totalPrice: lastQuantity < newQuantity
                 ? state.totalPrice +
-                    ((product.price ?? 0) * (newQuantity - lastQuantity)) - state.discount
+                    ((product.price ?? 0) * (newQuantity - lastQuantity)) -
+                    state.discount
                 : state.totalPrice -
-                    ((product.price ?? 0) * (lastQuantity - newQuantity))- state.discount);
+                    ((product.price ?? 0) * (lastQuantity - newQuantity)) -
+                    state.discount);
       }
     }
   }
@@ -196,15 +196,19 @@ class CartNotifier extends StateNotifier<CartState> {
             products: {...auxMap},
             variableItems: {...auxVariableMap},
             subtotal: state.subtotal - lastPrice + newPrice,
-        totalPrice: state.totalPrice + state.discount - lastPrice + newPrice - state.discount);
+            totalPrice: state.totalPrice +
+                state.discount -
+                lastPrice +
+                newPrice -
+                state.discount);
       }
     }
   }
 
-  Map<Product, double> getItemsCorrectFormat(){
+  Map<Product, double> getItemsCorrectFormat() {
     Map<Product, double> correctItems = {};
-    for (final entry in state.products.entries){
-      if (entry.key.weight == null){
+    for (final entry in state.products.entries) {
+      if (entry.key.weight == null) {
         correctItems[entry.key] = state.variablesItems[entry.key.id]!;
       } else {
         correctItems[entry.key] = entry.value;
@@ -214,21 +218,20 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void sale() async {
-
-    if (state.isReservation){
-      createReservationCallback(
-          Reservation(
-              client: User(id: "", fullName: state.clientName ?? "", phoneNumber: int.tryParse(state.clientPhone ?? "0") ?? 0),
-              deliveryDate: state.reservationDate!,
-              discount: state.discount,
-              totalPrice: state.totalPrice,
-              status: Status.pending,
-              isDelivery: state.isDelivery,
-              isPerMajor: state.isPerMajor,
-              isActive: true,
-              products: state.products.keys.toList()
-          )
-      );
+    if (state.isReservation) {
+      createReservationCallback(Reservation(
+          client: User(
+              id: "",
+              fullName: state.clientName ?? "",
+              phoneNumber: int.tryParse(state.clientPhone ?? "0") ?? 0),
+          deliveryDate: state.reservationDate!,
+          discount: state.discount,
+          totalPrice: state.totalPrice,
+          status: Status.pending,
+          isDelivery: state.isDelivery,
+          isPerMajor: state.isPerMajor,
+          isActive: true,
+          products: state.products.keys.toList()));
     } else {
       await saleRepository.createSale(Sale(
           products: state.products,
@@ -244,76 +247,66 @@ class CartNotifier extends StateNotifier<CartState> {
           saleDate: state.saleDate ?? DateTime.now()));
       decreaseItemsCallback(getItemsCorrectFormat());
     }
-
   }
 
   void changeWidgetOption(Widget newOption, {BuildContext? context}) {
     if (state.products.isEmpty) {
-      if (context != null){
-        CustomToast.showToastNotification(
-            context,
+      if (context != null) {
+        CustomToast.showToastNotification(context,
             icon: const Icon(Icons.error),
             title: 'Carrito vacio',
             description: 'Ingresa productos al carrito',
-            bgColor: Colors.red
-        );
+            bgColor: Colors.red);
       }
       return;
     }
 
-
-    if (newOption is SaleInformationBack || newOption is ConfirmSale){
-      for (double value in state.variablesItems.values){
-        if (value == 0 && context != null){
-          CustomToast.showToastNotification(
-              context,
+    if (newOption is SaleInformationBack || newOption is ConfirmSale) {
+      for (double value in state.variablesItems.values) {
+        if (value == 0 && context != null) {
+          CustomToast.showToastNotification(context,
               icon: const Icon(Icons.error),
               title: 'Productos sin precio',
               description: 'Revisa el carrito, hay productos sin precio',
-              bgColor: Colors.red
-          );
+              bgColor: Colors.red);
           return;
         }
       }
     }
 
-    if (newOption is ConfirmSale && state.isReservation){
-      if (state.reservationDate == null && context != null){
-        CustomToast.showToastNotification(
-            context,
+    if (newOption is ConfirmSale && state.isReservation) {
+      if (state.reservationDate == null && context != null) {
+        CustomToast.showToastNotification(context,
             icon: const Icon(Icons.error),
             title: 'Ingresa la fecha de reserva',
             description: 'Debes introducir la fecha par la reserva',
-            bgColor: Colors.red
-        );
+            bgColor: Colors.red);
         return;
       }
     }
 
-
-    if (newOption is ConfirmSale && (state.isReservation || state.isDelivery)){
-      if ((state.clientName == null || state.clientName == "") && context != null){
-        CustomToast.showToastNotification(
-            context,
+    if (newOption is ConfirmSale && (state.isReservation || state.isDelivery)) {
+      if ((state.clientName == null || state.clientName == "") &&
+          context != null) {
+        CustomToast.showToastNotification(context,
             icon: const Icon(Icons.error),
             title: 'Ingresa el nombre del cliente',
             description: 'Debes introducir el nombre del cliente',
-            bgColor: Colors.red
-        );
+            bgColor: Colors.red);
         return;
       }
     }
 
-    if (newOption is SaleInformationBack || newOption is ConfirmSale){
-      for (var entry in state.products.entries){
-        if ((entry.key.quantity < entry.value) && context != null && entry.key.weight != null){
-          CustomToast.showToastNotification(
-              context,
+    if (newOption is SaleInformationBack || newOption is ConfirmSale) {
+      for (var entry in state.products.entries) {
+        if ((entry.key.quantity < entry.value) &&
+            context != null &&
+            entry.key.weight != null) {
+          CustomToast.showToastNotification(context,
               icon: const Icon(Icons.warning),
               title: 'Producto sin stock',
               description: 'Estas agregando productos sin tenerlos en stock',
-              bgColor: Colors.deepOrangeAccent
-          );
+              bgColor: Colors.deepOrangeAccent);
           break;
         }
       }
@@ -327,8 +320,9 @@ class CartNotifier extends StateNotifier<CartState> {
     state = state.copyWith(isReservation: status);
   }
 
-  void decrementQuantity(double discount){
-    state = state.copyWith(discount: discount, totalPrice: state.subtotal - discount);
+  void decrementQuantity(double discount) {
+    state = state.copyWith(
+        discount: discount, totalPrice: state.subtotal - discount);
   }
 
   void toggleIsDelivery() {
@@ -362,7 +356,11 @@ class CartNotifier extends StateNotifier<CartState> {
 
 final cartProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
   final repository = ref.read(saleRepositoryProvider);
-  final reservationCallback = ref.read(reservationProvider.notifier).createReservation;
+  final reservationCallback =
+      ref.read(reservationProvider.notifier).createReservation;
   final callback = ref.read(productsProvider.notifier).decrementItemsByCart;
-  return CartNotifier(saleRepository: repository, decreaseItemsCallback: callback, createReservationCallback: reservationCallback);
+  return CartNotifier(
+      saleRepository: repository,
+      decreaseItemsCallback: callback,
+      createReservationCallback: reservationCallback);
 });

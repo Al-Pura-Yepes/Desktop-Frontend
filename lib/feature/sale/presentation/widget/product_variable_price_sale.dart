@@ -19,7 +19,6 @@ class ProductVariablePriceSale extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     //final quantity = ref.watch(cartProvider).products[product]!;
     double productQuantity = quantity ?? 0;
     if (quantity == null) {
@@ -68,12 +67,12 @@ class ProductVariablePriceSale extends ConsumerWidget {
                   validator: (value) {
                     return "error";
                   },
-                  enabled: ref.read(cartProvider).widgetOption is SaleInformationFront,
+                  enabled: ref.read(cartProvider).widgetOption
+                      is SaleInformationFront,
                   onChanged: (value) {
-                      ref
-                          .read(cartProvider.notifier)
-                          .setItemPrice(product, int.tryParse(value) ?? 0);
-
+                    ref
+                        .read(cartProvider.notifier)
+                        .setItemPrice(product, int.tryParse(value) ?? 0);
                   },
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),

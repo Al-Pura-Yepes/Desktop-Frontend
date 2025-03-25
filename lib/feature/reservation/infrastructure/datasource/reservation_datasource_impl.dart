@@ -7,7 +7,7 @@ class ReservationDatasourceImpl extends ReservationDatasource {
   late FirebaseFirestore firestore;
   late CollectionReference reservations;
 
-  ReservationDatasourceImpl(){
+  ReservationDatasourceImpl() {
     firestore = FirebaseFirestore.instance;
     reservations = firestore.collection('Reservations');
   }
@@ -91,7 +91,7 @@ class ReservationDatasourceImpl extends ReservationDatasource {
   }
 
   @override
-  Future<Reservation> createReservation(Reservation reservation) async{
+  Future<Reservation> createReservation(Reservation reservation) async {
     try {
       await reservations.add(reservation.toJson());
       return reservation;

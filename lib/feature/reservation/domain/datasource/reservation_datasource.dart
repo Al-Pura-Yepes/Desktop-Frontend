@@ -9,5 +9,4 @@ abstract class ReservationDatasource {
   Future<bool> confirmPayment(String id, String paymentMethod);
   Future<bool> deleteReservation(String id);
   Future<Reservation> createReservation(Reservation reservation);
-
 }

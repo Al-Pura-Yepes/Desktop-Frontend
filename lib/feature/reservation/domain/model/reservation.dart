@@ -68,7 +68,6 @@ class Reservation extends IEntity {
             (map['paymentMethod'] != null) ? map['paymentMethod'] : null);
   }
 
-
   Map<String, dynamic> toJson() {
     return {
       "client": client.toMap(),
@@ -83,5 +82,4 @@ class Reservation extends IEntity {
       "paymentMethod": paymentMethod,
     };
   }
-
 }

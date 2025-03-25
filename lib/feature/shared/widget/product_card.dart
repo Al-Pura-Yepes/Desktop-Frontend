@@ -59,7 +59,9 @@ class _ProductCardState extends State<ProductCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.product.weight == null ? widget.product.quantity.toStringAsFixed(2) : widget.product.quantity.toString(),
+                        widget.product.weight == null
+                            ? widget.product.quantity.toStringAsFixed(2)
+                            : widget.product.quantity.toString(),
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),

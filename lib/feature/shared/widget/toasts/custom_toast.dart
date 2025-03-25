@@ -14,8 +14,15 @@ class CustomToast {
         type: ToastificationType.success,
         style: ToastificationStyle.fillColored,
         autoCloseDuration: const Duration(seconds: 4),
-        title: Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-        description: RichText(text: TextSpan(text: description, style: const TextStyle(color: Colors.white))),
+        title: Text(
+          title,
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        description: RichText(
+            text: TextSpan(
+                text: description,
+                style: const TextStyle(color: Colors.white))),
         alignment: Alignment.topRight,
         direction: TextDirection.ltr,
         animationDuration: const Duration(milliseconds: 300),
@@ -23,14 +30,10 @@ class CustomToast {
         showIcon: icon != null,
         primaryColor: bgColor,
 
-
-
         //backgroundColor: Colors.white,
         //foregroundColor: Colors.red,
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8),
-          bottomLeft: Radius.circular(8)
-        ),
+            topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
         boxShadow: const [
           BoxShadow(
             color: Color(0x07000000),

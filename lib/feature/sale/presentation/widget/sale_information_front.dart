@@ -146,7 +146,7 @@ class SaleInformationFront extends ConsumerWidget {
                         'Bs. ',
                         style: textTheme.bodyMedium,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 100,
                         height: 60,
                         child: _DiscountField(),
@@ -176,11 +176,12 @@ class SaleInformationFront extends ConsumerWidget {
                               .setPaymentMethod(true);
                           if (ref.read(cartProvider).isDelivery) {
                             ref.read(cartProvider.notifier).changeWidgetOption(
-                                const SaleInformationBack(), context: context);
+                                const SaleInformationBack(),
+                                context: context);
                           } else {
-                            ref
-                                .read(cartProvider.notifier)
-                                .changeWidgetOption(const ConfirmSale(), context: context);
+                            ref.read(cartProvider.notifier).changeWidgetOption(
+                                const ConfirmSale(),
+                                context: context);
                           }
                         },
                         size: 60,
@@ -198,11 +199,12 @@ class SaleInformationFront extends ConsumerWidget {
                               .setPaymentMethod(false);
                           if (ref.read(cartProvider).isDelivery) {
                             ref.read(cartProvider.notifier).changeWidgetOption(
-                                const SaleInformationBack(), context: context);
+                                const SaleInformationBack(),
+                                context: context);
                           } else {
-                            ref
-                                .read(cartProvider.notifier)
-                                .changeWidgetOption(const ConfirmSale(), context: context);
+                            ref.read(cartProvider.notifier).changeWidgetOption(
+                                const ConfirmSale(),
+                                context: context);
                           }
                         },
                       ),
@@ -215,9 +217,9 @@ class SaleInformationFront extends ConsumerWidget {
                           ref
                               .read(cartProvider.notifier)
                               .setIsReservation(true);
-                          ref
-                              .read(cartProvider.notifier)
-                              .changeWidgetOption(const SaleInformationBack(), context: context);
+                          ref.read(cartProvider.notifier).changeWidgetOption(
+                              const SaleInformationBack(),
+                              context: context);
                         },
                       ),
                     ],
@@ -243,7 +245,7 @@ class SaleInformationFront extends ConsumerWidget {
 }
 
 class _DiscountField extends ConsumerStatefulWidget {
-  const _DiscountField({super.key});
+  const _DiscountField();
 
   @override
   ConsumerState<_DiscountField> createState() => _DiscountFieldState();
@@ -283,7 +285,9 @@ class _DiscountFieldState extends ConsumerState<_DiscountField> {
       controller: _controller,
       enabled: ref.read(cartProvider).widgetOption is SaleInformationFront,
       onChanged: (value) {
-        ref.read(cartProvider.notifier).decrementQuantity(double.tryParse(value) ?? 0);
+        ref
+            .read(cartProvider.notifier)
+            .decrementQuantity(double.tryParse(value) ?? 0);
       },
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       inputFormatters: [

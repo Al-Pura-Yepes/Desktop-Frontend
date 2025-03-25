@@ -51,11 +51,10 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
         dayFiltered: state.dayFiltered);
   }
 
-  createReservation(Reservation newReservation) async{
+  createReservation(Reservation newReservation) async {
     await repository.createReservation(newReservation);
-    state = state.copyWith(
-      reservations: [...state.reservations, newReservation]
-    );
+    state =
+        state.copyWith(reservations: [...state.reservations, newReservation]);
   }
 
   changeItemSelected(int index) {

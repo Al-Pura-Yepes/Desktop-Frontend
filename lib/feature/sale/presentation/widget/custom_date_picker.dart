@@ -9,13 +9,12 @@ class CustomDatePickerField extends ConsumerStatefulWidget {
   final DateTime? initialDate;
   final void Function(DateTime date) onDateSelected;
 
-  const CustomDatePickerField({
-    super.key,
-    this.color = Colors.white,
-    required this.title,
-    required this.onDateSelected,
-    this.initialDate
-  });
+  const CustomDatePickerField(
+      {super.key,
+      this.color = Colors.white,
+      required this.title,
+      required this.onDateSelected,
+      this.initialDate});
 
   @override
   _CustomDatePickerFieldState createState() => _CustomDatePickerFieldState();
@@ -29,6 +28,7 @@ class _CustomDatePickerFieldState extends ConsumerState<CustomDatePickerField> {
     super.initState();
     date = widget.initialDate;
   }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -68,7 +68,9 @@ class _CustomDatePickerFieldState extends ConsumerState<CustomDatePickerField> {
                   if (pickedDate != null) {
                     widget.onDateSelected(pickedDate);
                     setState(() {
-                      ref.read(cartProvider.notifier).setReservationDate(pickedDate);
+                      ref
+                          .read(cartProvider.notifier)
+                          .setReservationDate(pickedDate);
                       date = pickedDate;
                     });
                   }

@@ -162,9 +162,9 @@ class SaleInformationBack extends ConsumerWidget {
                         icon: Icons.check,
                         iconColor: Colors.green,
                         onPress: () {
-                          ref
-                              .read(cartProvider.notifier)
-                              .changeWidgetOption(const ConfirmSale(), context: context);
+                          ref.read(cartProvider.notifier).changeWidgetOption(
+                              const ConfirmSale(),
+                              context: context);
                         },
                       ),
                       const SizedBox(
@@ -180,9 +180,9 @@ class SaleInformationBack extends ConsumerWidget {
                           ref
                               .read(cartProvider.notifier)
                               .setIsReservation(false);
-                          ref
-                              .read(cartProvider.notifier)
-                              .changeWidgetOption(const SaleInformationFront(), context: context);
+                          ref.read(cartProvider.notifier).changeWidgetOption(
+                              const SaleInformationFront(),
+                              context: context);
                         },
                       ),
                     ],

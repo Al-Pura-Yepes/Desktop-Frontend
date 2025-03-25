@@ -34,7 +34,9 @@ class ProductStaticPriceSale extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      color: product.quantity < (ref.watch(cartProvider).products[product] ?? 0) ? Colors.deepOrangeAccent : Colors.transparent,
+      color: product.quantity < (ref.watch(cartProvider).products[product] ?? 0)
+          ? Colors.deepOrangeAccent
+          : Colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -94,7 +96,9 @@ class ProductStaticPriceSale extends ConsumerWidget {
                 ? const SizedBox.shrink()
                 : IconButton(
                     onPressed: () {
-                      ref.read(cartProvider.notifier).deleteItemFromCart(product);
+                      ref
+                          .read(cartProvider.notifier)
+                          .deleteItemFromCart(product);
                     },
                     icon: const Icon(
                       Icons.delete,
