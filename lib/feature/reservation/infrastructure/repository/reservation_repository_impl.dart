@@ -33,4 +33,9 @@ class ReservationRepositoryImpl extends ReservationRepository {
   Future<bool> deleteReservation(String id) {
     return datasource.deleteReservation(id);
   }
+
+  @override
+  Future<Reservation> createReservation(Reservation reservation) {
+    return datasource.createReservation(reservation);
+  }
 }

@@ -58,4 +58,21 @@ class ProductDatasourceImpl implements ProductDatasource {
     }
     return fetchProduct;
   }
+
+  @override
+  Future<void> decrementItemsByCart(Map<Product, double> cartItems) async {
+    try {
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      for (var entry in cartItems.entries) {
+        Product product = entry.key;
+        double decrementedQuantity = product.quantity - entry.value;
+        double newQuantity = decrementedQuantity < 0 ? 0 : decrementedQuantity;
+        DocumentReference productRef = products.doc(product.id);
+        batch.update(productRef, {"quantity": newQuantity});
+      }
+      await batch.commit();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

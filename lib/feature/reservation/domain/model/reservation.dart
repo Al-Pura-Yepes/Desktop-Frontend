@@ -67,4 +67,21 @@ class Reservation extends IEntity {
         paymentMethod:
             (map['paymentMethod'] != null) ? map['paymentMethod'] : null);
   }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      "client": client.toMap(),
+      "deliveryDate": Timestamp.fromDate(deliveryDate),
+      "discount": discount,
+      "totalPrice": totalPrice,
+      "status": getIntFromStatus(status),
+      "isDelivery": isDelivery,
+      "isPerMajor": isPerMajor,
+      "isActive": isActive,
+      "products": products.map((product) => product.toJson()).toList(),
+      "paymentMethod": paymentMethod,
+    };
+  }
+
 }

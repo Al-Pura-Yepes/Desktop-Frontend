@@ -4,7 +4,13 @@ import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReservationDatasourceImpl extends ReservationDatasource {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  late FirebaseFirestore firestore;
+  late CollectionReference reservations;
+
+  ReservationDatasourceImpl(){
+    firestore = FirebaseFirestore.instance;
+    reservations = firestore.collection('Reservations');
+  }
 
   @override
   Future<List<Reservation>> getAllReservations(
@@ -81,6 +87,16 @@ class ReservationDatasourceImpl extends ReservationDatasource {
       return true;
     } on Exception {
       return false;
+    }
+  }
+
+  @override
+  Future<Reservation> createReservation(Reservation reservation) async{
+    try {
+      await reservations.add(reservation.toJson());
+      return reservation;
+    } catch (e) {
+      rethrow;
     }
   }
 }

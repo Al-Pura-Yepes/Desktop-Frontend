@@ -1,14 +1,21 @@
-
-import 'package:al_pura_frontend/feature/sale/domain/model/sale.dart';
+import 'package:al_pura_frontend/feature/reservation/domain/model/reservation.dart';
+import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
+import 'package:al_pura_frontend/feature/reservation/domain/repository/reservation_repository.dart';
+import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
+import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_repository_provider.dart';
 import 'package:al_pura_frontend/feature/sale/domain/repository/sale_repository.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/providers/sale_respository_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/confirm_sale.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_back.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_information_front.dart';
+import 'package:al_pura_frontend/feature/shared/Provider/products_provider.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/user.dart';
 import 'package:al_pura_frontend/feature/shared/widget/toasts/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../domain/model/sale.dart';
 
 class CartState {
   final Map<Product, double> products;
@@ -16,6 +23,7 @@ class CartState {
   final bool isPerMajor;
   final double totalPrice;
   final double discount;
+  final double subtotal;
   final Widget widgetOption;
   final Widget lastWidget;
   final bool isReservation;
@@ -32,6 +40,7 @@ class CartState {
       this.isPerMajor = false,
       this.totalPrice = 0,
       this.discount = 0,
+        this.subtotal = 0,
       this.widgetOption = const SaleInformationFront(),
       this.lastWidget = const SaleInformationFront(),
       this.isReservation = false,
@@ -50,6 +59,7 @@ class CartState {
         isPerMajor: false,
         totalPrice: 0,
         discount: 0,
+        subtotal: 0,
         widgetOption: const SaleInformationFront(),
         lastWidget: const SaleInformationFront(),
         saleDate: null,
@@ -66,6 +76,7 @@ class CartState {
       bool? isPerMajor,
       double? totalPrice,
       double? discount,
+        double? subtotal,
       Widget? widgetOption,
       Widget? lastWidget,
       bool? isReservation,
@@ -75,6 +86,7 @@ class CartState {
       DateTime? reservationDate,
       DateTime? saleDate,
       Map<String, double>? variableItems}) {
+
     return CartState(
         products: products ?? this.products,
         isDelivery: isDelivery ?? this.isDelivery,
@@ -89,14 +101,17 @@ class CartState {
         isByCash: isByCash ?? this.isByCash,
         reservationDate: reservationDate ?? this.reservationDate,
         saleDate: saleDate ?? this.saleDate,
+        subtotal: subtotal ?? this.subtotal,
         variablesItems: variableItems ?? variablesItems);
   }
 }
 
 class CartNotifier extends StateNotifier<CartState> {
-  final SaleRepository repository;
+  final SaleRepository saleRepository;
+  final void Function(Reservation reservation) createReservationCallback;
+  final void Function(Map<Product, double>) decreaseItemsCallback;
 
-  CartNotifier({required this.repository}) : super(CartState());
+  CartNotifier({required this.saleRepository, required this.decreaseItemsCallback, required this.createReservationCallback}) : super(CartState());
 
   void addItemToCart(Product product) {
     if (state.widgetOption is SaleInformationFront) {
@@ -113,8 +128,10 @@ class CartNotifier extends StateNotifier<CartState> {
               ...state.products,
               product: product.weight == null ? 0 : 1
             },
-            totalPrice: state.totalPrice +
-                (product.weight == null ? 0 : product.price!));
+            subtotal: state.subtotal +
+                (product.weight == null ? 0 : product.price!),
+            totalPrice: state.totalPrice + state.discount +
+                (product.weight == null ? 0 : product.price!) - state.discount);
       }
     }
   }
@@ -134,6 +151,9 @@ class CartNotifier extends StateNotifier<CartState> {
 
       state = state.copyWith(
           products: {...auxMap},
+          subtotal: product.weight == null
+              ? state.subtotal - quantity
+              : state.subtotal - ((product.price ?? 0) * quantity),
           totalPrice: product.weight == null
               ? state.totalPrice - quantity
               : state.totalPrice - ((product.price ?? 0) * quantity));
@@ -148,11 +168,16 @@ class CartNotifier extends StateNotifier<CartState> {
         auxMap[product] = newQuantity.toDouble();
         state = state.copyWith(
             products: {...auxMap},
+            subtotal: lastQuantity < newQuantity
+                ? state.subtotal +
+                ((product.price ?? 0) * (newQuantity - lastQuantity))
+                : state.subtotal -
+                ((product.price ?? 0) * (lastQuantity - newQuantity)),
             totalPrice: lastQuantity < newQuantity
                 ? state.totalPrice +
-                    ((product.price ?? 0) * (newQuantity - lastQuantity))
+                    ((product.price ?? 0) * (newQuantity - lastQuantity)) - state.discount
                 : state.totalPrice -
-                    ((product.price ?? 0) * (lastQuantity - newQuantity)));
+                    ((product.price ?? 0) * (lastQuantity - newQuantity))- state.discount);
       }
     }
   }
@@ -170,24 +195,56 @@ class CartNotifier extends StateNotifier<CartState> {
         state = state.copyWith(
             products: {...auxMap},
             variableItems: {...auxVariableMap},
-            totalPrice: state.totalPrice - lastPrice + newPrice);
+            subtotal: state.subtotal - lastPrice + newPrice,
+        totalPrice: state.totalPrice + state.discount - lastPrice + newPrice - state.discount);
       }
     }
   }
 
+  Map<Product, double> getItemsCorrectFormat(){
+    Map<Product, double> correctItems = {};
+    for (final entry in state.products.entries){
+      if (entry.key.weight == null){
+        correctItems[entry.key] = state.variablesItems[entry.key.id]!;
+      } else {
+        correctItems[entry.key] = entry.value;
+      }
+    }
+    return correctItems;
+  }
+
   void sale() async {
-    await repository.createSale(Sale(
-        products: state.products,
-        isDelivery: state.isDelivery,
-        isPerMajor: state.isPerMajor,
-        totalPrice: state.totalPrice,
-        discount: state.discount,
-        isReservation: state.isReservation,
-        clientName: state.clientName,
-        clientPhone: state.clientPhone,
-        isByCash: state.isByCash,
-        reservationDate: state.reservationDate,
-        saleDate: state.saleDate ?? DateTime.now()));
+
+    if (state.isReservation){
+      createReservationCallback(
+          Reservation(
+              client: User(id: "", fullName: state.clientName ?? "", phoneNumber: int.tryParse(state.clientPhone ?? "0") ?? 0),
+              deliveryDate: state.reservationDate!,
+              discount: state.discount,
+              totalPrice: state.totalPrice,
+              status: Status.pending,
+              isDelivery: state.isDelivery,
+              isPerMajor: state.isPerMajor,
+              isActive: true,
+              products: state.products.keys.toList()
+          )
+      );
+    } else {
+      await saleRepository.createSale(Sale(
+          products: state.products,
+          isDelivery: state.isDelivery,
+          isPerMajor: state.isPerMajor,
+          totalPrice: state.totalPrice - state.discount,
+          discount: state.discount,
+          isReservation: state.isReservation,
+          clientName: state.clientName,
+          clientPhone: state.clientPhone,
+          isByCash: state.isByCash,
+          reservationDate: state.reservationDate,
+          saleDate: state.saleDate ?? DateTime.now()));
+      decreaseItemsCallback(getItemsCorrectFormat());
+    }
+
   }
 
   void changeWidgetOption(Widget newOption, {BuildContext? context}) {
@@ -249,7 +306,7 @@ class CartNotifier extends StateNotifier<CartState> {
 
     if (newOption is SaleInformationBack || newOption is ConfirmSale){
       for (var entry in state.products.entries){
-        if ((entry.key.quantity < entry.value) && context != null){
+        if ((entry.key.quantity < entry.value) && context != null && entry.key.weight != null){
           CustomToast.showToastNotification(
               context,
               icon: const Icon(Icons.warning),
@@ -268,6 +325,10 @@ class CartNotifier extends StateNotifier<CartState> {
 
   void setIsReservation(bool status) {
     state = state.copyWith(isReservation: status);
+  }
+
+  void decrementQuantity(double discount){
+    state = state.copyWith(discount: discount, totalPrice: state.subtotal - discount);
   }
 
   void toggleIsDelivery() {
@@ -301,6 +362,7 @@ class CartNotifier extends StateNotifier<CartState> {
 
 final cartProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
   final repository = ref.read(saleRepositoryProvider);
-
-  return CartNotifier(repository: repository);
+  final reservationCallback = ref.read(reservationProvider.notifier).createReservation;
+  final callback = ref.read(productsProvider.notifier).decrementItemsByCart;
+  return CartNotifier(saleRepository: repository, decreaseItemsCallback: callback, createReservationCallback: reservationCallback);
 });

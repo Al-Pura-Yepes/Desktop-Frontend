@@ -68,6 +68,33 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     }
   }
 
+  void decrementItemsByCart(Map<Product, double> cartItems) async{
+    try {
+      await repository.decrementItemsByCart(cartItems);
+      List<Product> auxList = [];
+      double newQuantity;
+      var auxProductsList = {...state.products};
+      for (final entry in cartItems.entries){
+        for (var product in auxProductsList[entry.key.category]!){
+          if (cartItems[product] != null){
+            newQuantity = product.quantity - cartItems[product]!;
+            auxList.add(product.copyWith(quantity: newQuantity < 0 ? 0 : newQuantity));
+            continue;
+          }
+          auxList.add(product);
+        }
+        auxProductsList[entry.key.category] = auxList;
+        auxList = [];
+      }
+      state = state.copyWith(
+        products: auxProductsList
+      );
+
+    } catch (e){
+      rethrow;
+    }
+  }
+
   List<String> getAllCategories() {
     return state.products.keys.toList();
   }

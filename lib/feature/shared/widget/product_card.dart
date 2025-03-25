@@ -1,4 +1,3 @@
-import 'package:al_pura_frontend/config/theme/app_theme.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +21,7 @@ class _ProductCardState extends State<ProductCard> {
       case >= 10:
         return Colors.green;
       case > 5:
-        return Colors.yellow;
+        return Colors.orangeAccent;
       default:
         return Colors.red;
     }
@@ -48,7 +47,7 @@ class _ProductCardState extends State<ProductCard> {
           Align(
               alignment: Alignment.topRight,
               child: FractionallySizedBox(
-                widthFactor: 0.3,
+                widthFactor: widget.product.weight != null ? 0.3 : 0.45,
                 heightFactor: 0.3,
                 child: Container(
                   alignment: Alignment.center,
@@ -60,7 +59,7 @@ class _ProductCardState extends State<ProductCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "${widget.product.quantity}",
+                        widget.product.weight == null ? widget.product.quantity.toStringAsFixed(2) : widget.product.quantity.toString(),
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),

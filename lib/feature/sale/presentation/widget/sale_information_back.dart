@@ -189,7 +189,7 @@ class SaleInformationBack extends ConsumerWidget {
                   )),
                   FittedBox(
                       child: Text(
-                    'Total: Bs ${(cartState.totalPrice - cartState.discount).toStringAsFixed(2)}',
+                    'Total: Bs ${(cartState.totalPrice).toStringAsFixed(2)}',
                     style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ))

@@ -4,6 +4,7 @@ import 'package:al_pura_frontend/feature/sale/presentation/widget/sale_informati
 import 'package:al_pura_frontend/feature/shared/widget/buttons/custom_button.dart';
 import 'package:al_pura_frontend/feature/shared/widget/checkbox/custom_checkbox.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SaleInformationFront extends ConsumerWidget {
@@ -103,7 +104,7 @@ class SaleInformationFront extends ConsumerWidget {
                         style: textTheme.bodyMedium,
                       ),
                       Text(
-                        'Bs. ${cartState.totalPrice.toStringAsFixed(2)}',
+                        'Bs. ${cartState.subtotal.toStringAsFixed(2)}',
                         style: textTheme.bodyMedium,
                       ),
                     ],
@@ -142,8 +143,13 @@ class SaleInformationFront extends ConsumerWidget {
                         style: textTheme.bodyMedium,
                       ),
                       Text(
-                        'Bs. ${cartState.discount.toStringAsFixed(2)}',
+                        'Bs. ',
                         style: textTheme.bodyMedium,
+                      ),
+                      SizedBox(
+                        width: 100,
+                        height: 60,
+                        child: _DiscountField(),
                       ),
                     ],
                   ),
@@ -224,13 +230,74 @@ class SaleInformationFront extends ConsumerWidget {
               Flexible(
                   child: FittedBox(
                       child: Text(
-                'Total: Bs ${(cartState.totalPrice - cartState.discount).toStringAsFixed(2)}',
+                'Total: Bs ${(cartState.totalPrice > 0 ? (cartState.totalPrice) : 0.00).toStringAsFixed(2)}',
                 style: textTheme.titleMedium
                     ?.copyWith(fontWeight: FontWeight.bold),
               )))
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+class _DiscountField extends ConsumerStatefulWidget {
+  const _DiscountField({super.key});
+
+  @override
+  ConsumerState<_DiscountField> createState() => _DiscountFieldState();
+}
+
+class _DiscountFieldState extends ConsumerState<_DiscountField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: ref.read(cartProvider).discount.toStringAsFixed(2),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void resetForm() {
+    _controller.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final discount = ref.watch(cartProvider).discount;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (discount == 0 && _controller.text.isNotEmpty) {
+        resetForm();
+      }
+    });
+    return TextFormField(
+      controller: _controller,
+      enabled: ref.read(cartProvider).widgetOption is SaleInformationFront,
+      onChanged: (value) {
+        ref.read(cartProvider.notifier).decrementQuantity(double.tryParse(value) ?? 0);
+      },
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'^\d{0,3}(?:\.\d*)?$')),
+      ],
+      style: const TextStyle(fontSize: 20),
+      textAlign: TextAlign.center,
+      textAlignVertical: TextAlignVertical.center,
+      cursorHeight: 20,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
     );
   }
