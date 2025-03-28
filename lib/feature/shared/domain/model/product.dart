@@ -31,7 +31,7 @@ class Product implements IEntity {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-        id: json["id"],
+        id: json["id"] ?? "0",
         category: json["category"],
         flavor: json["flavor"],
         price: (json["price"] is int)
@@ -56,6 +56,7 @@ class Product implements IEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "category": category,
       "flavor": flavor,
       "price": price,

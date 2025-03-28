@@ -18,24 +18,28 @@ class ReservationDatasourceImpl extends ReservationDatasource {
     var query =
         firestore.collection('Reservations').where('isActive', isEqualTo: true);
 
-    if (isStatusAscending != null) {
-      query = query.orderBy('status', descending: !isStatusAscending);
-    }
-
     if (dayFiltered != null) {
       var initOfDay =
           DateTime(dayFiltered.year, dayFiltered.month, dayFiltered.day);
-      var endOfDay = dayFiltered.add(const Duration(days: 1));
-      query = query.where('deliveryDate', isGreaterThan: initOfDay);
-      query = query.where('deliveryDate', isLessThan: endOfDay);
-    }
+      var endOfDay = initOfDay.add(const Duration(days: 1));
 
-    query = query.orderBy('deliveryDate');
+      query = query
+          .where('deliveryDate',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(initOfDay))
+          .where('deliveryDate', isLessThan: Timestamp.fromDate(endOfDay))
+          .orderBy('deliveryDate');
+    } else if (isStatusAscending != null) {
+      query = query
+          .orderBy('status', descending: !isStatusAscending)
+          .orderBy('deliveryDate');
+    } else {
+      query = query.orderBy('deliveryDate');
+    }
 
     var querySnapshot = await query.get();
 
     var reservations = querySnapshot.docs
-        .map((element) => Reservation.fromMap(element.data(), element.id))
+        .map((doc) => Reservation.fromMap(doc.data(), doc.id))
         .toList();
     return reservations;
   }

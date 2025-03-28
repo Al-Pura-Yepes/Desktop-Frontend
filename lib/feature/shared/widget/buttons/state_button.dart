@@ -26,6 +26,8 @@ class StateButton extends StatelessWidget {
         return false;
       case Status.completed:
         return false;
+      case Status.eliminated:
+        return false;
     }
   }
 
@@ -36,7 +38,9 @@ class StateButton extends StatelessWidget {
       case Status.ready:
         return true;
       case Status.completed:
-        return true;
+        return false;
+      case Status.eliminated:
+        return false;
     }
   }
 

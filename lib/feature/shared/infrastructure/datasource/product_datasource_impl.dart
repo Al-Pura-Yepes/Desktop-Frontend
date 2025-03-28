@@ -75,4 +75,21 @@ class ProductDatasourceImpl implements ProductDatasource {
       rethrow;
     }
   }
+
+  @override
+  Future<void> incrementItemsByCart(Map<Product, double> cartItems) async {
+    try {
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      for (var entry in cartItems.entries) {
+        Product product = entry.key;
+        double incrementedQuantity = product.quantity + entry.value;
+        // Si tienes alguna lógica de límite o algo similar, lo podrías agregar aquí.
+        DocumentReference productRef = products.doc(product.id);
+        batch.update(productRef, {"quantity": incrementedQuantity});
+      }
+      await batch.commit();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

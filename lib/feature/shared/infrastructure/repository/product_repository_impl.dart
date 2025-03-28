@@ -31,4 +31,9 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<void> decrementItemsByCart(Map<Product, double> cartItems) {
     return datasource.decrementItemsByCart(cartItems);
   }
+
+  @override
+  Future<void> incrementItemsByCart(Map<Product, double> cartItems) {
+    return datasource.incrementItemsByCart(cartItems);
+  }
 }

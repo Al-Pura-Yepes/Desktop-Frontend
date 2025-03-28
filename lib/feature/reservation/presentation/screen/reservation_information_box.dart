@@ -79,14 +79,14 @@ class _ReservationInformationBoxState
                   textAlign: TextAlign.left,
                   style: textTheme.titleSmall,
                 )),
-                isInformationLoaded
+                isInformationLoaded && reservation!.status != Status.eliminated
                     ? CustomButton(
                         size: 40,
                         icon: Icons.delete,
                         filled: false,
                         color: colorScheme.error,
                         iconColor: colorScheme.error,
-                        onPress: () {
+                        onPress: () async {
                           setState(() {
                             isDeletionConfirmationModal = true;
                           });
@@ -110,7 +110,10 @@ class _ReservationInformationBoxState
                                     ? Colors.yellow
                                     : reservation.status == Status.ready
                                         ? colorScheme.tertiary
-                                        : Colors.green,
+                                        : reservation.status ==
+                                                Status.eliminated
+                                            ? Colors.red
+                                            : Colors.green,
                                 secondaryColor: colorScheme.primary,
                                 textColor: reservation.status == Status.pending
                                     ? Colors.black
@@ -127,6 +130,9 @@ class _ReservationInformationBoxState
                                         .repository
                                         .updateStatus(
                                             reservation.id, Status.ready);
+                                    ref
+                                        .read(reservationProvider.notifier)
+                                        .decreaseItemsFromInventory();
                                     ref
                                         .read(reservationProvider.notifier)
                                         .loadReservations();
@@ -146,19 +152,7 @@ class _ReservationInformationBoxState
                                             reservation.id, Status.pending);
                                     ref
                                         .read(reservationProvider.notifier)
-                                        .loadReservations();
-                                  } else if (reservation.status ==
-                                      Status.completed) {
-                                    var reservationEditable = reservation;
-                                    reservationEditable.status = Status.ready;
-                                    ref
-                                        .read(reservationProvider.notifier)
-                                        .updateReservation(reservationEditable);
-                                    ref
-                                        .read(reservationProvider.notifier)
-                                        .repository
-                                        .updateStatus(
-                                            reservation.id, Status.ready);
+                                        .increaseItemsFromInventory();
                                     ref
                                         .read(reservationProvider.notifier)
                                         .loadReservations();
@@ -241,35 +235,37 @@ class _ReservationInformationBoxState
                             children: [
                               Row(
                                 children: [
-                                  CustomButton(
-                                    size: 60,
-                                    color: colorScheme.secondary,
-                                    icon: Icons.attach_money,
-                                    onPress: () {
-                                      if (reservation.status !=
-                                          Status.completed) {
-                                        setState(() {
-                                          isPaymentSectionShown = true;
-                                          paymentMethod = 'Efectivo';
-                                        });
-                                      }
-                                    },
-                                  ),
+                                  if (reservation.status != Status.eliminated)
+                                    CustomButton(
+                                      size: 60,
+                                      color: colorScheme.secondary,
+                                      icon: Icons.attach_money,
+                                      onPress: () {
+                                        if (reservation.status !=
+                                            Status.completed) {
+                                          setState(() {
+                                            isPaymentSectionShown = true;
+                                            paymentMethod = 'Efectivo';
+                                          });
+                                        }
+                                      },
+                                    ),
                                   const SizedBox(width: 10),
-                                  CustomButton(
-                                    size: 60,
-                                    color: const Color(0xff464C59),
-                                    icon: Icons.qr_code,
-                                    onPress: () {
-                                      if (reservation.status !=
-                                          Status.completed) {
-                                        setState(() {
-                                          isPaymentSectionShown = true;
-                                          paymentMethod = 'QR';
-                                        });
-                                      }
-                                    },
-                                  ),
+                                  if (reservation.status != Status.eliminated)
+                                    CustomButton(
+                                      size: 60,
+                                      color: const Color(0xff464C59),
+                                      icon: Icons.qr_code,
+                                      onPress: () {
+                                        if (reservation.status !=
+                                            Status.completed) {
+                                          setState(() {
+                                            isPaymentSectionShown = true;
+                                            paymentMethod = 'QR';
+                                          });
+                                        }
+                                      },
+                                    ),
                                 ],
                               ),
                               Row(
@@ -320,7 +316,7 @@ class _ReservationInformationBoxState
                           Text(
                             ' $paymentMethod',
                             style: textTheme.titleSmall
-                                ?.copyWith(color: Colors.green),
+                                ?.copyWith(color: Colors.white),
                           ),
                         ],
                       ),
@@ -332,16 +328,21 @@ class _ReservationInformationBoxState
                             size: 60,
                             color: Colors.green,
                             icon: Icons.check,
-                            onPress: () =>
-                                managePaymentConfirmation(reservation!),
+                            onPress: () {
+                              ref.read(reservationProvider.notifier).makeTheSale(true);
+                              managePaymentConfirmation(reservation!);
+                            }
                           ),
                           CustomButton(
-                            size: 60,
-                            color: Colors.red,
-                            icon: Icons.close,
-                            onPress: () =>
-                                managePaymentConfirmation(reservation!),
-                          ),
+                              size: 60,
+                              color: Colors.red,
+                              icon: Icons.close,
+                              onPress: () {
+                                ref.read(reservationProvider.notifier).makeTheSale(false);
+                                setState(() {
+                                  isPaymentSectionShown = false;
+                                });
+                              }),
                         ],
                       )
                     ],
@@ -354,20 +355,22 @@ class _ReservationInformationBoxState
                 highlightedText: 'eliminar ',
                 rightText: 'la reserva?',
                 onConfirmation: () async {
-                  var confirmation = await ref
+                  isDeletionConfirmationModal = true;
+                  var reservationEditable = reservation!;
+                  reservationEditable.status = Status.eliminated;
+                  ref
+                      .read(reservationProvider.notifier)
+                      .updateReservation(reservationEditable);
+                  ref
                       .read(reservationProvider.notifier)
                       .repository
-                      .deleteReservation(reservation!.id);
-                  if (!confirmation) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(
-                              'We are having trouble removing the product')));
-                    }
-                  } else {
-                    ref.read(reservationProvider.notifier).clearReservations();
-                    ref.read(reservationProvider.notifier).loadReservations();
-                  }
+                      .updateStatus(reservation.id, Status.eliminated);
+                  ref.read(reservationProvider.notifier).loadReservations();
+                  ref.read(reservationProvider.notifier).clearReservations();
+                  ref.read(reservationProvider.notifier).loadReservations();
+                  ref
+                      .read(reservationProvider.notifier)
+                      .increaseItemsFromInventory();
                   setState(() {
                     isDeletionConfirmationModal = false;
                   });

@@ -27,7 +27,7 @@ class _SalesInformationBoxState extends ConsumerState<SalesInformationBox> {
     });
 
     return Container(
-      height: 330,
+      height: 280,
       width: double.maxFinite,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: const BoxDecoration(
@@ -69,7 +69,7 @@ class _SalesInformationBoxState extends ConsumerState<SalesInformationBox> {
                                         style: textTheme.titleSmall!.copyWith(
                                             color: Colors.white,
                                             fontWeight: FontWeight.normal)),
-                                    Text(paymentMethod ?? 'Efectivo',
+                                    Text(sale!.isByCash ? 'Efectivo' : "Qr",
                                         style: textTheme.titleSmall!.copyWith(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold))
@@ -98,7 +98,7 @@ class _SalesInformationBoxState extends ConsumerState<SalesInformationBox> {
                                       borderRadius: BorderRadius.circular(8)),
                                   child: Text(
                                       DateFormat('dd-MM-yyyy')
-                                          .format(sale!.saleDate),
+                                          .format(sale.saleDate),
                                       style: textTheme.bodySmall),
                                 )
                               ],

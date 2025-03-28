@@ -47,7 +47,7 @@ class _ProductCardState extends State<ProductCard> {
           Align(
               alignment: Alignment.topRight,
               child: FractionallySizedBox(
-                widthFactor: widget.product.weight != null ? 0.3 : 0.45,
+                widthFactor: widget.product.weight != null ? 0.3 : 0.6,
                 heightFactor: 0.3,
                 child: Container(
                   alignment: Alignment.center,
@@ -60,7 +60,7 @@ class _ProductCardState extends State<ProductCard> {
                     children: [
                       Text(
                         widget.product.weight == null
-                            ? widget.product.quantity.toStringAsFixed(2)
+                            ? widget.product.quantity.toStringAsFixed(3)
                             : widget.product.quantity.toString(),
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),

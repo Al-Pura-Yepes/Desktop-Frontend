@@ -1,6 +1,8 @@
 import 'package:al_pura_frontend/feature/history/presentation/provider/sales_provider.dart';
+import 'package:al_pura_frontend/feature/reservation/domain/model/status.dart';
 import 'package:al_pura_frontend/feature/reservation/presentation/provider/reservation_provider.dart';
 import 'package:al_pura_frontend/feature/sale/presentation/widget/product_static_price_sale.dart';
+import 'package:al_pura_frontend/feature/shared/Provider/products_provider.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +20,9 @@ class NoEditableCart extends ConsumerWidget {
     late bool isInformationLoaded;
     late List<Product> products;
     late Map<Product, double> productsOnMap;
+    final productState = ref.watch(productsProvider);
+
+    final reservation = ref.watch(reservationProvider).reservation;
 
     if (onHistoryScreen) {
       isInformationLoaded = ref.watch(salesProvider).isSaleSelected;
@@ -70,6 +75,11 @@ class NoEditableCart extends ConsumerWidget {
                             return Container(
                               margin: const EdgeInsets.only(bottom: 20),
                               child: ProductStaticPriceSale(
+                                  isFinished: ref
+                                          .watch(reservationProvider)
+                                          .reservations[reservation?.id]
+                                          ?.status !=
+                                      Status.pending,
                                   product: product,
                                   isEditable: false,
                                   quantity: onHistoryScreen

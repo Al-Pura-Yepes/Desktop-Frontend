@@ -54,11 +54,12 @@ class Sale {
     };
   }
 
-  static Map<Product, double> _productFromJson(
-      List<Map<String, dynamic>> json) {
+  static Map<Product, double> _productFromJson(List<dynamic> json) {
     Map<Product, double> result = {};
-    for (Map<String, dynamic> jsonProduct in json) {
-      result[Product.fromJson(jsonProduct)] = jsonProduct['quantity'];
+    for (var jsonProduct in json) {
+      final productMap = jsonProduct as Map<String, dynamic>;
+      final quantity = (productMap['quantity'] as num).toDouble();
+      result[Product.fromJson(productMap)] = quantity;
     }
     return result;
   }
@@ -75,8 +76,12 @@ class Sale {
       clientName: json['clientName'],
       clientPhone: json['clientPhone'],
       isByCash: json['isByCash'],
-      reservationDate: (json['reservationDate'] as Timestamp).toDate(),
-      saleDate: (json['saleDate'] as Timestamp).toDate(),
+      reservationDate: json['reservationDate'] != null
+          ? (json['reservationDate'] as Timestamp).toDate()
+          : null,
+      saleDate: json['saleDate'] != null
+          ? (json['saleDate'] as Timestamp).toDate()
+          : DateTime.now(),
     );
   }
 

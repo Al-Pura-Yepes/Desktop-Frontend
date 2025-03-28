@@ -19,6 +19,7 @@ class ReservationScreen extends ConsumerStatefulWidget {
 
 class _ReservationScreenState extends ConsumerState<ReservationScreen> {
   bool isLoading = false;
+  Set<String> selectedStatusFilter = {'pendiente', 'preparado'};
 
   @override
   void initState() {
@@ -27,15 +28,13 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
   }
 
   void _showCustomDatePicker(BuildContext context) async {
-    DateTime firstDate = DateTime(2024);
-    DateTime lastDate = DateTime.now();
-
     DateTime? selectedDate = await showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
         return DatePickerDialog(
-          firstDate: firstDate,
-          lastDate: lastDate,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(2024),
+          lastDate: DateTime(2030),
           confirmText: 'Confirmar',
           cancelText: 'Limpiar',
         );
@@ -60,6 +59,11 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
     final sortStatus = ref.watch(reservationProvider).isStatusAscending;
     final dayFiltered = ref.watch(reservationProvider).dayFiltered;
 
+    final filteredReservations = reservations.values.where((reservation) {
+      final statusString = statusToString(reservation.status).toLowerCase();
+      return selectedStatusFilter.contains(statusString);
+    }).toList();
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
@@ -67,70 +71,77 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
         title: const Text('Reservas'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               width: size.width * 0.6,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 10,
                 children: [
                   Container(
-                      width: double.maxFinite,
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      alignment: Alignment.centerRight,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomButton(
-                            size: 40,
-                            filled: true,
-                            color: Colors.green,
-                            iconColor: Colors.white,
-                            icon: Icons.refresh_rounded,
-                            onPress: () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              await ref
-                                  .read(reservationProvider.notifier)
-                                  .loadReservations();
-                              setState(() {
-                                isLoading = false;
-                              });
-                            },
-                          ),
-                          TextButton.icon(
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
-                              backgroundColor: Colors.blueGrey.shade50,
-                              foregroundColor: Colors.blueGrey,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                side: BorderSide(
-                                  color: Colors.blueGrey.shade300,
-                                  width: 1.5,
-                                ),
+                    width: double.maxFinite,
+                    height: 50,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    alignment: Alignment.centerRight,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomButton(
+                          size: 40,
+                          filled: true,
+                          color: Colors.green,
+                          iconColor: Colors.white,
+                          icon: Icons.refresh_rounded,
+                          onPress: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await ref
+                                .read(reservationProvider.notifier)
+                                .loadReservations();
+                            setState(() {
+                              isLoading = false;
+                            });
+                          },
+                        ),
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            backgroundColor: Colors.blueGrey.shade50,
+                            foregroundColor: Colors.blueGrey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: BorderSide(
+                                color: Colors.blueGrey.shade300,
+                                width: 1.5,
                               ),
                             ),
-                            label: Text(dayFiltered != null
-                                ? DateFormat('dd-MM-yyyy').format(dayFiltered)
-                                : 'dd-MM-yyyy'),
-                            icon: const Icon(Icons.calendar_month_rounded,
-                                size: 20),
-                            onPressed: () => _showCustomDatePicker(context),
                           ),
-                        ],
-                      )
-                      //DatePickerDialog(firstDate: DateTime.now(), lastDate: dayFiltered ?? DateTime.now().add(const Duration(days: 1))),
-                      ),
+                          label: Text(dayFiltered != null
+                              ? DateFormat('dd-MM-yyyy').format(dayFiltered)
+                              : 'dd-MM-yyyy'),
+                          icon: const Icon(Icons.calendar_month_rounded,
+                              size: 20),
+                          onPressed: () => _showCustomDatePicker(context),
+                        ),
+                      ],
+                    ),
+                  ),
+                  _SegmentedButton(
+                    onSelectionChanged: (selection) {
+                      setState(() {
+                        selectedStatusFilter = selection;
+                      });
+                    },
+                  ),
                   SingleChildScrollView(
                     child: LayoutBuilder(builder: (context, constraints) {
                       return SizedBox(
@@ -156,7 +167,7 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                                   decoration:
                                       const BoxDecoration(color: Colors.white),
                                   border: TableBorder.all(
-                                      color: colorScheme.secondary),
+                                      color: colorScheme.primary),
                                   columns: [
                                     const DataColumn(
                                       label: Text('N°'),
@@ -168,16 +179,18 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                                       label: Text('Cliente:'),
                                     ),
                                     const DataColumn(
-                                        label: Text('Fecha de Entrega:'),
-                                        headingRowAlignment:
-                                            MainAxisAlignment.center),
+                                      label: Text('Fecha de Entrega:'),
+                                      headingRowAlignment:
+                                          MainAxisAlignment.center,
+                                    ),
                                     const DataColumn(
-                                        label: Text('Tipo de Entrega:')),
+                                      label: Text('Tipo de Entrega:'),
+                                    ),
                                     DataColumn(
                                       label: Row(
+                                        spacing: 10,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        spacing: 10,
                                         children: [
                                           Icon(
                                             sortStatus == null
@@ -202,9 +215,11 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                                     )
                                   ],
                                   rows: List<DataRow>.generate(
-                                      reservations.length, (int index) {
-                                    var reservation = reservations[index];
-                                    return DataRow(
+                                    filteredReservations.length,
+                                    (int index) {
+                                      var reservation =
+                                          filteredReservations[index];
+                                      return DataRow(
                                         cells: <DataCell>[
                                           DataCell(Center(
                                               child: Text(index.toString()))),
@@ -215,19 +230,26 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                                             status: reservation.status,
                                           )),
                                           DataCell(Text(reservation.isDelivery
-                                              ? "Entrega"
-                                              : "Delivery")),
+                                              ? "Delivery"
+                                              : "Entrega")),
                                           DataCell(Text(statusToString(
                                               reservation.status))),
                                         ],
-                                        selected: index == indexSelected,
+                                        selected: reservation.id ==
+                                            ref
+                                                .watch(reservationProvider)
+                                                .indexSelected,
                                         onSelectChanged: (bool? value) {
                                           ref
                                               .read(
                                                   reservationProvider.notifier)
-                                              .changeItemSelected(index);
-                                        });
-                                  })),
+                                              .changeItemSelected(
+                                                  reservation.id);
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
                         ),
                       );
                     }),
@@ -242,13 +264,12 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
                   spacing: 10,
                   children: [
                     Expanded(
-                        child: NoEditableCart(
-                      textTheme: textTheme,
-                      onHistoryScreen: false,
-                    )),
-                    const ClientInformationBox(
-                      onHistoryScreen: false,
+                      child: NoEditableCart(
+                        textTheme: textTheme,
+                        onHistoryScreen: false,
+                      ),
                     ),
+                    const ClientInformationBox(onHistoryScreen: false),
                     const ReservationInformationBox()
                   ],
                 ),
@@ -257,6 +278,69 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SegmentedButton extends StatefulWidget {
+  final void Function(Set<String> selection)? onSelectionChanged;
+  const _SegmentedButton({this.onSelectionChanged});
+
+  @override
+  State<_SegmentedButton> createState() => _SegmentedButtonState();
+}
+
+class _SegmentedButtonState extends State<_SegmentedButton> {
+  Set<String> option = {'pendiente', 'preparado'};
+
+  @override
+  Widget build(BuildContext context) {
+    return SegmentedButton<String>(
+      showSelectedIcon: false,
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+          (states) {
+            if (states.contains(WidgetState.selected)) {
+              return Colors.green;
+            }
+            return Theme.of(context).primaryColor;
+          },
+        ),
+        textStyle: WidgetStateProperty.all(
+          const TextStyle(color: Colors.white),
+        ),
+        fixedSize: WidgetStateProperty.all(
+          const Size(100, 100),
+        ),
+      ),
+      multiSelectionEnabled: true,
+      segments: const [
+        ButtonSegment<String>(
+          value: 'pendiente',
+          label: Text('Pendiente', style: TextStyle(color: Colors.white)),
+        ),
+        ButtonSegment<String>(
+          value: 'preparado',
+          label: Text('Preparado', style: TextStyle(color: Colors.white)),
+        ),
+        ButtonSegment<String>(
+          value: 'completado',
+          label: Text('Completado', style: TextStyle(color: Colors.white)),
+        ),
+        ButtonSegment<String>(
+          value: 'eliminado',
+          label: Text('Eliminado', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+      selected: option,
+      onSelectionChanged: (newSelection) {
+        setState(() {
+          option = newSelection;
+        });
+        if (widget.onSelectionChanged != null) {
+          widget.onSelectionChanged!(newSelection);
+        }
+      },
     );
   }
 }

@@ -206,6 +206,8 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   Map<Product, double> getItemsCorrectFormat() {
+    print("LLAMADA");
+
     Map<Product, double> correctItems = {};
     for (final entry in state.products.entries) {
       if (entry.key.weight == null) {
@@ -214,11 +216,20 @@ class CartNotifier extends StateNotifier<CartState> {
         correctItems[entry.key] = entry.value;
       }
     }
+
     return correctItems;
   }
 
   void sale() async {
+    final auxMap = {...getItemsCorrectFormat()};
     if (state.isReservation) {
+      final List<Product> auxProductList = [];
+      Product product;
+      for (final entry in auxMap.entries) {
+        product = entry.key;
+        product = product.copyWith(quantity: entry.value);
+        auxProductList.add(product);
+      }
       createReservationCallback(Reservation(
           client: User(
               id: "",
@@ -231,10 +242,10 @@ class CartNotifier extends StateNotifier<CartState> {
           isDelivery: state.isDelivery,
           isPerMajor: state.isPerMajor,
           isActive: true,
-          products: state.products.keys.toList()));
+          products: auxProductList));
     } else {
       await saleRepository.createSale(Sale(
-          products: state.products,
+          products: auxMap,
           isDelivery: state.isDelivery,
           isPerMajor: state.isPerMajor,
           totalPrice: state.totalPrice - state.discount,
@@ -245,7 +256,7 @@ class CartNotifier extends StateNotifier<CartState> {
           isByCash: state.isByCash,
           reservationDate: state.reservationDate,
           saleDate: state.saleDate ?? DateTime.now()));
-      decreaseItemsCallback(getItemsCorrectFormat());
+      decreaseItemsCallback(auxMap);
     }
   }
 

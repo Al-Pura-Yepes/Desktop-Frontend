@@ -1,4 +1,5 @@
 import 'package:al_pura_frontend/feature/sale/presentation/providers/cart_provider.dart';
+import 'package:al_pura_frontend/feature/shared/Provider/products_provider.dart';
 import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:al_pura_frontend/feature/shared/widget/text/label_border.dart';
 import 'package:flutter/material.dart';
@@ -6,53 +7,85 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/widget/buttons/quantity_counter.dart';
 
-class ProductStaticPriceSale extends ConsumerWidget {
+class ProductStaticPriceSale extends ConsumerStatefulWidget {
   final Product product;
   final double widgetHeight = 70;
   final bool isEditable;
   final double? quantity;
+  final bool isFinished;
 
   const ProductStaticPriceSale(
       {super.key,
       required this.product,
       this.isEditable = true,
-      this.quantity});
+      this.quantity,
+      this.isFinished = true});
+  @override
+  ConsumerState createState() => _ProductStaticPriceSaleState();
+}
+
+class _ProductStaticPriceSaleState
+    extends ConsumerState<ProductStaticPriceSale> {
+  late double localQuantity;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    //final quantity = ref.watch(cartProvider).products[product]!;
-    double productQuantity = quantity ?? 0;
-    if (quantity == null) {
-      productQuantity =
-          !isEditable ? 0 : ref.watch(cartProvider).products[product] ?? 0;
+  void initState() {
+    localQuantity = widget.quantity ?? 1;
+  }
 
-      if (!isEditable) {
-        productQuantity = product.quantity;
+  @override
+  Widget build(BuildContext context) {
+    final productState =
+        ref.read(productsProvider.notifier).getAllProductsInfo();
+    //final quantity = ref.watch(cartProvider).products[product]!;
+    double productQuantity = widget.quantity ?? 0;
+    if (widget.quantity == null) {
+      productQuantity = !widget.isEditable
+          ? 0
+          : ref.watch(cartProvider).products[widget.product] ?? 0;
+
+      if (!widget.isEditable) {
+        productQuantity = widget.product.quantity;
       }
     }
 
     final textTheme = Theme.of(context).textTheme;
 
+    final bool isAvailableProduct =
+        (((productState[widget.product.id]?.quantity ?? 0) >= localQuantity) &&
+            (productState[widget.product.id]?.quantity ?? 0) > 0);
     return Container(
-      color: product.quantity < (ref.watch(cartProvider).products[product] ?? 0)
-          ? Colors.deepOrangeAccent
-          : Colors.transparent,
+      color: (isAvailableProduct)
+          ? Colors.transparent
+          : widget.isEditable
+              ? Colors.red
+              : widget.isFinished
+                  ? Colors.transparent
+                  : Colors.red,
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            !isEditable
-                ? LabelBorder(
-                    text: productQuantity.toStringAsFixed(2),
-                    textStyle: textTheme.bodyMedium!,
+            !widget.isEditable
+                ? Row(
+                    spacing: 3,
+                    children: [
+                      LabelBorder(
+                        text: productQuantity.toStringAsFixed(3),
+                        textStyle: textTheme.bodyMedium!,
+                      ),
+                      Text(widget.product.isFixedPrice ? 'u' : 'Kg')
+                    ],
                   )
                 : QuantityCounter(
                     callback: (quantity) {
+                      localQuantity = quantity.toDouble();
                       ref
                           .read(cartProvider.notifier)
-                          .setItemQuantity(product, quantity);
+                          .setItemQuantity(widget.product, quantity);
+                      setState(() {});
                     },
                   ),
             const SizedBox(
@@ -62,9 +95,9 @@ class ProductStaticPriceSale extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(product.category, style: textTheme.titleSmall),
+                Text(widget.product.category, style: textTheme.titleSmall),
                 Text(
-                  '${product.flavor} - ${product.weight}',
+                  '${widget.product.flavor} - ${widget.product.weight}',
                   style: textTheme.bodySmall,
                 )
               ],
@@ -83,7 +116,8 @@ class ProductStaticPriceSale extends ConsumerWidget {
                     width: 15,
                   ),
                   Text(
-                    (product.price! * productQuantity).toStringAsFixed(2),
+                    (widget.product.price! * productQuantity)
+                        .toStringAsFixed(2),
                     style: textTheme.bodyLarge,
                   ),
                 ],
@@ -92,13 +126,13 @@ class ProductStaticPriceSale extends ConsumerWidget {
             const SizedBox(
               width: 40,
             ),
-            !isEditable
+            !widget.isEditable
                 ? const SizedBox.shrink()
                 : IconButton(
                     onPressed: () {
                       ref
                           .read(cartProvider.notifier)
-                          .deleteItemFromCart(product);
+                          .deleteItemFromCart(widget.product);
                     },
                     icon: const Icon(
                       Icons.delete,

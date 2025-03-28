@@ -78,8 +78,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         for (var product in auxProductsList[entry.key.category]!) {
           if (cartItems[product] != null) {
             newQuantity = product.quantity - cartItems[product]!;
-            auxList.add(
-                product.copyWith(quantity: newQuantity < 0 ? 0 : newQuantity));
+            auxList.add(product.copyWith(quantity: newQuantity));
             continue;
           }
           auxList.add(product);
@@ -89,8 +88,43 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       }
       state = state.copyWith(products: auxProductsList);
     } catch (e) {
+      throw ('No se pudo decrementar los items');
+    }
+  }
+
+  void incrementItemsByCart(Map<Product, double> cartItems) async {
+    try {
+      await repository.incrementItemsByCart(cartItems);
+      List<Product> auxList = [];
+      double newQuantity;
+      var auxProductsList = {...state.products};
+      for (final entry in cartItems.entries) {
+        for (var product in auxProductsList[entry.key.category]!) {
+          if (product.id == entry.key.id) {
+            newQuantity = product.quantity + entry.value;
+            auxList.add(product.copyWith(quantity: newQuantity));
+          } else {
+            auxList.add(product);
+          }
+        }
+        auxProductsList[entry.key.category] = auxList;
+        auxList = [];
+      }
+      // Actualizamos el estado con el mapa modificado
+      state = state.copyWith(products: auxProductsList);
+    } catch (e) {
       rethrow;
     }
+  }
+
+  Map<String, Product> getAllProductsInfo() {
+    Map<String, Product> result = {};
+    for (List<Product> products in state.products.values) {
+      for (Product product in products) {
+        result[product.id] = product;
+      }
+    }
+    return result;
   }
 
   List<String> getAllCategories() {

@@ -1,15 +1,20 @@
+import 'package:al_pura_frontend/feature/history/presentation/provider/sales_provider.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/datasource/reservation_datasource.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/model/reservation.dart';
 import 'package:al_pura_frontend/feature/reservation/domain/repository/reservation_repository.dart';
 import 'package:al_pura_frontend/feature/reservation/infrastructure/datasource/reservation_datasource_impl.dart';
 import 'package:al_pura_frontend/feature/reservation/infrastructure/repository/reservation_repository_impl.dart';
+import 'package:al_pura_frontend/feature/sale/domain/model/sale.dart';
+import 'package:al_pura_frontend/feature/sale/presentation/providers/sale_respository_provider.dart';
+import 'package:al_pura_frontend/feature/shared/Provider/products_provider.dart';
+import 'package:al_pura_frontend/feature/shared/domain/model/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReservationState {
   final bool isReservationSelected;
-  final int? indexSelected;
+  final String? indexSelected;
   final bool? isStatusAscending;
-  final List<Reservation> reservations;
+  final Map<String, Reservation> reservations;
   final Reservation? reservation;
   final DateTime? dayFiltered;
 
@@ -17,15 +22,15 @@ class ReservationState {
       {this.isReservationSelected = false,
       this.isStatusAscending,
       this.indexSelected,
-      this.reservations = const [],
+      this.reservations = const {},
       this.reservation,
       this.dayFiltered});
 
   ReservationState copyWith(
       {bool? isReservationSelected,
       bool? isStatusAscending,
-      int? indexSelected,
-      List<Reservation>? reservations,
+      String? indexSelected,
+      Map<String, Reservation>? reservations,
       Reservation? reservation,
       DateTime? dayFiltered}) {
     return ReservationState(
@@ -41,8 +46,12 @@ class ReservationState {
 
 class ReservationNotifier extends StateNotifier<ReservationState> {
   final ReservationRepository repository;
+  final void Function(Map<Product, double>) increaseItemsProductCallback;
+  final void Function(Map<Product, double>) decreaseItemsProductCallback;
+  final void Function(Sale) createSale;
 
-  ReservationNotifier(super.state, this.repository);
+  ReservationNotifier(super.state, this.repository,
+      this.increaseItemsProductCallback, this.decreaseItemsProductCallback, this.createSale);
 
   toggleReservation() {
     state = state.copyWith(
@@ -53,34 +62,78 @@ class ReservationNotifier extends StateNotifier<ReservationState> {
 
   createReservation(Reservation newReservation) async {
     await repository.createReservation(newReservation);
-    state =
-        state.copyWith(reservations: [...state.reservations, newReservation]);
+    state = state.copyWith(reservations: {
+      ...state.reservations,
+      newReservation.id: newReservation
+    });
   }
 
-  changeItemSelected(int index) {
+  changeItemSelected(String id) {
     state = state.copyWith(
-        indexSelected: index,
+        indexSelected: id,
         isReservationSelected: true,
         isStatusAscending: state.isStatusAscending,
-        reservation: state.reservations[index],
+        reservation: state.reservations[id],
         dayFiltered: state.dayFiltered);
   }
 
-  changeItemSelectedById(String id) {
-    var index =
-        state.reservations.indexWhere((reservation) => reservation.id == id);
-    state = state.copyWith(
-        indexSelected: index,
-        isReservationSelected: true,
-        isStatusAscending: state.isStatusAscending,
-        reservation: state.reservations[index],
-        dayFiltered: state.dayFiltered);
+  increaseItemsFromInventory() {
+    Map<Product, double> auxMap = {};
+    if (state.reservation != null) {
+      for (final product in state.reservation!.products) {
+        auxMap[product] = product.quantity;
+      }
+      increaseItemsProductCallback(auxMap);
+    }
+  }
+
+  makeTheSale(bool isByCash) async {
+    try {
+      final Map<Product, double> auxSaleItemsMap = {};
+      for (Product product in state.reservation?.products ?? []){
+        auxSaleItemsMap[product] = product.quantity;
+      }
+      if (state.reservation == null) throw Exception("The reservation is null");
+      createSale(
+          Sale(
+              products: auxSaleItemsMap,
+              isDelivery: state.reservation!.isDelivery,
+              isPerMajor: state.reservation!.isPerMajor,
+              totalPrice: state.reservation!.totalPrice,
+              discount: state.reservation!.discount,
+              isReservation: true,
+              isByCash: isByCash,
+              saleDate: DateTime.now(),
+
+              reservationDate: state.reservation!.deliveryDate,
+              clientName: state.reservation!.client.fullName,
+              clientPhone: state.reservation!.client.phoneNumber.toString(),
+          )
+      );
+      decreaseItemsProductCallback(auxSaleItemsMap);
+    } catch (e){
+      rethrow;
+    }
+  }
+
+  decreaseItemsFromInventory() {
+    Map<Product, double> auxMap = {};
+    if (state.reservation != null) {
+      for (final product in state.reservation!.products) {
+        auxMap[product] = product.quantity;
+      }
+      decreaseItemsProductCallback(auxMap);
+    }
   }
 
   Future<void> loadReservations() async {
+    final Map<String, Reservation> auxReservationList = {};
+    for (final res in await repository.getAllReservations(
+        state.isStatusAscending, state.dayFiltered)) {
+      auxReservationList[res.id] = res;
+    }
     state = state.copyWith(
-        reservations: await repository.getAllReservations(
-            state.isStatusAscending, state.dayFiltered),
+        reservations: auxReservationList,
         isStatusAscending: state.isStatusAscending,
         dayFiltered: state.dayFiltered);
   }
@@ -123,5 +176,13 @@ final reservationProvider =
   final ReservationDatasource datasource = ReservationDatasourceImpl();
   final ReservationRepository repository =
       ReservationRepositoryImpl(datasource: datasource);
-  return ReservationNotifier(ReservationState(), repository);
+  final increaseItemsCallback =
+      ref.read(productsProvider.notifier).incrementItemsByCart;
+  final decreaseItemsCallback =
+      ref.read(productsProvider.notifier).decrementItemsByCart;
+
+  final saleCallback = ref.read(saleRepositoryProvider).createSale;
+
+  return ReservationNotifier(ReservationState(), repository,
+      increaseItemsCallback, decreaseItemsCallback, saleCallback);
 });
