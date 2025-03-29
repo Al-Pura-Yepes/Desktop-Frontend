@@ -21,28 +21,27 @@ class SaleDatasourceFirebase implements SaleDatasource {
   }
 
   @override
-  Future<List<Sale>> getAllSales(
-      bool isDateAscending, DateTime? dayFiltered) async {
-    late Query<Object?> query;
-
-    query = sales.orderBy('saleDate', descending: !isDateAscending);
+  Future<List<Sale>> getAllSales(bool isStatusAscending, DateTime? dayFiltered) async {
+    Query query = sales.orderBy('saleDate', descending: !isStatusAscending);
 
     if (dayFiltered != null) {
-      var initOfDay =
-          DateTime(dayFiltered.year, dayFiltered.month, dayFiltered.day);
-      var endOfDay = dayFiltered.add(const Duration(days: 1));
-      query = query.where('saleDate', isGreaterThan: initOfDay);
-      query = query.where('saleDate', isLessThan: endOfDay);
+      // Calcula el inicio del día y el inicio del día siguiente
+      final initOfDay = DateTime(dayFiltered.year, dayFiltered.month, dayFiltered.day);
+      final endOfDay = initOfDay.add(const Duration(days: 1));
+
+      query = query
+          .where('saleDate', isGreaterThanOrEqualTo: Timestamp.fromDate(initOfDay))
+          .where('saleDate', isLessThan: Timestamp.fromDate(endOfDay));
     }
 
     var querySnapshot = await query.get();
 
-    var reservations = querySnapshot.docs
-        .map((element) =>
-            Sale.fromJson(element.data() as Map<String, dynamic>, element.id))
+    var salesList = querySnapshot.docs
+        .map((doc) => Sale.fromJson(doc.data() as Map<String, dynamic>, doc.id))
         .toList();
-    return reservations;
+    return salesList;
   }
+
 
   @override
   Future<Sale?> getSalesById(String id) async {

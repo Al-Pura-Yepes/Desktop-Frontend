@@ -58,10 +58,10 @@ class _ProductStaticPriceSaleState
       color: (isAvailableProduct)
           ? Colors.transparent
           : widget.isEditable
-              ? Colors.red
+              ? Colors.grey
               : widget.isFinished
                   ? Colors.transparent
-                  : Colors.red,
+                  : Colors.grey,
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),

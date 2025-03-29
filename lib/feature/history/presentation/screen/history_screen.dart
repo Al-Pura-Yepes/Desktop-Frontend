@@ -25,15 +25,16 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   }
 
   void _showCustomDatePicker(BuildContext context) async {
-    DateTime firstDate = DateTime(2024);
-    DateTime lastDate = DateTime.now();
+    print("LLAMADA");
+    final currentDay = ref.read(salesProvider).dayFiltered ?? DateTime.now();
 
     DateTime? selectedDate = await showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
         return DatePickerDialog(
-          firstDate: firstDate,
-          lastDate: lastDate,
+          initialDate: currentDay,
+          firstDate: DateTime(2020),
+          lastDate: DateTime(2030),
           confirmText: 'Confirmar',
           cancelText: 'Limpiar',
         );
@@ -43,10 +44,12 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     if (selectedDate != null) {
       ref.read(salesProvider.notifier).selectDay(selectedDate);
     } else {
-      ref.read(salesProvider.notifier).selectDay(null);
+      ref.read(salesProvider.notifier).selectDay(DateTime.now());
     }
-    ref.read(salesProvider.notifier).loadSales();
+
+    await ref.read(salesProvider.notifier).loadSales();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +60,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     final sales = ref.watch(salesProvider).sales;
     final sortDate = ref.watch(salesProvider).isDateAscending;
     final dayFiltered = ref.watch(salesProvider).dayFiltered;
+    final salesProviderState = ref.watch(salesProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -77,33 +81,49 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                 children: [
                   Container(
                       width: double.maxFinite,
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       alignment: Alignment.centerRight,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white),
                       child: Row(
+                        spacing: 8,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomButton(
-                            size: 40,
-                            filled: true,
-                            color: Colors.green,
-                            iconColor: Colors.white,
-                            icon: Icons.refresh_rounded,
-                            onPress: () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              await ref
-                                  .read(salesProvider.notifier)
-                                  .loadSales();
-                              setState(() {
-                                isLoading = false;
-                              });
-                            },
+                          
+                          Column(
+                            spacing: 3,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(text: TextSpan(
+                                text: 'Subtotal en efectivo: ',
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                children: [
+                                  TextSpan(text: "Bs. ${salesProviderState.subtotalMoney}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.normal))
+                                ]
+                              ),
+                              ),
+                              RichText(text: TextSpan(
+                                  text: 'Subtotal en QR: ',
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                  children: [
+                                    TextSpan(text: "Bs. ${salesProviderState.subtotalQR}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.normal))
+                                  ]
+                              ),
+                              ),
+                              const SizedBox(height: 5,),
+                              RichText(text: TextSpan(
+                                  text: 'Total: ',
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+                                  children: [
+                                    TextSpan(text: "Bs. ${salesProviderState.total}", style: const TextStyle(fontSize: 40, fontWeight: FontWeight.normal))
+                                  ]
+                              ),
+                              ),
+                            ],
                           ),
+                          
+                          const Spacer(),
                           TextButton.icon(
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
@@ -124,6 +144,26 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             icon: const Icon(Icons.calendar_month_rounded,
                                 size: 20),
                             onPressed: () => _showCustomDatePicker(context),
+
+                          ),
+
+                          CustomButton(
+                            size: 40,
+                            filled: true,
+                            color: Colors.green,
+                            iconColor: Colors.white,
+                            icon: Icons.refresh_rounded,
+                            onPress: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await ref
+                                  .read(salesProvider.notifier)
+                                  .loadSales();
+                              setState(() {
+                                isLoading = false;
+                              });
+                            },
                           ),
                         ],
                       )

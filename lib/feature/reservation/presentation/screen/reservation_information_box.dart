@@ -24,6 +24,7 @@ class _ReservationInformationBoxState
   bool isPaymentSectionShown = false;
   bool isDeletionConfirmationModal = false;
   String? paymentMethod;
+  bool isByCash = true;
 
   Future<void> managePaymentConfirmation(Reservation reservation) async {
     setState(() {
@@ -241,6 +242,7 @@ class _ReservationInformationBoxState
                                       color: colorScheme.secondary,
                                       icon: Icons.attach_money,
                                       onPress: () {
+                                        isByCash = true;
                                         if (reservation.status !=
                                             Status.completed) {
                                           setState(() {
@@ -257,6 +259,7 @@ class _ReservationInformationBoxState
                                       color: const Color(0xff464C59),
                                       icon: Icons.qr_code,
                                       onPress: () {
+                                        isByCash = false;
                                         if (reservation.status !=
                                             Status.completed) {
                                           setState(() {
@@ -329,7 +332,7 @@ class _ReservationInformationBoxState
                             color: Colors.green,
                             icon: Icons.check,
                             onPress: () {
-                              ref.read(reservationProvider.notifier).makeTheSale(true);
+                              ref.read(reservationProvider.notifier).makeTheSale(isByCash);
                               managePaymentConfirmation(reservation!);
                             }
                           ),
@@ -338,7 +341,6 @@ class _ReservationInformationBoxState
                               color: Colors.red,
                               icon: Icons.close,
                               onPress: () {
-                                ref.read(reservationProvider.notifier).makeTheSale(false);
                                 setState(() {
                                   isPaymentSectionShown = false;
                                 });

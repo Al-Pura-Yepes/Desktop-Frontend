@@ -15,32 +15,47 @@ class SalesState {
   final Sale? sale;
   final User? client;
   final DateTime? dayFiltered;
+  final double? subtotalQR;
+  final double? subtotalMoney;
+  final double? total;
 
-  SalesState(
-      {this.isSaleSelected = false,
-      this.isDateAscending = true,
-      this.indexSelected,
-      this.sales = const [],
-      this.sale,
-      this.client,
-      this.dayFiltered});
+  SalesState({
+    this.isSaleSelected = false,
+    this.isDateAscending = true,
+    this.indexSelected,
+    this.sales = const [],
+    this.sale,
+    this.client,
+    DateTime? dayFiltered,
+    this.subtotalQR,
+    this.subtotalMoney,
+    this.total,
+  }) : dayFiltered = dayFiltered ?? DateTime.now();
 
-  SalesState copyWith(
-      {bool? isSaleSelected,
-      bool? isDateAscending,
-      int? indexSelected,
-      List<Sale>? sales,
-      Sale? sale,
-      User? client,
-      DateTime? dayFiltered}) {
+  SalesState copyWith({
+    bool? isSaleSelected,
+    bool? isDateAscending,
+    int? indexSelected,
+    List<Sale>? sales,
+    Sale? sale,
+    User? client,
+    DateTime? dayFiltered,
+    double? subtotalQR,
+    double? subtotalMoney,
+    double? total,
+  }) {
     return SalesState(
-        isSaleSelected: isSaleSelected ?? this.isSaleSelected,
-        isDateAscending: isDateAscending ?? this.isDateAscending,
-        indexSelected: indexSelected ?? this.indexSelected,
-        sales: sales ?? this.sales,
-        sale: sale ?? this.sale,
-        client: client ?? this.client,
-        dayFiltered: dayFiltered);
+      isSaleSelected: isSaleSelected ?? this.isSaleSelected,
+      isDateAscending: isDateAscending ?? this.isDateAscending,
+      indexSelected: indexSelected ?? this.indexSelected,
+      sales: sales ?? this.sales,
+      sale: sale ?? this.sale,
+      client: client ?? this.client,
+      dayFiltered: dayFiltered,
+      subtotalQR: subtotalQR ?? this.subtotalQR,
+      subtotalMoney: subtotalMoney ?? this.subtotalMoney,
+      total: total ?? this.total,
+    );
   }
 }
 
@@ -52,6 +67,25 @@ class SalesNotifier extends StateNotifier<SalesState> {
   toggleSale() {
     state = state.copyWith(
         isSaleSelected: !state.isSaleSelected, dayFiltered: state.dayFiltered);
+  }
+
+  void setMoneyQuantity(){
+    double moneyCounter = 0;
+    double qrCounter = 0;
+    double total = 0;
+    for (Sale sale in state.sales){
+      if (sale.isByCash){
+        moneyCounter += sale.totalPrice - sale.discount;
+      } else {
+        qrCounter += sale.totalPrice - sale.discount;
+      }
+      total += sale.totalPrice - sale.discount;
+    }
+    state = state.copyWith(
+      total: total,
+      subtotalQR: qrCounter,
+      subtotalMoney: moneyCounter
+    );
   }
 
   changeItemSelected(int index) {
@@ -74,6 +108,7 @@ class SalesNotifier extends StateNotifier<SalesState> {
         sales: await repository.getAllSales(
             state.isDateAscending, state.dayFiltered),
         dayFiltered: state.dayFiltered);
+    setMoneyQuantity();
   }
 
   iterateSortByStatus() {
@@ -105,3 +140,4 @@ final salesProvider = StateNotifierProvider<SalesNotifier, SalesState>((ref) {
   final SaleRepository repository = SaleRepositoryImpl(datasource: datasource);
   return SalesNotifier(SalesState(), repository);
 });
+
