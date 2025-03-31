@@ -13,9 +13,17 @@ class ProductsState {
     bool? isLoading,
     Map<String, List<Product>>? products,
   }) {
+    final sortedProducts = (products ?? this.products).map(
+          (key, value) => MapEntry(
+        key,
+        List<Product>.from(value)
+          ..sort((a, b) => a.flavor.compareTo(b.flavor)),
+      ),
+    );
+
     return ProductsState(
       isLoading: isLoading ?? this.isLoading,
-      products: products ?? this.products,
+      products: sortedProducts,
     );
   }
 }
@@ -25,6 +33,8 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
   ProductsNotifier({required this.repository}) : super(const ProductsState()) {
     getAll();
+
+
   }
 
   Future getAll() async {
@@ -42,6 +52,8 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     } catch (e) {
       rethrow;
     }
+
+
   }
 
   Future add(Product product) async {
@@ -74,14 +86,15 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       List<Product> auxList = [];
       double newQuantity;
       var auxProductsList = {...state.products};
+
       for (final entry in cartItems.entries) {
         for (var product in auxProductsList[entry.key.category]!) {
-          if (cartItems[product] != null) {
-            newQuantity = product.quantity - cartItems[product]!;
-            auxList.add(product.copyWith(quantity: newQuantity));
-            continue;
+          if (product.id == entry.key.id) {
+            newQuantity = product.quantity - entry.value;
+            auxList.add(product.copyWith(quantity: newQuantity < 0 ? 0 : newQuantity));
+          } else {
+            auxList.add(product);
           }
-          auxList.add(product);
         }
         auxProductsList[entry.key.category] = auxList;
         auxList = [];
@@ -91,6 +104,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       throw ('No se pudo decrementar los items');
     }
   }
+
 
   void incrementItemsByCart(Map<Product, double> cartItems) async {
     try {
@@ -110,7 +124,6 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         auxProductsList[entry.key.category] = auxList;
         auxList = [];
       }
-      // Actualizamos el estado con el mapa modificado
       state = state.copyWith(products: auxProductsList);
     } catch (e) {
       rethrow;

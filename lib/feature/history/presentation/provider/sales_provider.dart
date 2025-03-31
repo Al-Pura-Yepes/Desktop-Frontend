@@ -17,6 +17,8 @@ class SalesState {
   final DateTime? dayFiltered;
   final double? subtotalQR;
   final double? subtotalMoney;
+  final double? subtotalMoneyExpenses;
+  final double? subtotalQRExpenses;
   final double? total;
 
   SalesState({
@@ -30,6 +32,8 @@ class SalesState {
     this.subtotalQR,
     this.subtotalMoney,
     this.total,
+    this.subtotalMoneyExpenses,
+    this.subtotalQRExpenses
   }) : dayFiltered = dayFiltered ?? DateTime.now();
 
   SalesState copyWith({
@@ -43,6 +47,8 @@ class SalesState {
     double? subtotalQR,
     double? subtotalMoney,
     double? total,
+    double? subtotalMoneyExpenses,
+    double? subtotalQRExpenses
   }) {
     return SalesState(
       isSaleSelected: isSaleSelected ?? this.isSaleSelected,
@@ -55,6 +61,8 @@ class SalesState {
       subtotalQR: subtotalQR ?? this.subtotalQR,
       subtotalMoney: subtotalMoney ?? this.subtotalMoney,
       total: total ?? this.total,
+        subtotalMoneyExpenses: subtotalMoneyExpenses ?? this.subtotalMoneyExpenses,
+        subtotalQRExpenses: subtotalQRExpenses ?? this.subtotalQRExpenses
     );
   }
 }
@@ -73,18 +81,30 @@ class SalesNotifier extends StateNotifier<SalesState> {
     double moneyCounter = 0;
     double qrCounter = 0;
     double total = 0;
+    double moneyExpensesCounter = 0;
+    double qrExpensesCounter = 0;
     for (Sale sale in state.sales){
       if (sale.isByCash){
-        moneyCounter += sale.totalPrice - sale.discount;
+        if (sale.totalPrice < 0 ){
+          moneyExpensesCounter += sale.totalPrice;
+        } else {
+          moneyCounter += sale.totalPrice - sale.discount;
+        }
       } else {
-        qrCounter += sale.totalPrice - sale.discount;
+        if (sale.totalPrice < 0 ){
+          qrExpensesCounter += sale.totalPrice;
+        } else {
+          qrCounter += sale.totalPrice - sale.discount;
+        }
       }
       total += sale.totalPrice - sale.discount;
     }
     state = state.copyWith(
       total: total,
       subtotalQR: qrCounter,
-      subtotalMoney: moneyCounter
+      subtotalMoney: moneyCounter,
+      subtotalMoneyExpenses: moneyExpensesCounter,
+      subtotalQRExpenses: qrExpensesCounter
     );
   }
 

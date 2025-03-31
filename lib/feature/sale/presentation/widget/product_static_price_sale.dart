@@ -58,10 +58,10 @@ class _ProductStaticPriceSaleState
       color: (isAvailableProduct)
           ? Colors.transparent
           : widget.isEditable
-              ? Colors.grey
+              ? Colors.yellowAccent
               : widget.isFinished
                   ? Colors.transparent
-                  : Colors.grey,
+                  : Colors.yellowAccent,
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -73,7 +73,7 @@ class _ProductStaticPriceSaleState
                     spacing: 3,
                     children: [
                       LabelBorder(
-                        text: productQuantity.toStringAsFixed(3),
+                        text: widget.product.weightValue != 'KG' ? productQuantity.toStringAsFixed(0) : productQuantity.toStringAsFixed(3),
                         textStyle: textTheme.bodyMedium!,
                       ),
                       Text(widget.product.isFixedPrice ? 'u' : 'Kg')
@@ -95,10 +95,10 @@ class _ProductStaticPriceSaleState
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.product.category, style: textTheme.titleSmall),
+                Text(widget.product.category, style: textTheme.bodySmall),
                 Text(
-                  '${widget.product.flavor} - ${widget.product.weight}',
-                  style: textTheme.bodySmall,
+                  '${widget.product.flavor} - ${widget.product.weight}${widget.product.weightValue}',
+                  style: textTheme.titleSmall,
                 )
               ],
             ),
@@ -115,10 +115,14 @@ class _ProductStaticPriceSaleState
                   const SizedBox(
                     width: 15,
                   ),
-                  Text(
-                    (widget.product.price! * productQuantity)
-                        .toStringAsFixed(2),
-                    style: textTheme.bodyLarge,
+                  FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Text(
+                      (widget.product.price! * productQuantity)
+                          .toStringAsFixed(2),
+                      style: textTheme.bodyLarge,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

@@ -25,7 +25,6 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   }
 
   void _showCustomDatePicker(BuildContext context) async {
-    print("LLAMADA");
     final currentDay = ref.read(salesProvider).dayFiltered ?? DateTime.now();
 
     DateTime? selectedDate = await showDialog<DateTime>(
@@ -97,17 +96,21 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             children: [
                               RichText(text: TextSpan(
                                 text: 'Subtotal en efectivo: ',
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                                 children: [
-                                  TextSpan(text: "Bs. ${salesProviderState.subtotalMoney}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.normal))
+                                  TextSpan(text: "Bs. ${salesProviderState.subtotalMoney}", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal)),
+                                  TextSpan(text: " - Bs. ${(salesProviderState.subtotalMoneyExpenses ?? -0) * -1}", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal, color: Colors.red))
+
                                 ]
                               ),
                               ),
                               RichText(text: TextSpan(
                                   text: 'Subtotal en QR: ',
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                                   children: [
-                                    TextSpan(text: "Bs. ${salesProviderState.subtotalQR}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.normal))
+                                    TextSpan(text: "Bs. ${salesProviderState.subtotalQR}", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal)),
+                                    TextSpan(text: " - Bs. ${(salesProviderState.subtotalQRExpenses ?? -0) * -1}", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal, color: Colors.red))
+
                                   ]
                               ),
                               ),

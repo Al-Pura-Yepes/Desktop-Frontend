@@ -10,12 +10,14 @@ class ProductVariablePriceSale extends ConsumerWidget {
   final double widgetHeight = 70;
   final bool isEditable;
   final double? quantity;
+  final bool? isDecrement;
 
   const ProductVariablePriceSale(
       {super.key,
       required this.product,
       this.isEditable = true,
-      this.quantity});
+      this.quantity,
+      this.isDecrement = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,10 +45,10 @@ class ProductVariablePriceSale extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(product.category, style: textTheme.titleSmall),
+              Text(product.category, style: textTheme.bodySmall),
               Text(
-                '${product.flavor} - ${product.weight}',
-                style: textTheme.bodySmall,
+                product.flavor,
+                style: textTheme.titleSmall,
               )
             ],
           ),
@@ -70,9 +72,16 @@ class ProductVariablePriceSale extends ConsumerWidget {
                   enabled: ref.read(cartProvider).widgetOption
                       is SaleInformationFront,
                   onChanged: (value) {
-                    ref
-                        .read(cartProvider.notifier)
-                        .setItemPrice(product, int.tryParse(value) ?? 0);
+                    if (isDecrement ?? false) {
+                      ref
+                      .read(cartProvider.notifier)
+                        .setItemPrice(product, ((int.tryParse(value) ?? 0) * -1));
+                    } else {
+                      ref
+                          .read(cartProvider.notifier)
+                          .setItemPrice(product, int.tryParse(value) ?? 0);
+                    }
+
                   },
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),

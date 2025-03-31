@@ -43,8 +43,11 @@ class SaleCart extends ConsumerWidget {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
                     child: cartProductsKeys[index].weight == null
-                        ? ProductVariablePriceSale(
-                            product: cartProductsKeys[index])
+                        ? cartProductsKeys[index].category != "decrement"
+                    ? ProductVariablePriceSale(
+                        product: cartProductsKeys[index])
+                        : ProductVariablePriceSale(
+                      product: cartProductsKeys[index], isDecrement: true,)
                         : ProductStaticPriceSale(
                             product: cartProductsKeys[index]),
                   );

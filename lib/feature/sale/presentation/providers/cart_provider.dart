@@ -136,6 +136,21 @@ class CartNotifier extends StateNotifier<CartState> {
     }
   }
 
+  void createTheReduceItem(){
+    state = state.copyWith(
+      products: {...state.products, const Product(
+          category: "decrement",
+          flavor: "",
+          price: 0,
+          quantity: 0,
+          imageURL: "",
+          weightValue: "",
+          weight: null,
+      ) : 0
+      }
+    );
+  }
+
   void deleteItemFromCart(Product product) {
     if (state.widgetOption is SaleInformationFront) {
       Map<Product, double> auxMap = {...state.products};

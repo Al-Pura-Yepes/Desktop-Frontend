@@ -103,6 +103,11 @@ class _FrontCard extends StatelessWidget {
         children: [
           Image.network(
             product.imageURL,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: Colors.grey,
+              );
+            },
             fit: BoxFit.fill,
             loadingBuilder: (context, child, loadingProgress) {
               return Container(
@@ -115,15 +120,36 @@ class _FrontCard extends StatelessWidget {
               bottom: 0,
               right: 0,
               left: 0,
-              height: 50,
+              height: 70,
               child: Container(
                 color: primaryColor,
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  '${product.flavor} - ${product.weight?.toStringAsFixed(0) ?? 0}${product.weightValue}',
-                  style: textTheme.bodySmall?.copyWith(color: Colors.white),
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                child: RichText(
+                  text: TextSpan(
+                    style: textTheme.bodyMedium?.copyWith(color: Colors.white),
+                    children: [
+                      TextSpan(text: product.flavor),
+                      if (product.weightValue != "KG") ...[
+                        const TextSpan(text: " - "),
+                        TextSpan(
+                          text: product.weight?.toStringAsFixed(0) ?? "0",
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontSize: (textTheme.bodyMedium?.fontSize ?? 14) * 1.2,
+                            color: Colors.yellow
+                          ),
+                        ),
+                        TextSpan(
+                          text: product.weightValue,
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontSize: (textTheme.bodyMedium?.fontSize ?? 14)* 1.2,
+                            color: Colors.yellow
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                )
               )),
           if (quantity != null)
             Positioned(

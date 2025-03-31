@@ -51,7 +51,7 @@ class ProductDatasourceImpl implements ProductDatasource {
       QuerySnapshot snapshot = await products.get();
       for (DocumentSnapshot doc in snapshot.docs) {
         Map<String, dynamic> productData = doc.data() as Map<String, dynamic>;
-        fetchProduct.add(Product.fromJson({"id": doc.id, ...productData}));
+        fetchProduct.add(Product.fromJson({...productData, "id": doc.id,}));
       }
     } catch (e) {
       rethrow;
@@ -66,7 +66,7 @@ class ProductDatasourceImpl implements ProductDatasource {
       for (var entry in cartItems.entries) {
         Product product = entry.key;
         double decrementedQuantity = product.quantity - entry.value;
-        double newQuantity = decrementedQuantity < 0 ? 0 : decrementedQuantity;
+        double newQuantity = decrementedQuantity;
         DocumentReference productRef = products.doc(product.id);
         batch.update(productRef, {"quantity": newQuantity});
       }
