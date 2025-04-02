@@ -95,11 +95,11 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               RichText(text: TextSpan(
-                                text: 'Subtotal en efectivo: ',
+                                text: 'Subtotal efectivo: ',
                                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                                 children: [
-                                  TextSpan(text: "Bs. ${salesProviderState.subtotalMoney}", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal)),
-                                  TextSpan(text: " - Bs. ${(salesProviderState.subtotalMoneyExpenses ?? -0) * -1}", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal, color: Colors.red))
+                                  TextSpan(text: "Bs. ${salesProviderState.subtotalMoney ?? 0 - (salesProviderState.subtotalMoneyExpenses ?? 0)} ", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal)),
+                                  TextSpan(text: "(${salesProviderState.subtotalMoney ?? 0} - ${(salesProviderState.subtotalMoneyExpenses ?? 0)})", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Colors.red))
 
                                 ]
                               ),
@@ -108,8 +108,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                                   text: 'Subtotal en QR: ',
                                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                                   children: [
-                                    TextSpan(text: "Bs. ${salesProviderState.subtotalQR}", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal)),
-                                    TextSpan(text: " - Bs. ${(salesProviderState.subtotalQRExpenses ?? -0) * -1}", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal, color: Colors.red))
+                                    TextSpan(text: "Bs. ${salesProviderState.subtotalQR ?? 0 - (salesProviderState.subtotalQRExpenses ?? 0)} ", style: const TextStyle(fontSize: 25, fontWeight: FontWeight.normal)),
+                                    TextSpan(text: "(${salesProviderState.subtotalQR ?? 0} - ${(salesProviderState.subtotalQRExpenses ?? 0)})", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Colors.red))
+
 
                                   ]
                               ),

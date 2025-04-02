@@ -88,16 +88,17 @@ class SalesNotifier extends StateNotifier<SalesState> {
         if (sale.totalPrice < 0 ){
           moneyExpensesCounter += sale.totalPrice;
         } else {
-          moneyCounter += sale.totalPrice - sale.discount;
+          moneyCounter += sale.totalPrice;
         }
       } else {
         if (sale.totalPrice < 0 ){
           qrExpensesCounter += sale.totalPrice;
         } else {
-          qrCounter += sale.totalPrice - sale.discount;
+          qrCounter += sale.totalPrice;
         }
       }
-      total += sale.totalPrice - sale.discount;
+      total += sale.totalPrice;
+
     }
     state = state.copyWith(
       total: total,

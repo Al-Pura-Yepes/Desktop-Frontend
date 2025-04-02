@@ -263,7 +263,7 @@ class CartNotifier extends StateNotifier<CartState> {
           products: auxMap,
           isDelivery: state.isDelivery,
           isPerMajor: state.isPerMajor,
-          totalPrice: state.totalPrice - state.discount,
+          totalPrice: state.totalPrice,
           discount: state.discount,
           isReservation: state.isReservation,
           clientName: state.clientName,
