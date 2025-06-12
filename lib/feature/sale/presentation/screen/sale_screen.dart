@@ -4,6 +4,10 @@ import 'package:al_pura_frontend/feature/shared/widget/options_bar/option_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../features/product/domain/entities/category.dart';
+import '../../../../features/product/domain/entities/flavor.dart';
+import '../../../../domain/entities/product.dart';
+import '../../../../features/product/data/data_sources/firebase_store_repository.dart';
 import '../widget/sale_cart.dart';
 
 class SaleScreen extends ConsumerWidget {
