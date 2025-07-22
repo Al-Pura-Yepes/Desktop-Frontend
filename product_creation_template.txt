@@ -1,0 +1,25 @@
+FlavorTypes flavorTypes = FlavorTypes.RIO_GRANDE;
+  CategoryTypes categoryTypes = CategoryTypes.QUESO;
+  Product product = Product(
+      flavor: Flavor(id: flavorTypes.id, label: flavorTypes.title, hexColor: flavorTypes.colorHex, hasStevia: flavorTypes.hasStevia),
+      category: Category(id: categoryTypes.id, label: categoryTypes.title),
+      productImage: '',
+      productPrice: 36,
+      isReturnable: false,
+      isAvailable: true,
+      isFixedPrice: true,
+      weightLabel: 'L',
+      weight: 2,
+  );
+
+  final productRepo = FirebaseProductRepository();
+  final createProductUseCase = CreateProductUseCase(repository: productRepo);
+  final productCreated = await createProductUseCase.execute(product);
+
+  print(productCreated);
+
+  final productStoreRepo = FirebaseProductStoreRepository();
+  final createProductStoreUseCase = CreateProductStoreUseCase(repository: productStoreRepo, productRepository: productRepo);
+  final productStoreCreated = await createProductStoreUseCase.execute(productCreated.id!);
+
+  print(productStoreCreated);
