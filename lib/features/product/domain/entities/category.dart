@@ -1,26 +1,12 @@
 import 'package:al_pura_frontend/core/entities/i_entity.dart';
 
 class Category implements IEntity {
-
   @override
   final String id;
 
-  final String categoryLabel;
+  final String label;
 
-  Category({required this.id, required this.categoryLabel});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'categoryLabel': this.categoryLabel,
-    };
-  }
-
-  factory Category.fromMap(Map<String, dynamic> map) {
-    return Category(
-      id: map['id'] as String,
-      categoryLabel: map['categoryLabel'] as String,
-    );
-  }
+  Category({required this.id, required this.label});
 
   Category copyWith({
     String? id,
@@ -28,12 +14,20 @@ class Category implements IEntity {
   }) {
     return Category(
       id: id ?? this.id,
-      categoryLabel: flavorLabel ?? this.categoryLabel,
+      label: flavorLabel ?? this.label,
     );
   }
 
   @override
   String toString() {
-    return 'Category{id: $id, categoryLabel: $categoryLabel}';
+    return 'Category{id: $id, categoryLabel: $label}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Category && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
